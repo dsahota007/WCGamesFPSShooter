@@ -1,11 +1,14 @@
 # WCGamesFPSShooter
-# Indie Project – FPS Abilities Demo
+# Indie Project – FPS Demo
 
 This project is an independent first-person shooter prototype, developed in Unity as part of a larger experimental game framework.
 The current build demonstrates core FPS systems such as weapon management, player movement mechanics, perk upgrades, and a developing magic ability system.
 All features are still work-in-progress, with placeholder visuals and unfinished gameplay elements.
 
-**Core Features**
+<img width="869" height="604" alt="Screenshot 2025-08-10 022354" src="https://github.com/user-attachments/assets/feba3218-a66f-418d-b2e7-2fd35fda25d1" />
+
+**Core Features** 
+
 
 Player HUD – health bar, ammo counter, and UI elements.
 
@@ -44,6 +47,9 @@ Magic:
 Acquire at station: E
 
 Cast ability: Q
+
+<img width="665" height="469" alt="Screenshot 2025-08-10 120554" src="https://github.com/user-attachments/assets/f973d7ce-4024-4061-b41f-4ebec801f652" />
+
 
 **Weapons
 **
@@ -94,6 +100,8 @@ Instant Kill – one-shot kills for a limited time
 Infinite Ammo – weapons and abilities consume no ammo for duration
 
 Max Ammo – refills all weapons and grenades
+
+<img width="1421" height="742" alt="Screenshot 2025-08-24 132309" src="https://github.com/user-attachments/assets/5eb354e9-18ac-4a6b-a2e8-ef38d3d2d4e2" />
 
 **Development Status**
 
