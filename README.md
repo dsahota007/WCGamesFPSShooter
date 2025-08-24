@@ -1,5 +1,5 @@
 # WCGamesFPSShooter
-Indie Project – FPS Abilities Demo
+# Indie Project – FPS Abilities Demo
 
 This project is an independent first-person shooter prototype, developed in Unity as part of a larger experimental game framework.
 The current build demonstrates core FPS systems such as weapon management, player movement mechanics, perk upgrades, and a developing magic ability system.
