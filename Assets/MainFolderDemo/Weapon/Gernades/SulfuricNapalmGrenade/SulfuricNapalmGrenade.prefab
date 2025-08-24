@@ -29384,9 +29384,9 @@ MonoBehaviour:
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
-  explosionVFX: {fileID: 1427962332153456, guid: f5cd8999a9f7b5746a5cf3e9a9ecc4af,
+  explosionVFX: {fileID: 1121192042590650, guid: 08680350a4f0ede46bcf32c8bb756d4a,
     type: 3}
   vfxLifetime: 5
-  EnemyImpactVFX: {fileID: 8793510976239746625, guid: cc707cdad8bda724e87f32564fee7f77,
+  EnemyImpactVFX: {fileID: 1901245927194888, guid: bc4eed06a26e79448b4bc7d60ecf201e,
     type: 3}
   spinTorque: 5
