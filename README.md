@@ -5,7 +5,7 @@ This project is an independent first-person shooter prototype, developed in Unit
 The current build demonstrates core FPS systems such as weapon management, player movement mechanics, perk upgrades, and a developing magic ability system.
 All features are still work-in-progress, with placeholder visuals and unfinished gameplay elements.
 
-Core Features
+**Core Features**
 
 Player HUD – health bar, ammo counter, and UI elements.
 
@@ -17,7 +17,7 @@ Magic Ability Stations – acquire and cast unique abilities.
 
 Core FPS Controls – sprinting, sliding, kinetic jump, melee, grenade use, and magic casting.
 
-Controls
+**Controls**
 
 Movement: WASD
 
@@ -45,12 +45,12 @@ Acquire at station: E
 
 Cast ability: Q
 
-Weapons
-
+**Weapons
+**
 The current build includes six functional weapons, with the system prepared for expansion into a larger arsenal.
 
-Magic Abilities
-
+**Magic Abilities
+**
 Players can acquire and cast unique magical powers. Examples include:
 
 Fire Magic – burns enemies.
@@ -67,7 +67,7 @@ Meteor Magic – calls down a devastating meteor strike.
 
 Crimson Magic – drains health from enemies to heal the player.
 
-Perk & Upgrade System
+**Perk & Upgrade System**
 
 A perk upgrade system is being implemented to enhance player stats:
 
@@ -81,7 +81,7 @@ Reduced magic cooldown
 
 Passive health regeneration
 
-Power-Up Drops
+**Power-Up Drops**
 
 Random drops provide temporary advantages during gameplay:
 
@@ -95,7 +95,7 @@ Infinite Ammo – weapons and abilities consume no ammo for duration
 
 Max Ammo – refills all weapons and grenades
 
-Development Status
+**Development Status**
 
 This build is an early prototype.
 Current focus:
