@@ -1,4 +1,3 @@
-# WCGamesFPSShooter
 # Indie Project – FPS Demo
 
 This project is an independent first-person shooter prototype, developed in Unity as part of a larger experimental game framework.
