@@ -1,22 +1,21 @@
 # WCGamesFPSShooter
+Indie Project – FPS Abilities Demo
 
-Indie Project – Grenade Abilities Demo
+This project is an independent first-person shooter prototype, developed in Unity as part of a larger experimental game framework.
+The current build demonstrates core FPS systems such as weapon management, player movement mechanics, perk upgrades, and a developing magic ability system.
+All features are still work-in-progress, with placeholder visuals and unfinished gameplay elements.
 
-This is a demo showcase for an indie FPS project, built on top of the existing base shooter framework.
-The current version highlights grenade abilities while retaining core FPS systems.
-Please note: All features are work-in-progress — VFX, zombie AI/animations, and gameplay systems are subject to iteration.
+Core Features
 
-Features in This Build
+Player HUD – health bar, ammo counter, and UI elements.
 
-Player HUD: working health bar, ammo counter, and UI elements.
+Weapon Manager System – supports weapon switching, reloading, and ammo management.
 
-Weapon Manager System: handles swapping, reloading, and ammo management.
+Mystery Box + Ammo Box – randomized weapon draws and ammo refills.
 
-Mystery Box + Ammo Box: interactive systems for randomized weapon draws and ammo refills.
+Magic Ability Stations – acquire and cast unique abilities.
 
-Magic Ability System: stations to acquire powers, with hotkeys for quick casting.
-
-Core FPS Controls: sprint, slide, kinetic jump, melee, reload, and grenade usage.
+Core FPS Controls – sprinting, sliding, kinetic jump, melee, grenade use, and magic casting.
 
 Controls
 
@@ -42,91 +41,77 @@ Grenade: G
 
 Magic:
 
-Pick ability at Magic Station: E
+Acquire at station: E
 
-Cast magic: Q (cooldowns vary by ability)
-
-Grenade Types
-
-Frag Grenade – Standard explosive, high-damage AoE.
-
-Impact Grenade – Instant detonation on contact.
-
-Semtex – Sticky explosive that attaches to surfaces or enemies.
-
-Bio Grenade – Spreads a toxic gas cloud, dealing DoT.
-
-Sulfuric Napalm Grenade – Large fiery blast with lingering burn damage.
-
-Crystal Cluster Grenade – Splits into smaller cluster bombs scattering damaging shards.
-
-Bastion Grenade – Generates a protective dome that blocks enemy attacks temporarily.
-
-Ragnarok Grenade – Summons a storm of lightning strikes in the blast area.
-
-🔮 Magic Abilities
-
-Fire Magic – Burns enemies alive.
-
-Sulfuric Fire (WIP) – Kills nearby enemies, summons a destructive portal with energy beams.
-
-Void Magic – Black hole effect that sucks in and crushes all enemies.
-
-Ice Magic – Freezes enemies and creates a defensive ring of ice.
-
-Venom Magic – Toxic AoE gas, lethal to all within range.
-
-Lightning Magic – Chains through enemies, killing up to 60 in a strike.
-
-Wind Magic – Shockwave that knocks enemies back.
-
-Meteor Magic – Calls a massive meteor, devastating almost all enemies on the map.
-
-Crimson Magic – Lifesteal ability: siphons 10 HP per enemy in range.
+Cast ability: Q
 
 Weapons
 
-Currently, 6 weapons are implemented in the demo with plans for full arsenal expansion:
+The current build includes six functional weapons, with the system prepared for expansion into a larger arsenal.
 
+Magic Abilities
 
-Future builds will expand the weapon selection system, supporting multiple categories (primaries, secondaries, special weapons).
+Players can acquire and cast unique magical powers. Examples include:
 
-Perk & Upgrade System (WIP)
+Fire Magic – burns enemies.
 
-Players will be able to enhance survivability and combat effectiveness via perks and upgrades:
+Ice Magic – freezes enemies and provides temporary defense.
 
-Increased Health – higher max HP.
+Void Magic – summons a black hole that pulls enemies inward.
 
-Speed Boost – faster sprinting and reload speed.
+Lightning Magic – chains damage across groups of enemies.
 
-Fire Rate Upgrade – faster weapon rate-of-fire.
+Venom Magic – creates a toxic cloud.
 
-Magic Cooldown Reduction – cast spells more frequently.
+Meteor Magic – calls down a devastating meteor strike.
 
-Regeneration – passive health recovery over time.
+Crimson Magic – drains health from enemies to heal the player.
+
+Perk & Upgrade System
+
+A perk upgrade system is being implemented to enhance player stats:
+
+Increased health
+
+Faster movement and reload speed
+
+Higher fire rate
+
+Reduced magic cooldown
+
+Passive health regeneration
 
 Power-Up Drops
 
-During zombie waves, special drops may spawn, granting temporary boosts:
+Random drops provide temporary advantages during gameplay:
 
-Double Points – doubles score gains.
+Double Points – doubles score gains
 
-Nuke – eliminates all zombies currently alive.
+Nuke – eliminates all zombies currently active
 
-Instant Kill – one-shot kills for a limited time.
+Instant Kill – one-shot kills for a limited time
 
-Infinite Ammo – weapons and abilities consume no ammo for duration.
+Infinite Ammo – weapons and abilities consume no ammo for duration
 
-Max Ammo – instantly refills all weapons and grenades.
+Max Ammo – refills all weapons and grenades
 
 Development Status
 
-This build represents an early prototype, focused primarily on testing:
+This build is an early prototype.
+Current focus:
 
-Grenade mechanics
+Weapon and magic systems
 
-Magic casting system
+Core FPS movement
 
-Weapon switching framework
+Perk and upgrade framework
 
-Zombie AI, animations, VFX polish, balancing, and map design are actively in-progress.
+Planned improvements:
+
+Zombie AI and animations
+
+Visual effects and audio
+
+Balancing and gameplay progression
+
+Additional weapons and abilities
