@@ -230,7 +230,7 @@ public class Weapon : MonoBehaviour
     public GameObject fireOnEnemyVFXPrefab;   // VFX that sticks to enemies you burn
     public float fireDotPercentPerSec = 0.03f; // 3% per second
     public float fireDotDuration = 4f;         // seconds
-    [HideInInspector] public GameObject enemyInfusionVFX;   // make bullets know which VFX to stick on enemies for this infusion
+    //[HideInInspector] public GameObject enemyInfusionVFX;   // make bullets know which VFX to stick on enemies for this infusion
     public Vector3 fireOnEnemyVFXOffset = Vector3.zero;
     public Vector3 fireOnEnemyVFXEuler = Vector3.zero;
     public Vector3 fireOnEnemyVFXScale = Vector3.one;
@@ -713,7 +713,7 @@ public class Weapon : MonoBehaviour
         }
 
         //Debug.Log("[Weapon] Fire infusion effects applied!");
-        enemyInfusionVFX = fireOnEnemyVFXPrefab;
+        //enemyInfusionVFX = fireOnEnemyVFXPrefab;
 
     }
 
@@ -743,7 +743,7 @@ public class Weapon : MonoBehaviour
         }
 
         // Debug.Log("[Weapon] Crystal infusion effects applied!");
-        enemyInfusionVFX = crystalOnEnemyVFXPrefab;
+        //enemyInfusionVFX = crystalOnEnemyVFXPrefab;
     }
 
     private void ApplyVoidInfusion()
@@ -800,7 +800,7 @@ public class Weapon : MonoBehaviour
         }
 
         //Debug.Log("[Weapon] Ice infusion effects applied!");
-        enemyInfusionVFX = iceOnEnemyVFXPrefab;
+        //enemyInfusionVFX = iceOnEnemyVFXPrefab;
     }
 
     private void ApplyVenomInfusion()
@@ -941,7 +941,7 @@ public class Weapon : MonoBehaviour
         }
 
         //Debug.Log("[Weapon] Crimson infusion effects applied!");
-        enemyInfusionVFX = crimsonOnEnemyVFXPrefab;
+        //enemyInfusionVFX = crimsonOnEnemyVFXPrefab;
 
     }
 

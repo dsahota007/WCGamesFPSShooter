@@ -101,9 +101,9 @@ public class Bullet : MonoBehaviour
             {
                 Vector3 center = transform.position;   //find the center positon 
 
-                if (sourceWeapon.crystalImpactVFXPrefab != null)       // Spawn VFX at impact
+                if (sourceWeapon.crystalOnEnemyVFXPrefab != null)       // Spawn VFX at impact
                 {
-                    var fx = Instantiate(sourceWeapon.crystalImpactVFXPrefab, center, Quaternion.identity);
+                    var fx = Instantiate(sourceWeapon.crystalOnEnemyVFXPrefab, center, Quaternion.identity);
                     fx.transform.SetParent(null, true);
                     fx.transform.position += sourceWeapon.crystalImpactVFXOffset;
                     fx.transform.rotation = Quaternion.Euler(sourceWeapon.crystalImpactVFXEuler);
