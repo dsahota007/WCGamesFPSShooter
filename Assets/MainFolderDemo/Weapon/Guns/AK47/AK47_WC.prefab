@@ -6205,6 +6205,17 @@ MonoBehaviour:
   fireOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   fireOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   fireOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  crystalSplashRadius: 2.5
+  crystalSplashPercent: 0.02
+  crystalEnemyMask:
+    serializedVersion: 2
+    m_Bits: 8
+  crystalImpactVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
+    type: 3}
+  crystalImpactVFXOffset: {x: 0, y: 0, z: 0}
+  crystalImpactVFXEuler: {x: 0, y: 0, z: 0}
+  crystalImpactVFXScale: {x: 1, y: 1, z: 1}
+  crystalImpactVFXLifetime: 1
   venomOnEnemyVFXPrefab: {fileID: 8793510976239746625, guid: 0be12c6cfc87d17459538f204eccdb92,
     type: 3}
   venomDotPercentPerSec: 0.01

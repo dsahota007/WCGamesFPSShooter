@@ -87,10 +87,9 @@ public class Bullet : MonoBehaviour
             // CRYSTAL INFUSION
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crystal)
             {
-                Vector3 center = transform.position;
+                Vector3 center = transform.position;   //find the center positon 
 
-                // Spawn VFX at impact
-                if (sourceWeapon.crystalImpactVFXPrefab != null)
+                if (sourceWeapon.crystalImpactVFXPrefab != null)       // Spawn VFX at impact
                 {
                     var fx = Instantiate(sourceWeapon.crystalImpactVFXPrefab, center, Quaternion.identity);
                     fx.transform.SetParent(null, true);
@@ -101,23 +100,18 @@ public class Bullet : MonoBehaviour
                 }
 
                 // Find all enemies in radius
-                Collider[] hits = Physics.OverlapSphere(
-                    center,
-                    sourceWeapon.crystalSplashRadius,
-                    sourceWeapon.crystalEnemyMask,
-                    QueryTriggerInteraction.Ignore
-                );
+                Collider[] hits = Physics.OverlapSphere(center, sourceWeapon.crystalSplashRadius, sourceWeapon.crystalEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
 
-                foreach (var c in hits)
-                {
-                    var e = c.GetComponentInParent<EnemyHealthRagdoll>();
-                    if (e == null || e.IsDead()) continue;
+                foreach (var c in hits)   //one collider from the sphere check
+                {   // e is enemy
+                    var e = c.GetComponentInParent<EnemyHealthRagdoll>();   //fetch script 
+                    if (e == null || e.IsDead())  //ignore if nobody is there or theyre dead
+                        continue;
 
-                    // 1% of each enemy's max health
-                    float dmg = Mathf.Max(1f, e.Health * sourceWeapon.crystalSplashPercent);
-                    Vector3 pushDir = (e.transform.position - center).normalized;
+                    float dmg = Mathf.Max(1f, e.Health * sourceWeapon.crystalSplashPercent);  // we dont need that 1f and math max this makes sure its never under 1 percent ? 
+                    Vector3 pushDir = (e.transform.position - center).normalized;  //for ragdoll we find direction and in take damage implment that 
 
-                    e.TakeDamage(dmg, pushDir);
+                    e.TakeDamage(dmg, pushDir); 
                 }
             }
 
@@ -134,29 +128,29 @@ public class Bullet : MonoBehaviour
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crimson)
             {
                 // 0.1% of enemy MAX HP per bullet (tweak in Weapon inspector)
-                float healAmt = enemy.Health * sourceWeapon.crimsonHealPercentPerHit;
+                float healAmt = enemy.Health * sourceWeapon.crimsonHealPercentPerHit; //WE Calc the amount so curren health of the enemy 
 
                 // Heal player
-                var player = GameObject.FindGameObjectWithTag("Player");
+                var player = GameObject.FindGameObjectWithTag("Player");  //find player with tag 
                 if (player != null)
                 {
-                    var attrs = player.GetComponentInChildren<PlayerAttributes>();
-                    if (attrs != null) attrs.Heal(healAmt);
+                    var attrs = player.GetComponentInChildren<PlayerAttributes>();  //fethc attirbutes for health
+                    if (attrs != null)
+                    {
+                        attrs.Heal(healAmt);         //heal the amount per bullet
+                    }
                 }
-
                 // Spawn quick crimson VFX ON the enemy at custom offset/rotation/scale
-                var vfxPrefab = sourceWeapon.crimsonOnEnemyVFXPrefab;
+                var vfxPrefab = sourceWeapon.crimsonOnEnemyVFXPrefab;   // spawn vfx 
                 if (vfxPrefab != null)
                 {
                     var fx = Instantiate(vfxPrefab, enemy.transform);
-                    fx.transform.localPosition = sourceWeapon.crimsonOnEnemyVFXOffset;
+                    fx.transform.localPosition = sourceWeapon.crimsonOnEnemyVFXOffset;  
                     fx.transform.localRotation = Quaternion.Euler(sourceWeapon.crimsonOnEnemyVFXEuler);
                     fx.transform.localScale = sourceWeapon.crimsonOnEnemyVFXScale;
                     Destroy(fx, sourceWeapon.crimsonOnEnemyVFXLifetime);
                 }
             }
-
-
         }
 
         Destroy(gameObject);

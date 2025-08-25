@@ -734,7 +734,8 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-       // Debug.Log("[Weapon] Crystal infusion effects applied!");
+        // Debug.Log("[Weapon] Crystal infusion effects applied!");
+        enemyInfusionVFX = crystalImpactVFXPrefab;
     }
 
     private void ApplyVoidInfusion()
