@@ -226,7 +226,7 @@ public class Weapon : MonoBehaviour
 
 
     [Header("Infusion Bullet Logic")]
-    [Header("Fire Infusion VFX")]
+    [Header("Fire Infusion VFX + Bullet Logic")]
     public GameObject fireOnEnemyVFXPrefab;   // VFX that sticks to enemies you burn
     public float fireDotPercentPerSec = 0.03f; // 3% per second
     public float fireDotDuration = 4f;         // seconds
@@ -235,7 +235,17 @@ public class Weapon : MonoBehaviour
     public Vector3 fireOnEnemyVFXEuler = Vector3.zero;
     public Vector3 fireOnEnemyVFXScale = Vector3.one;
 
-    [Header("Crystal Infusion VFX")]
+    [Header("Ice Infusion VFX + Bullet Logic")]
+    public float iceSlowPercent = 0.40f;            // 40% slow (i.e., final speed = base * (1 - 0.40))
+    public float iceSlowDuration = 2.5f;            // seconds
+    public GameObject iceOnEnemyVFXPrefab;           
+    public Vector3 iceOnEnemyVFXOffset = Vector3.zero;
+    public Vector3 iceOnEnemyVFXEuler = Vector3.zero;
+    public Vector3 iceOnEnemyVFXScale = Vector3.one;
+    public float iceOnEnemyVFXLifetime = 2.0f;    
+
+
+    [Header("Crystal Infusion VFX + Bullet Logic")]
     public float crystalSplashRadius = 2.5f;     // small AoE
     public float crystalSplashPercent = 0.01f;   // 1% of max health
     public LayerMask crystalEnemyMask;
@@ -245,7 +255,7 @@ public class Weapon : MonoBehaviour
     public Vector3 crystalImpactVFXScale = Vector3.one;
     public float crystalImpactVFXLifetime = 1.0f;
 
-    [Header("Venom Infusion VFX")]
+    [Header("Venom Infusion VFX + Bullet Logic")]
     public GameObject venomOnEnemyVFXPrefab;
     public float venomDotPercentPerSec = 0.03f;  
     public float venomDotDuration = 4f;
@@ -253,15 +263,13 @@ public class Weapon : MonoBehaviour
     public Vector3 venomOnEnemyVFXEuler = Vector3.zero;
     public Vector3 venomOnEnemyVFXScale = Vector3.one;
 
-    [Header("Crimson Infusion VFX")]
+    [Header("Crimson Infusion VFX + Bullet Logic")]
     public GameObject crimsonOnEnemyVFXPrefab;       // VFX to attach to enemies on hit
     public Vector3 crimsonOnEnemyVFXOffset = Vector3.zero;
     public Vector3 crimsonOnEnemyVFXEuler = Vector3.zero;
     public Vector3 crimsonOnEnemyVFXScale = Vector3.one;
     public float crimsonOnEnemyVFXLifetime = 4f;     // auto-destroy (0 = don't auto destroy)
     public float crimsonHealPercentPerHit = 0.001f;  // 0.1%
-
- 
 
 
     public void ApplyPackAPunchSkin()

@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.LightTransport;
+using static Sentry.MeasurementUnit;
 
 public class EnemyHealthRagdoll : MonoBehaviour
 {
@@ -51,12 +52,25 @@ public class EnemyHealthRagdoll : MonoBehaviour
     private float fireDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
     private GameObject activeFireVFX;
 
+    // --- ICE slow state ---
+    private bool iceSlowed = false;
+    private float iceEndTime = 0f;
+    private float baseAgentSpeed = -1f;   // cached original
+    private GameObject activeIceVFX = null;
+
+    //-- No crystal variable
+
     // --- VENOM INFUSION state -------------------------------------
     private bool venomDotActive = false;
     private float venomDotPctPerSec = 0f;
     private float venomDotEndTime = 0f;
     private float venomNextTickTime = 0f;
     private GameObject activeVenomVFX = null;
+
+    //-- No crimson variable
+
+
+
 
 
 
@@ -104,6 +118,11 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
 
         //SetHealthUIVisible(true);
+
+        agent = GetComponent<NavMeshAgent>();  //fetch agent script for ice and wind to slwo speed down
+        if (agent != null && baseAgentSpeed < 0f)
+            baseAgentSpeed = agent.speed;  // get current speed in baseAgentSpeed
+
     }
 
     void Update()
@@ -160,6 +179,21 @@ public class EnemyHealthRagdoll : MonoBehaviour
             }
         }
 
+        // --- ICE infusion  ---
+        if (iceSlowed && Time.time >= iceEndTime) //if currently frozen.
+        {
+            agent.speed = baseAgentSpeed;  // restore exact original
+            iceSlowed = false;
+
+            if (activeIceVFX != null)
+            {
+                Destroy(activeIceVFX);
+                activeIceVFX = null;
+            }
+        }
+
+
+
         // --- VENOM infusion DOT tick ---
         if (venomDotActive)
         {
@@ -208,6 +242,36 @@ public class EnemyHealthRagdoll : MonoBehaviour
         //}
         }
     }
+
+    public void ApplyIceSlow(float durationSeconds, float newSpeed, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
+    {
+        if (isDead || agent == null) return;
+
+        if (baseAgentSpeed < 0f) baseAgentSpeed = agent.speed;
+
+        agent.speed = newSpeed;
+        iceSlowed = true;
+        iceEndTime = Time.time + durationSeconds;
+
+        // Attach or refresh VFX
+        if (onEnemyVFXPrefab != null)
+        {
+            if (activeIceVFX == null)
+                activeIceVFX = Instantiate(onEnemyVFXPrefab, transform);
+
+            activeIceVFX.transform.localPosition = vfxLocalPos;
+            activeIceVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+            activeIceVFX.transform.localScale = vfxLocalScale;
+
+            if (vfxLifetime > 0f)
+            {
+                // If you want the VFX to always last the whole slow, you can skip this
+                Destroy(activeIceVFX, vfxLifetime);
+                activeIceVFX = null; // so we don't try to destroy twice on expiry
+            }
+        }
+    }
+
     public void ApplyVenomInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale) 
     { 
         venomDotActive = true;

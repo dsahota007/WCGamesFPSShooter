@@ -84,6 +84,18 @@ public class Bullet : MonoBehaviour
                 );
             }
 
+            // ICE INFUSION (slow NavMesh speed for a duration)
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Ice)
+            {
+                // convert percent to multiplier: 40% slow => 0.60 multiplier
+                float slowMultiplier = Mathf.Clamp01(1f - sourceWeapon.iceSlowPercent);
+
+                enemy.ApplyIceSlow(sourceWeapon.iceSlowDuration, slowMultiplier, sourceWeapon.iceOnEnemyVFXPrefab,
+                    sourceWeapon.iceOnEnemyVFXOffset, sourceWeapon.iceOnEnemyVFXEuler, sourceWeapon.iceOnEnemyVFXScale, sourceWeapon.iceOnEnemyVFXLifetime
+                );
+            }
+
+
             // CRYSTAL INFUSION
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crystal)
             {
