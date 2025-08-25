@@ -6201,7 +6201,6 @@ MonoBehaviour:
     type: 3}
   fireDotPercentPerSec: 0.05
   fireDotDuration: 4
-  enemyInfusionVFX: {fileID: 0}
   fireOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   fireOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   fireOnEnemyVFXScale: {x: 1, y: 1, z: 1}
@@ -6218,7 +6217,7 @@ MonoBehaviour:
   crystalEnemyMask:
     serializedVersion: 2
     m_Bits: 8
-  crystalImpactVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
+  crystalOnEnemyVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
     type: 3}
   crystalImpactVFXOffset: {x: 0, y: 0, z: 0}
   crystalImpactVFXEuler: {x: 0, y: 0, z: 0}
@@ -6231,6 +6230,14 @@ MonoBehaviour:
   venomOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   venomOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   venomOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  windOnEnemyVFXPrefab: {fileID: 358637981425055526, guid: a3cd71c38954cb545a2e6dd0e054b958,
+    type: 3}
+  windOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
+  windOnEnemyVFXEuler: {x: 0, y: 0, z: 0}
+  windOnEnemyVFXScale: {x: 1.2, y: 1.2, z: 1.2}
+  windOnEnemyVFXLifetime: 1.5
+  windKnockbackForce: 15
+  windKnockbackDuration: 0.01
   crimsonOnEnemyVFXPrefab: {fileID: 6126188424833946103, guid: b0c8d1499944d4c4fa1bb9928c7c13a0,
     type: 3}
   crimsonOnEnemyVFXOffset: {x: 0, y: 0, z: 0}

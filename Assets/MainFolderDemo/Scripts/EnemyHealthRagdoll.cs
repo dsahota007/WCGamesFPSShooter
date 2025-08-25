@@ -1,7 +1,8 @@
-﻿using Unity.VisualScripting;
+﻿//using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.LightTransport;
+using System.Collections;
+//using UnityEngine.LightTransport;
 
 public class EnemyHealthRagdoll : MonoBehaviour
 {
@@ -263,9 +264,11 @@ public class EnemyHealthRagdoll : MonoBehaviour
         // Attach or refresh VFX
         if (onEnemyVFXPrefab != null)
         {
-            if (activeIceVFX == null)
-                activeIceVFX = Instantiate(onEnemyVFXPrefab, transform);
-
+            if (activeIceVFX == null) 
+            { 
+            activeIceVFX = Instantiate(onEnemyVFXPrefab, transform);
+            }
+            
             activeIceVFX.transform.localPosition = vfxLocalPos;
             activeIceVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
             activeIceVFX.transform.localScale = vfxLocalScale;
@@ -298,6 +301,82 @@ public class EnemyHealthRagdoll : MonoBehaviour
             activeVenomVFX.transform.localScale = vfxLocalScale;
         }
     }
+
+    public void ApplyWindKnockback(Vector3 fromPos, float force, float duration, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
+    {
+        if (isDead) return;  // if enemy is dead -- gtfo this code 
+
+        Vector3 dir = (transform.position - fromPos).normalized;  //from origin of bullet adn enemy hitting - direciton 
+        if (dir.sqrMagnitude < 0.01f) 
+        {
+            dir = transform.forward; //we push in that direction
+        }
+
+        Rigidbody rb = GetComponent<Rigidbody>();  //get rigid body
+        if (rb == null && ragdollRoot != null)     //get rigid body
+        {
+            rb = ragdollRoot.GetComponent<Rigidbody>();
+        }
+
+        if (agent != null)  //turn off agent so we can push back on navmesh
+        {
+            agent.enabled = false;
+        }
+
+        if (rb != null)
+        {
+            bool wasKinematic = rb.isKinematic;  //true ignores physics
+            rb.isKinematic = false;             
+            rb.AddForce(dir * Mathf.Max(0f, force), ForceMode.Impulse);  //Apply an instant impulse force to the Rigidbody in the dir direction (away from bullet)   -- void AddForce(Vector3 force, ForceMode mode = ForceMode.Force) -- there are different mode you can searhc up implulse is an instant kick so we need that for wind
+            StartCoroutine(RestoreNavAfterWindInfusionBullet(duration, rb, wasKinematic));
+        }
+        //else
+        //{
+        //    // fallback: small navmesh warp if no rigidbody present
+        //    const float fallbackDistPerForce = 0.02f;
+        //    float push = Mathf.Max(0f, force) * fallbackDistPerForce;
+        //    Vector3 target = transform.position + dir * push;
+
+        //    if (agent != null)
+        //    {
+        //        agent.Warp(target);
+        //        agent.enabled = true;
+        //    }
+        //    else
+        //    {
+        //        transform.position = target;
+        //    }
+        //}
+
+        if (onEnemyVFXPrefab != null)
+        {
+            var fx = Instantiate(onEnemyVFXPrefab, transform);
+            fx.transform.localPosition = vfxLocalPos;
+            fx.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+            fx.transform.localScale = vfxLocalScale;
+
+            if (vfxLifetime > 0f)
+            {
+                Destroy(fx, vfxLifetime);
+            }
+        }
+    }
+
+    private IEnumerator RestoreNavAfterWindInfusionBullet(float delay, Rigidbody rb, bool restoreKinematic)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (rb != null)
+        {
+            rb.isKinematic = restoreKinematic;
+        }
+        
+        if (!isDead && agent != null)
+        {
+            agent.enabled = true;
+        }
+    }
+
 
 
 

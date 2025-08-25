@@ -136,6 +136,15 @@ public class Bullet : MonoBehaviour
                 );
             }
 
+            // WIND INFUSION (knockback)
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Wind)
+            {
+                enemy.ApplyWindKnockback(transform.position, sourceWeapon.windKnockbackForce, sourceWeapon.windKnockbackDuration, sourceWeapon.windOnEnemyVFXPrefab,
+                    sourceWeapon.windOnEnemyVFXOffset, sourceWeapon.windOnEnemyVFXEuler, sourceWeapon.windOnEnemyVFXScale, sourceWeapon.windOnEnemyVFXLifetime
+                );
+            }
+
+
             // CIMRSON INFUSION ALL LOGIC
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crimson)
             {

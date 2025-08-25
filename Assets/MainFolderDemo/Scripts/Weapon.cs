@@ -263,6 +263,17 @@ public class Weapon : MonoBehaviour
     public Vector3 venomOnEnemyVFXEuler = Vector3.zero;
     public Vector3 venomOnEnemyVFXScale = Vector3.one;
 
+
+    [Header("Wind Infusion VFX + Bullet Logic")]
+    public GameObject windOnEnemyVFXPrefab;
+    public Vector3 windOnEnemyVFXOffset = Vector3.zero;
+    public Vector3 windOnEnemyVFXEuler = Vector3.zero;
+    public Vector3 windOnEnemyVFXScale = Vector3.one;
+    public float windOnEnemyVFXLifetime = 1.5f;
+    public float windKnockbackForce = 8f;        // impulse strength
+    public float windKnockbackDuration = 0.35f;  // physics time before navmesh resumes
+
+
     [Header("Crimson Infusion VFX + Bullet Logic")]
     public GameObject crimsonOnEnemyVFXPrefab;       // VFX to attach to enemies on hit
     public Vector3 crimsonOnEnemyVFXOffset = Vector3.zero;
@@ -270,6 +281,8 @@ public class Weapon : MonoBehaviour
     public Vector3 crimsonOnEnemyVFXScale = Vector3.one;
     public float crimsonOnEnemyVFXLifetime = 4f;     // auto-destroy (0 = don't auto destroy)
     public float crimsonHealPercentPerHit = 0.001f;  // 0.1%
+ 
+
 
 
     public void ApplyPackAPunchSkin()
