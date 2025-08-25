@@ -6212,6 +6212,13 @@ MonoBehaviour:
   venomOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   venomOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   venomOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  crimsonOnEnemyVFXPrefab: {fileID: 6126188424833946103, guid: b0c8d1499944d4c4fa1bb9928c7c13a0,
+    type: 3}
+  crimsonOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
+  crimsonOnEnemyVFXEuler: {x: 0, y: 0, z: 0}
+  crimsonOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  crimsonOnEnemyVFXLifetime: 4
+  crimsonHealPercentPerHit: 0.0015
 --- !u!1 &8027666018750598299
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class Bullet : MonoBehaviour
     public GameObject groundHitEffect;
     public LayerMask layersToIgnore;
 
+    private static PlayerAttributes _playerCache;  //// Cache the player so we don’t search every hit  -- cirmson bullet infusion
     public Weapon sourceWeapon;  // set by Weapon.Shoot()
 
     Rigidbody rb;
@@ -75,7 +76,7 @@ public class Bullet : MonoBehaviour
             Vector3 dir = transform.forward;
             enemy.TakeDamage(damage, dir);
 
-            //Fire infusion DOT logic
+            //FIRE INDUSION (Rest in enemyHealthRagdoll)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Fire)
             {
                 enemy.ApplyFireInfusionEffect( sourceWeapon.fireDotDuration, sourceWeapon.fireDotPercentPerSec, sourceWeapon.fireOnEnemyVFXPrefab, 
@@ -83,13 +84,78 @@ public class Bullet : MonoBehaviour
                 );
             }
 
-            // ☠️ Venom DOT + VFX
+            // CRYSTAL INFUSION
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crystal)
+            {
+                Vector3 center = transform.position;
+
+                // Spawn VFX at impact
+                if (sourceWeapon.crystalImpactVFXPrefab != null)
+                {
+                    var fx = Instantiate(sourceWeapon.crystalImpactVFXPrefab, center, Quaternion.identity);
+                    fx.transform.SetParent(null, true);
+                    fx.transform.position += sourceWeapon.crystalImpactVFXOffset;
+                    fx.transform.rotation = Quaternion.Euler(sourceWeapon.crystalImpactVFXEuler);
+                    fx.transform.localScale = sourceWeapon.crystalImpactVFXScale;
+                    Destroy(fx, sourceWeapon.crystalImpactVFXLifetime);
+                }
+
+                // Find all enemies in radius
+                Collider[] hits = Physics.OverlapSphere(
+                    center,
+                    sourceWeapon.crystalSplashRadius,
+                    sourceWeapon.crystalEnemyMask,
+                    QueryTriggerInteraction.Ignore
+                );
+
+                foreach (var c in hits)
+                {
+                    var e = c.GetComponentInParent<EnemyHealthRagdoll>();
+                    if (e == null || e.IsDead()) continue;
+
+                    // 1% of each enemy's max health
+                    float dmg = Mathf.Max(1f, e.Health * sourceWeapon.crystalSplashPercent);
+                    Vector3 pushDir = (e.transform.position - center).normalized;
+
+                    e.TakeDamage(dmg, pushDir);
+                }
+            }
+
+
+            // VENOM INFUSION (Rest in enemyHealthRagdoll)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Venom)
             {
                 enemy.ApplyVenomInfusionEffect( sourceWeapon.venomDotDuration, sourceWeapon.venomDotPercentPerSec, sourceWeapon.venomOnEnemyVFXPrefab,
                                         sourceWeapon.venomOnEnemyVFXOffset, sourceWeapon.venomOnEnemyVFXEuler, sourceWeapon.venomOnEnemyVFXScale
                 );
             }
+
+            // CIMRSON INFUSION ALL LOGIC
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crimson)
+            {
+                // 0.1% of enemy MAX HP per bullet (tweak in Weapon inspector)
+                float healAmt = enemy.Health * sourceWeapon.crimsonHealPercentPerHit;
+
+                // Heal player
+                var player = GameObject.FindGameObjectWithTag("Player");
+                if (player != null)
+                {
+                    var attrs = player.GetComponentInChildren<PlayerAttributes>();
+                    if (attrs != null) attrs.Heal(healAmt);
+                }
+
+                // Spawn quick crimson VFX ON the enemy at custom offset/rotation/scale
+                var vfxPrefab = sourceWeapon.crimsonOnEnemyVFXPrefab;
+                if (vfxPrefab != null)
+                {
+                    var fx = Instantiate(vfxPrefab, enemy.transform);
+                    fx.transform.localPosition = sourceWeapon.crimsonOnEnemyVFXOffset;
+                    fx.transform.localRotation = Quaternion.Euler(sourceWeapon.crimsonOnEnemyVFXEuler);
+                    fx.transform.localScale = sourceWeapon.crimsonOnEnemyVFXScale;
+                    Destroy(fx, sourceWeapon.crimsonOnEnemyVFXLifetime);
+                }
+            }
+
 
         }
 

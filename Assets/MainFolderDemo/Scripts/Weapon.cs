@@ -235,13 +235,33 @@ public class Weapon : MonoBehaviour
     public Vector3 fireOnEnemyVFXEuler = Vector3.zero;
     public Vector3 fireOnEnemyVFXScale = Vector3.one;
 
-    [Header("Venom On-Enemy VFX")]
+    [Header("Crystal Infusion VFX")]
+    public float crystalSplashRadius = 2.5f;     // small AoE
+    public float crystalSplashPercent = 0.01f;   // 1% of max health
+    public LayerMask crystalEnemyMask;
+    public GameObject crystalImpactVFXPrefab;
+    public Vector3 crystalImpactVFXOffset = Vector3.zero;
+    public Vector3 crystalImpactVFXEuler = Vector3.zero;
+    public Vector3 crystalImpactVFXScale = Vector3.one;
+    public float crystalImpactVFXLifetime = 1.0f;
+
+    [Header("Venom Infusion VFX")]
     public GameObject venomOnEnemyVFXPrefab;
     public float venomDotPercentPerSec = 0.03f;  
     public float venomDotDuration = 4f;
     public Vector3 venomOnEnemyVFXOffset = Vector3.zero;
     public Vector3 venomOnEnemyVFXEuler = Vector3.zero;
     public Vector3 venomOnEnemyVFXScale = Vector3.one;
+
+    [Header("Crimson Infusion VFX")]
+    public GameObject crimsonOnEnemyVFXPrefab;       // VFX to attach to enemies on hit
+    public Vector3 crimsonOnEnemyVFXOffset = Vector3.zero;
+    public Vector3 crimsonOnEnemyVFXEuler = Vector3.zero;
+    public Vector3 crimsonOnEnemyVFXScale = Vector3.one;
+    public float crimsonOnEnemyVFXLifetime = 4f;     // auto-destroy (0 = don't auto destroy)
+    public float crimsonHealPercentPerHit = 0.001f;  // 0.1%
+
+ 
 
 
     public void ApplyPackAPunchSkin()
@@ -684,8 +704,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Fire infusion effects applied!");
-
+        //Debug.Log("[Weapon] Fire infusion effects applied!");
         enemyInfusionVFX = fireOnEnemyVFXPrefab;
 
     }
@@ -715,7 +734,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Crystal infusion effects applied!");
+       // Debug.Log("[Weapon] Crystal infusion effects applied!");
     }
 
     private void ApplyVoidInfusion()
@@ -743,7 +762,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Void infusion effects applied!");
+        //Debug.Log("[Weapon] Void infusion effects applied!");
     }
 
     private void ApplyIceInfusion()
@@ -771,7 +790,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Ice infusion effects applied!");
+        //Debug.Log("[Weapon] Ice infusion effects applied!");
     }
 
     private void ApplyVenomInfusion()
@@ -799,7 +818,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Venom infusion effects applied!");
+        //Debug.Log("[Weapon] Venom infusion effects applied!");
     }
 
     private void ApplyLightningInfusion()
@@ -827,7 +846,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Lightning infusion effects applied!");
+        //Debug.Log("[Weapon] Lightning infusion effects applied!");
     }
 
     private void ApplyWindInfusion()
@@ -855,7 +874,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Wind infusion effects applied!");
+       // Debug.Log("[Weapon] Wind infusion effects applied!");
     }
 
     private void ApplyMeteorInfusion()
@@ -883,7 +902,7 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Meteor infusion effects applied!");
+       // Debug.Log("[Weapon] Meteor infusion effects applied!");
     }
 
     private void ApplyCrimsonInfusion()
@@ -911,7 +930,9 @@ public class Weapon : MonoBehaviour
             hasInfusionSkin = true;
         }
 
-        Debug.Log("[Weapon] Crimson infusion effects applied!");
+        //Debug.Log("[Weapon] Crimson infusion effects applied!");
+        enemyInfusionVFX = crimsonOnEnemyVFXPrefab;
+
     }
 
 
