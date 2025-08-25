@@ -136,6 +136,38 @@ public class Bullet : MonoBehaviour
                 );
             }
 
+            // LIGHTNING INFUSION
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Lightning)
+            {
+                Vector3 center = transform.position;   //find the center positon 
+
+                if (sourceWeapon.LightningOnEnemyVFXPrefab != null)       // Spawn VFX at impact
+                {
+                    var fx = Instantiate(sourceWeapon.LightningOnEnemyVFXPrefab, center, Quaternion.identity);
+                    fx.transform.SetParent(null, true);
+                    fx.transform.position += sourceWeapon.LightningImpactVFXOffset;
+                    fx.transform.rotation = Quaternion.Euler(sourceWeapon.LightningImpactVFXEuler);
+                    fx.transform.localScale = sourceWeapon.LightningImpactVFXScale;
+                    Destroy(fx, sourceWeapon.LightningImpactVFXLifetime);
+                }
+
+                // Find all enemies in radius
+                Collider[] hits = Physics.OverlapSphere(center, sourceWeapon.LightningSplashRadius, sourceWeapon.LightningEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
+
+                foreach (var c in hits)   //one collider from the sphere check
+                {   // e is enemy
+                    var e = c.GetComponentInParent<EnemyHealthRagdoll>();   //fetch script 
+                    if (e == null || e.IsDead())  //ignore if nobody is there or theyre dead
+                        continue;
+
+                    float dmg = Mathf.Max(1f, e.Health * sourceWeapon.LightningSplashPercent);  // we dont need that 1f and math max this makes sure its never under 1 percent ? 
+                    Vector3 pushDir = (e.transform.position - center).normalized;  //for ragdoll we find direction and in take damage implment that 
+
+                    e.TakeDamage(dmg, pushDir);
+                }
+            }
+
+
             // WIND INFUSION (knockback)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Wind)
             {

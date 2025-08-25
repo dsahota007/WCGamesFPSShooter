@@ -235,25 +235,26 @@ public class Weapon : MonoBehaviour
     public Vector3 fireOnEnemyVFXEuler = Vector3.zero;
     public Vector3 fireOnEnemyVFXScale = Vector3.one;
 
+    [Header("Crystal Infusion VFX + Bullet Logic")]
+    public GameObject crystalOnEnemyVFXPrefab;
+    public float crystalSplashRadius = 2.5f;     // small AoE
+    public float crystalSplashPercent = 0.01f;   // 1% of max health
+    public LayerMask crystalEnemyMask;
+    public Vector3 crystalImpactVFXOffset = Vector3.zero;
+    public Vector3 crystalImpactVFXEuler = Vector3.zero;
+    public Vector3 crystalImpactVFXScale = Vector3.one;
+    public float crystalImpactVFXLifetime = 1.0f;
+
     [Header("Ice Infusion VFX + Bullet Logic")]
+    public GameObject iceOnEnemyVFXPrefab;
     public float iceSlowPercent = 0.40f;            // 40% slow (i.e., final speed = base * (1 - 0.40))
     public float iceSlowDuration = 2.5f;            // seconds
-    public GameObject iceOnEnemyVFXPrefab;           
     public Vector3 iceOnEnemyVFXOffset = Vector3.zero;
     public Vector3 iceOnEnemyVFXEuler = Vector3.zero;
     public Vector3 iceOnEnemyVFXScale = Vector3.one;
     public float iceOnEnemyVFXLifetime = 2.0f;    
 
-
-    [Header("Crystal Infusion VFX + Bullet Logic")]
-    public float crystalSplashRadius = 2.5f;     // small AoE
-    public float crystalSplashPercent = 0.01f;   // 1% of max health
-    public LayerMask crystalEnemyMask;
-    public GameObject crystalOnEnemyVFXPrefab;
-    public Vector3 crystalImpactVFXOffset = Vector3.zero;
-    public Vector3 crystalImpactVFXEuler = Vector3.zero;
-    public Vector3 crystalImpactVFXScale = Vector3.one;
-    public float crystalImpactVFXLifetime = 1.0f;
+ 
 
     [Header("Venom Infusion VFX + Bullet Logic")]
     public GameObject venomOnEnemyVFXPrefab;
@@ -263,6 +264,15 @@ public class Weapon : MonoBehaviour
     public Vector3 venomOnEnemyVFXEuler = Vector3.zero;
     public Vector3 venomOnEnemyVFXScale = Vector3.one;
 
+    [Header("Lightning Infusion VFX + Bullet Logic")]
+    public GameObject LightningOnEnemyVFXPrefab;
+    public float LightningSplashRadius = 2.5f;     // small AoE
+    public float LightningSplashPercent = 0.01f;   // 1% of max health
+    public LayerMask LightningEnemyMask;
+    public Vector3 LightningImpactVFXOffset = Vector3.zero;
+    public Vector3 LightningImpactVFXEuler = Vector3.zero;
+    public Vector3 LightningImpactVFXScale = Vector3.one;
+    public float LightningImpactVFXLifetime = 1.0f;
 
     [Header("Wind Infusion VFX + Bullet Logic")]
     public GameObject windOnEnemyVFXPrefab;

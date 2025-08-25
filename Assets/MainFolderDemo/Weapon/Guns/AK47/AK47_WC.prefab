@@ -6204,25 +6204,25 @@ MonoBehaviour:
   fireOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   fireOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   fireOnEnemyVFXScale: {x: 1, y: 1, z: 1}
-  iceSlowPercent: 0.6
-  iceSlowDuration: 6
-  iceOnEnemyVFXPrefab: {fileID: 4924508274929071776, guid: 96dc1c8a3953cb44fbe50c9e17d04978,
+  crystalOnEnemyVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
     type: 3}
-  iceOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
-  iceOnEnemyVFXEuler: {x: 0, y: 0, z: 0}
-  iceOnEnemyVFXScale: {x: 1, y: 1, z: 1}
-  iceOnEnemyVFXLifetime: 6
   crystalSplashRadius: 2.5
   crystalSplashPercent: 0.02
   crystalEnemyMask:
     serializedVersion: 2
     m_Bits: 8
-  crystalOnEnemyVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
-    type: 3}
   crystalImpactVFXOffset: {x: 0, y: 0, z: 0}
   crystalImpactVFXEuler: {x: 0, y: 0, z: 0}
   crystalImpactVFXScale: {x: 1, y: 1, z: 1}
   crystalImpactVFXLifetime: 1
+  iceOnEnemyVFXPrefab: {fileID: 4924508274929071776, guid: 96dc1c8a3953cb44fbe50c9e17d04978,
+    type: 3}
+  iceSlowPercent: 0.6
+  iceSlowDuration: 6
+  iceOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
+  iceOnEnemyVFXEuler: {x: 0, y: 0, z: 0}
+  iceOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  iceOnEnemyVFXLifetime: 6
   venomOnEnemyVFXPrefab: {fileID: 8793510976239746625, guid: 0be12c6cfc87d17459538f204eccdb92,
     type: 3}
   venomDotPercentPerSec: 0.01
@@ -6230,6 +6230,17 @@ MonoBehaviour:
   venomOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   venomOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   venomOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  LightningOnEnemyVFXPrefab: {fileID: 3958596659431381315, guid: ff2d884e6b9f02b4db4e55bd5fc5b3c3,
+    type: 3}
+  LightningSplashRadius: 5
+  LightningSplashPercent: 0.005
+  LightningEnemyMask:
+    serializedVersion: 2
+    m_Bits: 8
+  LightningImpactVFXOffset: {x: 0, y: 0, z: 0}
+  LightningImpactVFXEuler: {x: 0, y: 90, z: 0}
+  LightningImpactVFXScale: {x: 1, y: 1, z: 1}
+  LightningImpactVFXLifetime: 3
   windOnEnemyVFXPrefab: {fileID: 358637981425055526, guid: a3cd71c38954cb545a2e6dd0e054b958,
     type: 3}
   windOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
