@@ -6205,9 +6205,9 @@ MonoBehaviour:
   fireOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   fireOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   fireOnEnemyVFXScale: {x: 1, y: 1, z: 1}
-  iceSlowPercent: 0.5
+  iceSlowPercent: 0.6
   iceSlowDuration: 6
-  iceOnEnemyVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
+  iceOnEnemyVFXPrefab: {fileID: 4924508274929071776, guid: 96dc1c8a3953cb44fbe50c9e17d04978,
     type: 3}
   iceOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
   iceOnEnemyVFXEuler: {x: 0, y: 0, z: 0}

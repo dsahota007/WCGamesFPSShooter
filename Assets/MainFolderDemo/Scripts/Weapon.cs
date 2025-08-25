@@ -249,7 +249,7 @@ public class Weapon : MonoBehaviour
     public float crystalSplashRadius = 2.5f;     // small AoE
     public float crystalSplashPercent = 0.01f;   // 1% of max health
     public LayerMask crystalEnemyMask;
-    public GameObject crystalImpactVFXPrefab;
+    public GameObject crystalOnEnemyVFXPrefab;
     public Vector3 crystalImpactVFXOffset = Vector3.zero;
     public Vector3 crystalImpactVFXEuler = Vector3.zero;
     public Vector3 crystalImpactVFXScale = Vector3.one;
@@ -743,7 +743,7 @@ public class Weapon : MonoBehaviour
         }
 
         // Debug.Log("[Weapon] Crystal infusion effects applied!");
-        enemyInfusionVFX = crystalImpactVFXPrefab;
+        enemyInfusionVFX = crystalOnEnemyVFXPrefab;
     }
 
     private void ApplyVoidInfusion()
@@ -800,6 +800,7 @@ public class Weapon : MonoBehaviour
         }
 
         //Debug.Log("[Weapon] Ice infusion effects applied!");
+        enemyInfusionVFX = iceOnEnemyVFXPrefab;
     }
 
     private void ApplyVenomInfusion()

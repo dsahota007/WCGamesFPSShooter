@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.LightTransport;
-using static Sentry.MeasurementUnit;
 
 public class EnemyHealthRagdoll : MonoBehaviour
 {
@@ -180,18 +179,23 @@ public class EnemyHealthRagdoll : MonoBehaviour
         }
 
         // --- ICE infusion  ---
-        if (iceSlowed && Time.time >= iceEndTime) //if currently frozen.
+        if (iceSlowed)  //if currentyl frozen 
         {
-            agent.speed = baseAgentSpeed;  // restore exact original
-            iceSlowed = false;
-
-            if (activeIceVFX != null)
+            if (Time.time >= iceEndTime || isDead)  //if duration over or dead
             {
-                Destroy(activeIceVFX);
-                activeIceVFX = null;
+                iceSlowed = false;  //than false
+
+                // restore original speed safely
+                if (agent != null && baseAgentSpeed >= 0f)
+                    agent.speed = baseAgentSpeed;
+
+                if (activeIceVFX != null || isDead)  //turn off VFX and destory it
+                {
+                    Destroy(activeIceVFX);
+                    activeIceVFX = null;
+                }
             }
         }
-
 
 
         // --- VENOM infusion DOT tick ---
@@ -243,15 +247,18 @@ public class EnemyHealthRagdoll : MonoBehaviour
         }
     }
 
-    public void ApplyIceSlow(float durationSeconds, float newSpeed, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
+    public void ApplyIceSlow(float durationSeconds, float speedMultiplier, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
     {
         if (isDead || agent == null) return;
 
         if (baseAgentSpeed < 0f) baseAgentSpeed = agent.speed;
 
-        agent.speed = newSpeed;
+        // Clamp multiplier (0 = frozen, 1 = no slow)
+        speedMultiplier = Mathf.Clamp01(speedMultiplier);
+
+        agent.speed = Mathf.Max(0.05f, baseAgentSpeed * speedMultiplier);  //apply right away teh slowness
         iceSlowed = true;
-        iceEndTime = Time.time + durationSeconds;
+        iceEndTime = Time.time + Mathf.Max(0f, durationSeconds);
 
         // Attach or refresh VFX
         if (onEnemyVFXPrefab != null)
