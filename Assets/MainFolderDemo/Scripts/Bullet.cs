@@ -176,6 +176,37 @@ public class Bullet : MonoBehaviour
                 );
             }
 
+            // METEOR INFUSION
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Meteor)
+            {
+                Vector3 center = transform.position;   //find the center positon 
+
+                if (sourceWeapon.MeteorOnEnemyVFXPrefab != null)       // Spawn VFX at impact
+                {
+                    var fx = Instantiate(sourceWeapon.MeteorOnEnemyVFXPrefab, center, Quaternion.identity);
+                    fx.transform.SetParent(null, true);
+                    fx.transform.position += sourceWeapon.MeteorImpactVFXOffset;
+                    fx.transform.rotation = Quaternion.Euler(sourceWeapon.MeteorImpactVFXEuler);
+                    fx.transform.localScale = sourceWeapon.MeteorImpactVFXScale;
+                    Destroy(fx, sourceWeapon.MeteorImpactVFXLifetime);
+                }
+
+                // Find all enemies in radius
+                Collider[] hits = Physics.OverlapSphere(center, sourceWeapon.MeteorSplashRadius, sourceWeapon.MeteorEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
+
+                foreach (var c in hits)   //one collider from the sphere check
+                {   // e is enemy
+                    var e = c.GetComponentInParent<EnemyHealthRagdoll>();   //fetch script 
+                    if (e == null || e.IsDead())  //ignore if nobody is there or theyre dead
+                        continue;
+
+                    float dmg = Mathf.Max(1f, e.Health * sourceWeapon.MeteorSplashPercent);  // we dont need that 1f and math max this makes sure its never under 1 percent ? 
+                    Vector3 pushDir = (e.transform.position - center).normalized;  //for ragdoll we find direction and in take damage implment that 
+
+                    e.TakeDamage(dmg, pushDir);
+                }
+            }
+
 
             // CIMRSON INFUSION ALL LOGIC
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crimson)

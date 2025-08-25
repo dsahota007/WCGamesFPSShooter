@@ -283,6 +283,16 @@ public class Weapon : MonoBehaviour
     public float windKnockbackForce = 8f;        // impulse strength
     public float windKnockbackDuration = 0.35f;  // physics time before navmesh resumes
 
+    [Header("Meteor Infusion VFX + Bullet Logic")]
+    public GameObject MeteorOnEnemyVFXPrefab;
+    public float MeteorSplashRadius = 5.0f;     // small AoE
+    public float MeteorSplashPercent = 0.005f;   // 1% of max health
+    public LayerMask MeteorEnemyMask;
+    public Vector3 MeteorImpactVFXOffset = Vector3.zero;
+    public Vector3 MeteorImpactVFXEuler = Vector3.zero;
+    public Vector3 MeteorImpactVFXScale = Vector3.one;
+    public float MeteorImpactVFXLifetime = 5.0f;
+
 
     [Header("Crimson Infusion VFX + Bullet Logic")]
     public GameObject crimsonOnEnemyVFXPrefab;       // VFX to attach to enemies on hit

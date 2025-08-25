@@ -6249,6 +6249,17 @@ MonoBehaviour:
   windOnEnemyVFXLifetime: 1.5
   windKnockbackForce: 15
   windKnockbackDuration: 0.01
+  MeteorOnEnemyVFXPrefab: {fileID: 7957833072274404953, guid: 529af434fbf038e409bbdb8c4d698cb0,
+    type: 3}
+  MeteorSplashRadius: 7
+  MeteorSplashPercent: 0.003
+  MeteorEnemyMask:
+    serializedVersion: 2
+    m_Bits: 8
+  MeteorImpactVFXOffset: {x: 0, y: 0, z: 0}
+  MeteorImpactVFXEuler: {x: 0, y: 0, z: 0}
+  MeteorImpactVFXScale: {x: 1, y: 1, z: 1}
+  MeteorImpactVFXLifetime: 3
   crimsonOnEnemyVFXPrefab: {fileID: 6126188424833946103, guid: b0c8d1499944d4c4fa1bb9928c7c13a0,
     type: 3}
   crimsonOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
