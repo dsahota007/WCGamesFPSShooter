@@ -84,6 +84,15 @@ public class Bullet : MonoBehaviour
                 );
             }
 
+            // VOID INFUSION (Rest in enemyHealthRagdoll)
+            if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Void)
+            {
+                enemy.ApplyVoidInfusionEffect(sourceWeapon.VoidDotDuration, sourceWeapon.VoidDotPercentPerSec, sourceWeapon.VoidOnEnemyVFXPrefab,
+                    sourceWeapon.VoidOnEnemyVFXOffset, sourceWeapon.VoidOnEnemyVFXEuler, sourceWeapon.VoidOnEnemyVFXScale
+                );
+            }
+
+
             // ICE INFUSION (slow NavMesh speed for a duration)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Ice)
             {

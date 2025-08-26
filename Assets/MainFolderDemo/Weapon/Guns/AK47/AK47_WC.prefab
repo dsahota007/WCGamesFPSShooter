@@ -6204,6 +6204,13 @@ MonoBehaviour:
   fireOnEnemyVFXOffset: {x: 0, y: 1.5, z: 0}
   fireOnEnemyVFXEuler: {x: 90, y: 90, z: 0}
   fireOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  VoidOnEnemyVFXPrefab: {fileID: 6126188424833946103, guid: 96dada5a603495d4badec5f169f2ee76,
+    type: 3}
+  VoidDotPercentPerSec: 0.05
+  VoidDotDuration: 2
+  VoidOnEnemyVFXOffset: {x: 0, y: 0.25, z: 0}
+  VoidOnEnemyVFXEuler: {x: 0, y: 0, z: 0}
+  VoidOnEnemyVFXScale: {x: 1, y: 1, z: 1}
   crystalOnEnemyVFXPrefab: {fileID: 1758473627833946668, guid: 3e9e4c2d62d40ec4cbb63d743bc85d31,
     type: 3}
   crystalSplashRadius: 2.5

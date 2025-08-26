@@ -235,6 +235,14 @@ public class Weapon : MonoBehaviour
     public Vector3 fireOnEnemyVFXEuler = Vector3.zero;
     public Vector3 fireOnEnemyVFXScale = Vector3.one;
 
+    [Header("Void Infusion VFX + Bullet Logic")]   //same logic for fire
+    public GameObject VoidOnEnemyVFXPrefab;    
+    public float VoidDotPercentPerSec = 0.05f;  
+    public float VoidDotDuration = 1f;          
+    public Vector3 VoidOnEnemyVFXOffset = Vector3.zero;
+    public Vector3 VoidOnEnemyVFXEuler = Vector3.zero;
+    public Vector3 VoidOnEnemyVFXScale = Vector3.one;
+
     [Header("Crystal Infusion VFX + Bullet Logic")]
     public GameObject crystalOnEnemyVFXPrefab;
     public float crystalSplashRadius = 2.5f;     // small AoE
@@ -253,8 +261,6 @@ public class Weapon : MonoBehaviour
     public Vector3 iceOnEnemyVFXEuler = Vector3.zero;
     public Vector3 iceOnEnemyVFXScale = Vector3.one;
     public float iceOnEnemyVFXLifetime = 2.0f;    
-
- 
 
     [Header("Venom Infusion VFX + Bullet Logic")]
     public GameObject venomOnEnemyVFXPrefab;
@@ -1007,8 +1013,6 @@ public class Weapon : MonoBehaviour
             }
         }
     }
-
-
 
     //for ui -- getter methods
     public int GetCurrentAmmo() => currentAmmo;

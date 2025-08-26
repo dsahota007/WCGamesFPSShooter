@@ -52,6 +52,14 @@ public class EnemyHealthRagdoll : MonoBehaviour
     private float fireDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
     private GameObject activeFireVFX;
 
+
+    // ---- VOID INFUSION DOT (damage over time) -------------------------------------
+    private bool VoidDotActive = false;
+    private float VoidDotEndTime = 0f;
+    private float VoidNextTickTime = 0f;
+    private float VoidDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
+    private GameObject activeVoidVFX;
+
     // --- ICE slow state ---
     private bool iceSlowed = false;
     private float iceEndTime = 0f;
@@ -179,6 +187,26 @@ public class EnemyHealthRagdoll : MonoBehaviour
             }
         }
 
+        // ---- FIRE infusion DOT tick ----
+        if (VoidDotActive)
+        {
+            if (Time.time >= VoidDotEndTime || isDead)  //Check if the burn effect should stop
+            {
+                VoidDotActive = false;
+                if (activeVoidVFX != null)
+                {
+                    Destroy(activeVoidVFX); //disable it all 
+                    activeVoidVFX = null;
+                }
+            }
+            else if (Time.time >= VoidNextTickTime)  //Otherwise, if it’s time to deal the next tick of damage.
+            {
+                VoidNextTickTime += 1f; // next second
+                float tickDamage = Mathf.Max(1f, Health * VoidDotPctPerSec);    //Example: Enemy has 100 HP, fireDotPctPerSec = 0.03f (3%) → 3 dmg/sec    ---->   Ensures at least 1 damage per tick. Without it, a tiny - health enemy(like 10 HP) with 3 % DOT → 0.3 dmg / sec, which Unity would round down to 0 → no damage.
+                TakeDamage(tickDamage, Vector3.zero); // direction not important for DOT
+            }
+        }
+
         // --- ICE infusion  ---
         if (iceSlowed)  //if currentyl frozen 
         {
@@ -245,6 +273,33 @@ public class EnemyHealthRagdoll : MonoBehaviour
         //{
         //    // if already exists, you can refresh lifetime or leave it
         //}
+        }
+    }
+
+    public void ApplyVoidInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
+
+    {
+        // Start/refresh DOT
+        VoidDotActive = true;
+        VoidDotPctPerSec = Mathf.Max(0f, percentPerSec);                //This stores how much damage per second
+        VoidDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
+        VoidNextTickTime = Time.time + 1f; // tick every 1s
+
+        // Attach/refresh VFX
+        if (onEnemyVFXPrefab != null)
+        {
+            if (activeVoidVFX == null)
+            {
+                activeVoidVFX = Instantiate(onEnemyVFXPrefab, transform);
+            }
+            // enforce uniform transform every time we apply/refresh
+            activeVoidVFX.transform.localPosition = vfxLocalPos;
+            activeVoidVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+            activeVoidVFX.transform.localScale = vfxLocalScale;
+            //else
+            //{
+            //    // if already exists, you can refresh lifetime or leave it
+            //}
         }
     }
 
