@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
@@ -9,11 +9,20 @@ public class MiniBossAIChase : MonoBehaviour
     private Animator animator;
 
     [Header("Vision Settings")]
-    public float sightRange = 15f;      // how far miniboss can see
-    public float sightAngle = 60f;      // FOV angle
-    public LayerMask obstructionMask;   // walls/objects that block vision
+    public float sightRange = 15f;
+    public float sightAngle = 60f;
+    public LayerMask obstructionMask;
 
-    private bool isWaiting = false;
+    [Header("Attack Settings")]
+    public float attackCooldownMin = 3f;
+    public float attackCooldownMax = 5f;
+    public float attackAnimLength = 4.5f;   // how long the animation lasts
+    private bool isAttacking = false;
+
+    [Header("Attack VFX")]
+    public GameObject attackVFXPrefab;
+    public Transform vfxSpawnPoint;
+    public float vfxDelay = 0.5f;           // when to spawn effect after anim starts
 
     void Start()
     {
@@ -30,14 +39,15 @@ public class MiniBossAIChase : MonoBehaviour
 
     void Update()
     {
-        if (target != null && enemyAgent.isOnNavMesh && !isWaiting)
+        if (target != null && enemyAgent.isOnNavMesh && !isAttacking)
         {
             if (CanSeePlayer())
             {
-                StartCoroutine(StopAndWait());
+                StartCoroutine(AttackCycle());
             }
             else
             {
+                enemyAgent.isStopped = false;
                 enemyAgent.SetDestination(target.position);
             }
         }
@@ -51,7 +61,6 @@ public class MiniBossAIChase : MonoBehaviour
             {
                 int randomRun = Random.Range(0, 2);
                 animator.SetInteger("RunIndex", randomRun);
-                Debug.Log($"Switched to RunIndex: {randomRun}");
             }
         }
     }
@@ -66,7 +75,6 @@ public class MiniBossAIChase : MonoBehaviour
             float angle = Vector3.Angle(transform.forward, dirToPlayer);
             if (angle < sightAngle / 2f)
             {
-                // raycast to check line of sight
                 if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstructionMask))
                 {
                     return true;
@@ -75,17 +83,35 @@ public class MiniBossAIChase : MonoBehaviour
         }
         return false;
     }
-
-    IEnumerator StopAndWait()
+    IEnumerator AttackCycle()
     {
-        isWaiting = true;
+        isAttacking = true;
         enemyAgent.isStopped = true;
         animator.SetFloat("Speed", 0f);
 
-        Debug.Log("[MiniBoss] Spotted player! Standing still for 3 seconds.");
-        yield return new WaitForSeconds(3f);
+        // Play attack
+        animator.ResetTrigger("Attack");
+        animator.SetTrigger("Attack");
 
+        // Spawn VFX with delay
+        yield return new WaitForSeconds(vfxDelay);
+        if (attackVFXPrefab != null)
+        {
+            Transform spawnAt = vfxSpawnPoint != null ? vfxSpawnPoint : transform;
+            Instantiate(attackVFXPrefab, spawnAt.position, spawnAt.rotation);
+        }
+
+        // Wait until animation finishes
+        yield return new WaitForSeconds(attackAnimLength - vfxDelay);
+
+        // ✅ Resume chasing IMMEDIATELY after animation
         enemyAgent.isStopped = false;
-        isWaiting = false;
+
+        // ✅ But still enforce cooldown before next attack
+        float cooldown = Random.Range(attackCooldownMin, attackCooldownMax);
+        yield return new WaitForSeconds(cooldown);
+
+        isAttacking = false;
     }
+
 }
