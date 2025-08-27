@@ -27,4 +27,19 @@ public class EnemyHealthBar : MonoBehaviour
         if (percent <= 0f)
             gameObject.SetActive(false);
     }
+
+    void OnEnable()
+    {
+        // When spawned or re-enabled, respect global toggle
+        ApplyGlobalVisibility();
+    }
+
+    public void ApplyGlobalVisibility()
+    {
+        // This will hide/show based on the global PauseUI flag
+        if (!PauseUI.showEnemyHealthBars)
+            gameObject.SetActive(false);
+        else if (slider != null && slider.value > 0f)
+            gameObject.SetActive(true); // only re-enable if alive
+    }
 }

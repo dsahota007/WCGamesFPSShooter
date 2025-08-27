@@ -58,7 +58,10 @@ public class PauseUI : MonoBehaviour
     private AmbientOcclusion ambientOcclusion;
     private Grain grain;
 
- 
+    [Header("UI - Enemy Health Bars")]
+    public Toggle enemyHealthBarToggle; // assign in inspector
+    public static bool showEnemyHealthBars = true;
+
 
     //--------------------------------------------
     public void EnableChaos()
@@ -158,7 +161,11 @@ public class PauseUI : MonoBehaviour
 
         //-----------------------------------------
 
-
+        if (enemyHealthBarToggle != null)
+        {
+            enemyHealthBarToggle.isOn = showEnemyHealthBars;
+            enemyHealthBarToggle.onValueChanged.AddListener(ToggleEnemyHealthBars);
+        }
     }
 
     void Update()
@@ -265,5 +272,13 @@ public class PauseUI : MonoBehaviour
             fovValueText.text = (value + 30f).ToString("F0");  //bc 120 is high so it gives the player the feel
     }
 
+    public void ToggleEnemyHealthBars(bool enabled)
+    {
+        showEnemyHealthBars = enabled;
 
+        // Update all active health bars
+        var allBars = FindObjectsOfType<EnemyHealthBar>(true); // true = include inactive
+        foreach (var bar in allBars)
+            bar.ApplyGlobalVisibility();
+    }
 }
