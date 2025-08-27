@@ -74,6 +74,8 @@ public class EnemyAIChase : MonoBehaviour
             }
 
         }
+
+        //---- animation logic
         if (animator != null)
         {
             float speed = enemyAgent.velocity.magnitude;   //gets the speed
