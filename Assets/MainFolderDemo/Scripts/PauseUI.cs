@@ -19,7 +19,7 @@ public class PauseUI : MonoBehaviour
     bool isPaused;
 
     [Header("UI")]
-    public KeyCode toggleKey = KeyCode.Escape; // ESC to toggle
+    public KeyCode toggleKey = KeyCode.P; // ESC to toggle
     public bool lockCursorWhenPlaying = true;  // optional nicety
 
     [Header("Frames")]
