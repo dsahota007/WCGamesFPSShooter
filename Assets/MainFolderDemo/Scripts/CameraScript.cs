@@ -183,8 +183,8 @@ public class CameraScript : MonoBehaviour
     public void VertClamp()
     {
         if (cameraLocked) return;  //for menu system when u open grenade menu or PAP
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;  // * Time.deltaTime;  -- we gonna do this in pause bc these are frame dependent
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;  // * Time.deltaTime;
 
         xRotation -= mouseY;                            //we can reverse controls for whoever wants it. 
         xRotation = Mathf.Clamp(xRotation, -verticalClamp, verticalClamp);          //math.clamp (taregt, min, max)   
@@ -338,6 +338,13 @@ public class CameraScript : MonoBehaviour
         hitmarkerImage.rectTransform.localScale = hitmarkerTargetScale;
 
     }
+
+    public void SetBaseFOV(float value)  //for setting pause
+    {
+        defaultFOV = value;
+        sprintFOV = defaultFOV + 25f;  // keep sprint offset consistent
+    }
+
 
 
 
