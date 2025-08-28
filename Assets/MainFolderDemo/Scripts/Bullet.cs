@@ -6,8 +6,8 @@ public class Bullet : MonoBehaviour
     public float speed = 20f;
     public float lifeTime = 2f;
     public float damage = 1f;
-   
-    
+
+
     public GameObject[] bloodEffects;
     public GameObject groundHitEffect;
     public LayerMask layersToIgnore;
@@ -79,30 +79,39 @@ public class Bullet : MonoBehaviour
             //FIRE INDUSION (Rest in enemyHealthRagdoll)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Fire)
             {
-                enemy.ApplyFireInfusionEffect( sourceWeapon.fireDotDuration, sourceWeapon.fireDotPercentPerSec, sourceWeapon.fireOnEnemyVFXPrefab, 
-                    sourceWeapon.fireOnEnemyVFXOffset, sourceWeapon.fireOnEnemyVFXEuler, sourceWeapon.fireOnEnemyVFXScale
-                );
+                ElementType IncomingFire = ConvertInfusionToElement(sourceWeapon.infusion);   // for elemental minibosses
+                if (enemy.immuneTo != IncomingFire)
+                {
+                    enemy.ApplyFireInfusionEffect(sourceWeapon.fireDotDuration, sourceWeapon.fireDotPercentPerSec, sourceWeapon.fireOnEnemyVFXPrefab,
+                    sourceWeapon.fireOnEnemyVFXOffset, sourceWeapon.fireOnEnemyVFXEuler, sourceWeapon.fireOnEnemyVFXScale);
+                }
             }
 
             // VOID INFUSION (Rest in enemyHealthRagdoll)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Void)
             {
-                enemy.ApplyVoidInfusionEffect(sourceWeapon.VoidDotDuration, sourceWeapon.VoidDotPercentPerSec, sourceWeapon.VoidOnEnemyVFXPrefab,
-                    sourceWeapon.VoidOnEnemyVFXOffset, sourceWeapon.VoidOnEnemyVFXEuler, sourceWeapon.VoidOnEnemyVFXScale
-                );
+                ElementType IncomingVoid = ConvertInfusionToElement(sourceWeapon.infusion);
+                if (enemy.immuneTo != IncomingVoid)
+                {
+                    enemy.ApplyVoidInfusionEffect(sourceWeapon.VoidDotDuration, sourceWeapon.VoidDotPercentPerSec, sourceWeapon.VoidOnEnemyVFXPrefab,
+                    sourceWeapon.VoidOnEnemyVFXOffset, sourceWeapon.VoidOnEnemyVFXEuler, sourceWeapon.VoidOnEnemyVFXScale);
+                }
             }
-
 
             // ICE INFUSION (slow NavMesh speed for a duration)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Ice)
             {
-                // convert percent to multiplier: 40% slow => 0.60 multiplier
-                float slowMultiplier = Mathf.Clamp01(1f - sourceWeapon.iceSlowPercent);
-
-                enemy.ApplyIceSlow(sourceWeapon.iceSlowDuration, slowMultiplier, sourceWeapon.iceOnEnemyVFXPrefab,
-                    sourceWeapon.iceOnEnemyVFXOffset, sourceWeapon.iceOnEnemyVFXEuler, sourceWeapon.iceOnEnemyVFXScale, sourceWeapon.iceOnEnemyVFXLifetime
-                );
+                ElementType IncomingIce = ConvertInfusionToElement(sourceWeapon.infusion);
+                if (enemy.immuneTo != IncomingIce)
+                {
+                    float slowMultiplier = Mathf.Clamp01(1f - sourceWeapon.iceSlowPercent);
+                    enemy.ApplyIceSlow(
+                        sourceWeapon.iceSlowDuration, slowMultiplier,
+                        sourceWeapon.iceOnEnemyVFXPrefab, sourceWeapon.iceOnEnemyVFXOffset, sourceWeapon.iceOnEnemyVFXEuler, sourceWeapon.iceOnEnemyVFXScale, sourceWeapon.iceOnEnemyVFXLifetime
+                    );
+                }
             }
+
 
 
             // CRYSTAL INFUSION
@@ -112,12 +121,16 @@ public class Bullet : MonoBehaviour
 
                 if (sourceWeapon.crystalOnEnemyVFXPrefab != null)       // Spawn VFX at impact
                 {
-                    var fx = Instantiate(sourceWeapon.crystalOnEnemyVFXPrefab, center, Quaternion.identity);
-                    fx.transform.SetParent(null, true);
-                    fx.transform.position += sourceWeapon.crystalImpactVFXOffset;
-                    fx.transform.rotation = Quaternion.Euler(sourceWeapon.crystalImpactVFXEuler);
-                    fx.transform.localScale = sourceWeapon.crystalImpactVFXScale;
-                    Destroy(fx, sourceWeapon.crystalImpactVFXLifetime);
+                    ElementType IncomingCrystal = ConvertInfusionToElement(sourceWeapon.infusion);
+                    if (enemy.immuneTo != IncomingCrystal)
+                    {
+                        var fx = Instantiate(sourceWeapon.crystalOnEnemyVFXPrefab, center, Quaternion.identity);
+                        fx.transform.SetParent(null, true);
+                        fx.transform.position += sourceWeapon.crystalImpactVFXOffset;
+                        fx.transform.rotation = Quaternion.Euler(sourceWeapon.crystalImpactVFXEuler);
+                        fx.transform.localScale = sourceWeapon.crystalImpactVFXScale;
+                        Destroy(fx, sourceWeapon.crystalImpactVFXLifetime);
+                    }
                 }
 
                 // Find all enemies in radius
@@ -132,7 +145,7 @@ public class Bullet : MonoBehaviour
                     float dmg = Mathf.Max(1f, e.Health * sourceWeapon.crystalSplashPercent);  // we dont need that 1f and math max this makes sure its never under 1 percent ? 
                     Vector3 pushDir = (e.transform.position - center).normalized;  //for ragdoll we find direction and in take damage implment that 
 
-                    e.TakeDamage(dmg, pushDir); 
+                    e.TakeDamage(dmg, pushDir);
                 }
             }
 
@@ -140,9 +153,13 @@ public class Bullet : MonoBehaviour
             // VENOM INFUSION (Rest in enemyHealthRagdoll)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Venom)
             {
-                enemy.ApplyVenomInfusionEffect( sourceWeapon.venomDotDuration, sourceWeapon.venomDotPercentPerSec, sourceWeapon.venomOnEnemyVFXPrefab,
-                                        sourceWeapon.venomOnEnemyVFXOffset, sourceWeapon.venomOnEnemyVFXEuler, sourceWeapon.venomOnEnemyVFXScale
-                );
+                ElementType IncomingVenom = ConvertInfusionToElement(sourceWeapon.infusion);
+                if (enemy.immuneTo != IncomingVenom)
+                {
+
+                    enemy.ApplyVenomInfusionEffect(sourceWeapon.venomDotDuration, sourceWeapon.venomDotPercentPerSec, sourceWeapon.venomOnEnemyVFXPrefab,
+                                sourceWeapon.venomOnEnemyVFXOffset, sourceWeapon.venomOnEnemyVFXEuler, sourceWeapon.venomOnEnemyVFXScale);
+                }
             }
 
             // LIGHTNING INFUSION
@@ -152,12 +169,16 @@ public class Bullet : MonoBehaviour
 
                 if (sourceWeapon.LightningOnEnemyVFXPrefab != null)       // Spawn VFX at impact
                 {
-                    var fx = Instantiate(sourceWeapon.LightningOnEnemyVFXPrefab, center, Quaternion.identity);
-                    fx.transform.SetParent(null, true);
-                    fx.transform.position += sourceWeapon.LightningImpactVFXOffset;
-                    fx.transform.rotation = Quaternion.Euler(sourceWeapon.LightningImpactVFXEuler);
-                    fx.transform.localScale = sourceWeapon.LightningImpactVFXScale;
-                    Destroy(fx, sourceWeapon.LightningImpactVFXLifetime);
+                    ElementType IncomingLightning = ConvertInfusionToElement(sourceWeapon.infusion);
+                    if (enemy.immuneTo != IncomingLightning)
+                    {
+                        var fx = Instantiate(sourceWeapon.LightningOnEnemyVFXPrefab, center, Quaternion.identity);
+                        fx.transform.SetParent(null, true);
+                        fx.transform.position += sourceWeapon.LightningImpactVFXOffset;
+                        fx.transform.rotation = Quaternion.Euler(sourceWeapon.LightningImpactVFXEuler);
+                        fx.transform.localScale = sourceWeapon.LightningImpactVFXScale;
+                        Destroy(fx, sourceWeapon.LightningImpactVFXLifetime);
+                    }
                 }
 
                 // Find all enemies in radius
@@ -180,9 +201,12 @@ public class Bullet : MonoBehaviour
             // WIND INFUSION (knockback)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Wind)
             {
-                enemy.ApplyWindKnockback(transform.position, sourceWeapon.windKnockbackForce, sourceWeapon.windKnockbackDuration, sourceWeapon.windOnEnemyVFXPrefab,
-                    sourceWeapon.windOnEnemyVFXOffset, sourceWeapon.windOnEnemyVFXEuler, sourceWeapon.windOnEnemyVFXScale, sourceWeapon.windOnEnemyVFXLifetime
-                );
+                ElementType IncomingWind = ConvertInfusionToElement(sourceWeapon.infusion);
+                if (enemy.immuneTo != IncomingWind)
+                {
+                    enemy.ApplyWindKnockback(transform.position, sourceWeapon.windKnockbackForce, sourceWeapon.windKnockbackDuration, sourceWeapon.windOnEnemyVFXPrefab,
+                    sourceWeapon.windOnEnemyVFXOffset, sourceWeapon.windOnEnemyVFXEuler, sourceWeapon.windOnEnemyVFXScale, sourceWeapon.windOnEnemyVFXLifetime);
+                }
             }
 
             // METEOR INFUSION
@@ -192,12 +216,16 @@ public class Bullet : MonoBehaviour
 
                 if (sourceWeapon.MeteorOnEnemyVFXPrefab != null)       // Spawn VFX at impact
                 {
-                    var fx = Instantiate(sourceWeapon.MeteorOnEnemyVFXPrefab, center, Quaternion.identity);
-                    fx.transform.SetParent(null, true);
-                    fx.transform.position += sourceWeapon.MeteorImpactVFXOffset;
-                    fx.transform.rotation = Quaternion.Euler(sourceWeapon.MeteorImpactVFXEuler);
-                    fx.transform.localScale = sourceWeapon.MeteorImpactVFXScale;
-                    Destroy(fx, sourceWeapon.MeteorImpactVFXLifetime);
+                    ElementType IncomingMeteor = ConvertInfusionToElement(sourceWeapon.infusion);
+                    if (enemy.immuneTo != IncomingMeteor)
+                    {
+                        var fx = Instantiate(sourceWeapon.MeteorOnEnemyVFXPrefab, center, Quaternion.identity);
+                        fx.transform.SetParent(null, true);
+                        fx.transform.position += sourceWeapon.MeteorImpactVFXOffset;
+                        fx.transform.rotation = Quaternion.Euler(sourceWeapon.MeteorImpactVFXEuler);
+                        fx.transform.localScale = sourceWeapon.MeteorImpactVFXScale;
+                        Destroy(fx, sourceWeapon.MeteorImpactVFXLifetime);
+                    }
                 }
 
                 // Find all enemies in radius
@@ -220,32 +248,54 @@ public class Bullet : MonoBehaviour
             // CIMRSON INFUSION ALL LOGIC
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Crimson)
             {
-                // 0.1% of enemy MAX HP per bullet (tweak in Weapon inspector)
-                float healAmt = enemy.Health * sourceWeapon.crimsonHealPercentPerHit; //WE Calc the amount so curren health of the enemy 
+                ElementType IncomingCrimson = ConvertInfusionToElement(sourceWeapon.infusion);
+                if (enemy.immuneTo != IncomingCrimson)
+                {
+                    // 0.1% of enemy MAX HP per bullet (tweak in Weapon inspector)
+                    float healAmt = enemy.Health * sourceWeapon.crimsonHealPercentPerHit; //WE Calc the amount so curren health of the enemy 
 
-                // Heal player
-                var player = GameObject.FindGameObjectWithTag("Player");  //find player with tag 
-                if (player != null)
-                {
-                    var attrs = player.GetComponentInChildren<PlayerAttributes>();  //fethc attirbutes for health
-                    if (attrs != null)
+                    // Heal player
+                    var player = GameObject.FindGameObjectWithTag("Player");  //find player with tag 
+                    if (player != null)
                     {
-                        attrs.Heal(healAmt);         //heal the amount per bullet
+                        var attrs = player.GetComponentInChildren<PlayerAttributes>();  //fethc attirbutes for health
+                        if (attrs != null)
+                        {
+                            attrs.Heal(healAmt);         //heal the amount per bullet
+                        }
                     }
-                }
-                // Spawn quick crimson VFX ON the enemy at custom offset/rotation/scale
-                var vfxPrefab = sourceWeapon.crimsonOnEnemyVFXPrefab;   // spawn vfx 
-                if (vfxPrefab != null)
-                {
-                    var fx = Instantiate(vfxPrefab, enemy.transform);
-                    fx.transform.localPosition = sourceWeapon.crimsonOnEnemyVFXOffset;  
-                    fx.transform.localRotation = Quaternion.Euler(sourceWeapon.crimsonOnEnemyVFXEuler);
-                    fx.transform.localScale = sourceWeapon.crimsonOnEnemyVFXScale;
-                    Destroy(fx, sourceWeapon.crimsonOnEnemyVFXLifetime);
+                    // Spawn quick crimson VFX ON the enemy at custom offset/rotation/scale
+                    var vfxPrefab = sourceWeapon.crimsonOnEnemyVFXPrefab;   // spawn vfx 
+                    if (vfxPrefab != null)
+                    {
+                        var fx = Instantiate(vfxPrefab, enemy.transform);
+                        fx.transform.localPosition = sourceWeapon.crimsonOnEnemyVFXOffset;
+                        fx.transform.localRotation = Quaternion.Euler(sourceWeapon.crimsonOnEnemyVFXEuler);
+                        fx.transform.localScale = sourceWeapon.crimsonOnEnemyVFXScale;
+                        Destroy(fx, sourceWeapon.crimsonOnEnemyVFXLifetime);
+                    }
                 }
             }
         }
 
         Destroy(gameObject);
     }
+
+    private ElementType ConvertInfusionToElement(InfusionType infusion)
+    {
+        switch (infusion)
+        {
+            case InfusionType.Fire: return ElementType.Fire;
+            case InfusionType.Ice: return ElementType.Ice;
+            case InfusionType.Void: return ElementType.Void;
+            case InfusionType.Crystal: return ElementType.Crystal;
+            case InfusionType.Venom: return ElementType.Venom;
+            case InfusionType.Lightning: return ElementType.Lightning;
+            case InfusionType.Wind: return ElementType.Wind;
+            case InfusionType.Meteor: return ElementType.Meteor;
+            case InfusionType.Crimson: return ElementType.Crimson;
+            default: return ElementType.None;
+        }
+    }
+
 }

@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
+ 
 
-public class FireMiniBossAIChase : MonoBehaviour
+public class GenericElementalMiniBossAIChase : MonoBehaviour
 {
     private NavMeshAgent enemyAgent;
     public Transform target;
@@ -42,6 +43,7 @@ public class FireMiniBossAIChase : MonoBehaviour
     public Vector3 auraVFXScale = Vector3.one;     // local scale
 
     private GameObject activeAuraVFX;
+ 
 
 
     void Start()

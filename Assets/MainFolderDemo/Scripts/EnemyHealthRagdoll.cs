@@ -3,6 +3,19 @@ using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 //using UnityEngine.LightTransport;
+public enum ElementType
+{
+    None,
+    Fire,
+    Ice,
+    Void,
+    Crystal,
+    Venom,
+    Lightning,
+    Wind,
+    Meteor,
+    Crimson
+}
 
 public class EnemyHealthRagdoll : MonoBehaviour
 {
@@ -79,6 +92,8 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
 
 
+    [Header("Elemental Immunity")]
+    public ElementType immuneTo = ElementType.None;  // set in Inspector
 
 
 
