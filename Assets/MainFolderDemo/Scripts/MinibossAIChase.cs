@@ -64,7 +64,6 @@ public class MiniBossAIChase : MonoBehaviour
             activeAuraVFX.transform.localRotation = Quaternion.Euler(auraVFXEuler);
             activeAuraVFX.transform.localScale = auraVFXScale;
         }
-
     }
 
     void Update()
