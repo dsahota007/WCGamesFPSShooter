@@ -1243,6 +1243,11 @@ MonoBehaviour:
   attackVFXPrefab: {fileID: 1973075987484898, guid: 85a8802f4a0f29d47857ecb958756496,
     type: 3}
   vfxSpawnPoint: {fileID: 4707175045439444422}
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
+    type: 3}
+  auraVFXOffset: {x: 0, y: 0, z: 0}
+  auraVFXEuler: {x: 0, y: 0, z: 0}
+  auraVFXScale: {x: 1, y: 1, z: 1}
 --- !u!4 &1241935176825947237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1330755669629619180, guid: b61959cf200d7134d8bee35175eeb18c,

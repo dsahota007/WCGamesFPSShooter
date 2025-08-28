@@ -7,6 +7,7 @@ public class MiniBossAIChase : MonoBehaviour
     private NavMeshAgent enemyAgent;
     public Transform target;
     private Animator animator;
+    private EnemyHealthRagdoll healthScript; 
 
     [Header("Vision Settings")]
     public float sightRange = 15f;
@@ -34,10 +35,20 @@ public class MiniBossAIChase : MonoBehaviour
 
     private float vfxTimer = 0f;         // time tracking for active flames
 
+    [Header("Aura VFX")]
+    public GameObject auraVFXPrefab;
+    public Vector3 auraVFXOffset = Vector3.zero;   // position offset
+    public Vector3 auraVFXEuler = Vector3.zero;    // rotation override
+    public Vector3 auraVFXScale = Vector3.one;     // local scale
+
+    private GameObject activeAuraVFX;
+
+
     void Start()
     {
         enemyAgent = GetComponent<NavMeshAgent>();  //fethc navMesh
         animator = GetComponent<Animator>();        //fetch animator
+        healthScript = GetComponent<EnemyHealthRagdoll>();  //fetch health script
 
         if (target == null) 
         {
@@ -45,10 +56,37 @@ public class MiniBossAIChase : MonoBehaviour
             if (playerObj != null)
                 target = playerObj.transform; //make the target the player
         }
+         
+        if (auraVFXPrefab != null)
+        {
+            activeAuraVFX = Instantiate(auraVFXPrefab, transform);
+            activeAuraVFX.transform.localPosition = auraVFXOffset;
+            activeAuraVFX.transform.localRotation = Quaternion.Euler(auraVFXEuler);
+            activeAuraVFX.transform.localScale = auraVFXScale;
+        }
+
     }
 
     void Update()
     {
+
+        if (healthScript != null && healthScript.IsDead())
+        {
+            if (activeAuraVFX != null)
+            {
+                Destroy(activeAuraVFX);
+                activeAuraVFX = null;
+            }
+            return;
+        }
+
+        if (healthScript != null && healthScript.IsDead())
+        {
+            if (attackVFXPrefab != null) Destroy(attackVFXPrefab);
+            isAttacking = false;
+            return;
+        }
+
         if (target != null && enemyAgent.isOnNavMesh)   //is navmesh is true so this is attach to enemy so their navmesh 
         {
             if (!isAttacking && !isInCooldown && CanSeePlayer())        
@@ -170,4 +208,5 @@ public class MiniBossAIChase : MonoBehaviour
             }
         }
     }
+
 }
