@@ -1963,7 +1963,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 6790798426563335372}
   m_Layer: 0
-  m_Name: Miniboss1
+  m_Name: FireMiniboss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1997,7 +1997,7 @@ Animator:
   m_GameObject: {fileID: 5213014239458159033}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 46ee346e47948e04f92b34b25d6b5195, type: 3}
-  m_Controller: {fileID: 9100000, guid: ea03166c84783964dbadd1203bc31c1f, type: 2}
+  m_Controller: {fileID: 9100000, guid: f090799c352f5ee46ad12326a0c32374, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
