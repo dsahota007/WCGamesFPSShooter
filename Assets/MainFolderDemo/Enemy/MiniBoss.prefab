@@ -1239,6 +1239,7 @@ MonoBehaviour:
   vfxDamage: 6.5
   attackRange: 10
   attackAngle: 60
+  damageVFXDelay: 0.55
   attackVFXPrefab: {fileID: 1973075987484898, guid: 85a8802f4a0f29d47857ecb958756496,
     type: 3}
   vfxSpawnPoint: {fileID: 4707175045439444422}

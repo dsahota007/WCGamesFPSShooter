@@ -26,6 +26,7 @@ public class MiniBossAIChase : MonoBehaviour
     public float vfxDamage = 10f;        // damage per second
     public float attackRange = 6f;       // how far the flames reach
     public float attackAngle = 60f;      // cone angle
+    public float damageVFXDelay = 1f;
 
     [Header("Attack VFX")]
     public GameObject attackVFXPrefab;
@@ -35,41 +36,37 @@ public class MiniBossAIChase : MonoBehaviour
 
     void Start()
     {
-        enemyAgent = GetComponent<NavMeshAgent>();
-        animator = GetComponent<Animator>();
+        enemyAgent = GetComponent<NavMeshAgent>();  //fethc navMesh
+        animator = GetComponent<Animator>();        //fetch animator
 
-        if (target == null)
+        if (target == null) 
         {
-            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+            GameObject playerObj = GameObject.FindGameObjectWithTag("Player");  // find anythign with player tag 
             if (playerObj != null)
-                target = playerObj.transform;
+                target = playerObj.transform; //make the target the player
         }
     }
 
     void Update()
     {
-        if (target != null && enemyAgent.isOnNavMesh)
+        if (target != null && enemyAgent.isOnNavMesh)   //is navmesh is true so this is attach to enemy so their navmesh 
         {
-            // Only check for attacks if not currently attacking and not in cooldown
-            if (!isAttacking && !isInCooldown && CanSeePlayer())
+            if (!isAttacking && !isInCooldown && CanSeePlayer())        
             {
-                StartCoroutine(AttackCycle());
+                StartCoroutine(AttackCycle());    //attack if ur not attacking not cooldown and can see
             }
-            // Only chase if not attacking
             else if (!isAttacking)
             {
-                enemyAgent.isStopped = false;
-                enemyAgent.SetDestination(target.position);
+                enemyAgent.isStopped = false;                   //turn off stopping so he can move
+                enemyAgent.SetDestination(target.position);       //set deestiantion to player so they can follow on the navmesh
             }
         }
 
-        // Handle animations - just Speed parameter for run/stop
-        if (animator != null)
+        if (animator != null) // Handle animations - just Speed parameter for run/stop
         {
-            if (isAttacking)
+            if (isAttacking)   
             {
-                // Stop moving, speed = 0 for attack state
-                animator.SetFloat("Speed", 0f);
+                animator.SetFloat("Speed", 0f);    // Stop moving, speed = 0 for attack state
             }
             else
             {
@@ -77,8 +74,7 @@ public class MiniBossAIChase : MonoBehaviour
                 float speed = enemyAgent.velocity.magnitude;
                 animator.SetFloat("Speed", speed);
 
-                // Set random run index when starting to run
-                if (speed > 0.1f)
+                if (speed > 0.1f)  //if moving ever
                 {
                     int randomRun = Random.Range(0, 2);
                     animator.SetInteger("RunIndex", randomRun);
@@ -89,16 +85,15 @@ public class MiniBossAIChase : MonoBehaviour
         // During attack, rotate toward player (but don't move)
         if (isAttacking && target != null)
         {
-            Vector3 dir = (target.position - transform.position);
-            dir.y = 0f;
-            if (dir.sqrMagnitude > 0.01f)
+            Vector3 dir = (target.position - transform.position);  //pointing vector --- player to enemy 
+            dir.y = 0f;   //ignore up down diff
+            if (dir.sqrMagnitude > 0.01f)  //Make sure the direction vector isn’t “almost zero” (e.g., player standing exactly on top of the miniboss).
             {
-                Quaternion targetRot = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 200f * Time.deltaTime);
+                Quaternion targetRot = Quaternion.LookRotation(dir);  //build rotation look towards player
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 200f * Time.deltaTime);  //RotateTowards(from , to and maxDegreeDelta
             }
         }
 
-        // Apply damage only when VFX window is active
         if (isAttacking && vfxTimer > 0f)
         {
             DoConeDamage();
@@ -108,81 +103,70 @@ public class MiniBossAIChase : MonoBehaviour
 
     bool CanSeePlayer()
     {
-        Vector3 dirToPlayer = (target.position - transform.position).normalized;
-        float distanceToPlayer = Vector3.Distance(transform.position, target.position);
+        Vector3 dirToPlayer = (target.position - transform.position).normalized;   //find direction of the enenmy to the player 
+        float distanceToPlayer = Vector3.Distance(transform.position, target.position);  //calc the dist between them as well
 
-        if (distanceToPlayer < sightRange)
+        if (distanceToPlayer < sightRange)   //create a range so if were in range
         {
-            float angle = Vector3.Angle(transform.forward, dirToPlayer);
-            if (angle < sightAngle / 2f)
+            float angle = Vector3.Angle(transform.forward, dirToPlayer);   //if were in front of the player directly (face to face)
+            if (angle < sightAngle / 2f)  //Only proceed if the player is inside the vision cone (field of view).
             {
-                if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstructionMask))
+                if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstructionMask))  //if your not hitting a wall than return true 
                 {
                     return true;
                 }
             }
         }
-        return false;
+        return false;  //your looking at a wall than
     }
 
     IEnumerator AttackCycle()
     {
-        // Set attack state
         isAttacking = true;
         isInCooldown = true;
 
-        // Stop movement completely
-        enemyAgent.isStopped = true;
+        enemyAgent.isStopped = true;           // Stop movement completely
         enemyAgent.velocity = Vector3.zero;
 
-        // Trigger attack animation 
-        animator.SetTrigger("Attack");
-        // Set speed to 0 so animator transitions to attack state
-        animator.SetFloat("Speed", 0f);
+        animator.SetTrigger("Attack");          // begin adn Trigger attack animation 
+        animator.SetFloat("Speed", 0f);     // Set speed to 0 so animator transitions to attack state
 
-        // Wait before flames start
-        yield return new WaitForSeconds(vfxDelay);
+        yield return new WaitForSeconds(vfxDelay); // Wait before flames start
 
-        // Spawn VFX
-        if (attackVFXPrefab != null)
+        if (attackVFXPrefab != null)          // Spawn fire VFX
         {
-            Transform spawnAt = vfxSpawnPoint != null ? vfxSpawnPoint : transform;
+            Transform spawnAt = vfxSpawnPoint != null ? vfxSpawnPoint : transform; //spawn at spawnPoint or the transform if empty (not important)
             GameObject vfx = Instantiate(attackVFXPrefab, spawnAt.position, spawnAt.rotation, spawnAt);
             Destroy(vfx, vfxLifetime);
         }
 
-        // Enable damage window
-        vfxTimer = vfxLifetime;
+        yield return new WaitForSeconds(damageVFXDelay); //delay damage because it takes a sec for flames to begin
+        vfxTimer = vfxLifetime - damageVFXDelay;  
 
-        // Wait until animation finishes
-        yield return new WaitForSeconds(attackAnimLength - vfxDelay);
-
-        // Attack animation done - ready to resume movement
-        isAttacking = false;
+        yield return new WaitForSeconds(attackAnimLength - vfxDelay);         // Wait until animation finishes
+        isAttacking = false;   //when animation done you are no longer in attacking state
 
         // Cooldown period before next attack
-        float cooldown = Random.Range(attackCooldownMin, attackCooldownMax);
+        float cooldown = Random.Range(attackCooldownMin, attackCooldownMax);  //random range so theyer all not spawing the same time. 
         yield return new WaitForSeconds(cooldown);
-
-        // Ready to attack again
-        isInCooldown = false;
+        isInCooldown = false;    // Ready to attack again
     }
 
     void DoConeDamage()
     {
-        if (target == null) return;
+        if (target == null) return;  //GTFO this code 
 
-        Vector3 dirToPlayer = (target.position - transform.position).normalized;
-        dirToPlayer.y = 0f;
-        float distance = Vector3.Distance(transform.position, target.position);
-        float angle = Vector3.Angle(transform.forward, dirToPlayer);
+        Vector3 dirToPlayer = (target.position - transform.position).normalized;   // find direciton 
+        dirToPlayer.y = 0f;                     //ignore height 
+        float distance = Vector3.Distance(transform.position, target.position);  //enemy to player dist
+        float angle = Vector3.Angle(transform.forward, dirToPlayer);   //r
 
-        if (distance <= attackRange && angle <= attackAngle / 2f)
+        if (distance <= attackRange && angle <= attackAngle / 2f)   ///in range and sight of the eplayer (FOV) 
         {
             PlayerAttributes player = target.GetComponent<PlayerAttributes>();
             if (player != null)
             {
-                player.TakeDamagefromEnemy(vfxDamage * Time.deltaTime);
+                player.TakeDamagefromEnemy(vfxDamage * Time.deltaTime);  //do damage overall
             }
         }
     }
