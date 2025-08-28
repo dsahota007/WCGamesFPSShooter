@@ -24,13 +24,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 872339448471500037}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29636002, y: 1.374, z: 1.096}
+  m_LocalRotation: {x: 0.09639176, y: -0, z: -0, w: 0.99534345}
+  m_LocalPosition: {x: -0.29636002, y: 1.31, z: 0.88}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 342642118485141602}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 11.063, y: 0, z: 0}
 --- !u!1 &1459995347994916855
 GameObject:
   m_ObjectHideFlags: 0
@@ -1227,17 +1227,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   sightRange: 15
-  sightAngle: 60
+  sightAngle: 30
   obstructionMask:
     serializedVersion: 2
     m_Bits: 256
   attackCooldownMin: 3
   attackCooldownMax: 5
   attackAnimLength: 5
+  vfxDelay: 2
+  vfxLifetime: 4.2
+  vfxDamage: 6.5
+  attackRange: 10
+  attackAngle: 60
   attackVFXPrefab: {fileID: 1973075987484898, guid: 85a8802f4a0f29d47857ecb958756496,
     type: 3}
   vfxSpawnPoint: {fileID: 4707175045439444422}
-  vfxDelay: 2
 --- !u!4 &1241935176825947237 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1330755669629619180, guid: b61959cf200d7134d8bee35175eeb18c,

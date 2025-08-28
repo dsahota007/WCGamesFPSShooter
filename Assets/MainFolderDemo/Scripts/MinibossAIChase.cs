@@ -16,13 +16,22 @@ public class MiniBossAIChase : MonoBehaviour
     [Header("Attack Settings")]
     public float attackCooldownMin = 3f;
     public float attackCooldownMax = 5f;
-    public float attackAnimLength = 4.5f;   // how long the animation lasts
+    public float attackAnimLength = 4.5f;
     private bool isAttacking = false;
+    private bool isInCooldown = false;
+
+    [Header("Attack Damage Settings")]
+    public float vfxDelay = 0.5f;        // delay before fire "comes out"
+    public float vfxLifetime = 2f;       // how long the flames are active
+    public float vfxDamage = 10f;        // damage per second
+    public float attackRange = 6f;       // how far the flames reach
+    public float attackAngle = 60f;      // cone angle
 
     [Header("Attack VFX")]
     public GameObject attackVFXPrefab;
     public Transform vfxSpawnPoint;
-    public float vfxDelay = 0.5f;           // when to spawn effect after anim starts
+
+    private float vfxTimer = 0f;         // time tracking for active flames
 
     void Start()
     {
@@ -39,29 +48,61 @@ public class MiniBossAIChase : MonoBehaviour
 
     void Update()
     {
-        if (target != null && enemyAgent.isOnNavMesh && !isAttacking)
+        if (target != null && enemyAgent.isOnNavMesh)
         {
-            if (CanSeePlayer())
+            // Only check for attacks if not currently attacking and not in cooldown
+            if (!isAttacking && !isInCooldown && CanSeePlayer())
             {
                 StartCoroutine(AttackCycle());
             }
-            else
+            // Only chase if not attacking
+            else if (!isAttacking)
             {
                 enemyAgent.isStopped = false;
                 enemyAgent.SetDestination(target.position);
             }
         }
 
+        // Handle animations - just Speed parameter for run/stop
         if (animator != null)
         {
-            float speed = enemyAgent.velocity.magnitude;
-            animator.SetFloat("Speed", speed);
-
-            if (speed > 0.1f && animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+            if (isAttacking)
             {
-                int randomRun = Random.Range(0, 2);
-                animator.SetInteger("RunIndex", randomRun);
+                // Stop moving, speed = 0 for attack state
+                animator.SetFloat("Speed", 0f);
             }
+            else
+            {
+                // Normal movement - speed > 0 for running
+                float speed = enemyAgent.velocity.magnitude;
+                animator.SetFloat("Speed", speed);
+
+                // Set random run index when starting to run
+                if (speed > 0.1f)
+                {
+                    int randomRun = Random.Range(0, 2);
+                    animator.SetInteger("RunIndex", randomRun);
+                }
+            }
+        }
+
+        // During attack, rotate toward player (but don't move)
+        if (isAttacking && target != null)
+        {
+            Vector3 dir = (target.position - transform.position);
+            dir.y = 0f;
+            if (dir.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 200f * Time.deltaTime);
+            }
+        }
+
+        // Apply damage only when VFX window is active
+        if (isAttacking && vfxTimer > 0f)
+        {
+            DoConeDamage();
+            vfxTimer -= Time.deltaTime;
         }
     }
 
@@ -83,35 +124,66 @@ public class MiniBossAIChase : MonoBehaviour
         }
         return false;
     }
+
     IEnumerator AttackCycle()
     {
+        // Set attack state
         isAttacking = true;
+        isInCooldown = true;
+
+        // Stop movement completely
         enemyAgent.isStopped = true;
+        enemyAgent.velocity = Vector3.zero;
+
+        // Trigger attack animation 
+        animator.SetTrigger("Attack");
+        // Set speed to 0 so animator transitions to attack state
         animator.SetFloat("Speed", 0f);
 
-        // Play attack
-        animator.ResetTrigger("Attack");
-        animator.SetTrigger("Attack");
-
-        // Spawn VFX with delay
+        // Wait before flames start
         yield return new WaitForSeconds(vfxDelay);
+
+        // Spawn VFX
         if (attackVFXPrefab != null)
         {
             Transform spawnAt = vfxSpawnPoint != null ? vfxSpawnPoint : transform;
-            Instantiate(attackVFXPrefab, spawnAt.position, spawnAt.rotation);
+            GameObject vfx = Instantiate(attackVFXPrefab, spawnAt.position, spawnAt.rotation, spawnAt);
+            Destroy(vfx, vfxLifetime);
         }
+
+        // Enable damage window
+        vfxTimer = vfxLifetime;
 
         // Wait until animation finishes
         yield return new WaitForSeconds(attackAnimLength - vfxDelay);
 
-        // ✅ Resume chasing IMMEDIATELY after animation
-        enemyAgent.isStopped = false;
+        // Attack animation done - ready to resume movement
+        isAttacking = false;
 
-        // ✅ But still enforce cooldown before next attack
+        // Cooldown period before next attack
         float cooldown = Random.Range(attackCooldownMin, attackCooldownMax);
         yield return new WaitForSeconds(cooldown);
 
-        isAttacking = false;
+        // Ready to attack again
+        isInCooldown = false;
     }
 
+    void DoConeDamage()
+    {
+        if (target == null) return;
+
+        Vector3 dirToPlayer = (target.position - transform.position).normalized;
+        dirToPlayer.y = 0f;
+        float distance = Vector3.Distance(transform.position, target.position);
+        float angle = Vector3.Angle(transform.forward, dirToPlayer);
+
+        if (distance <= attackRange && angle <= attackAngle / 2f)
+        {
+            PlayerAttributes player = target.GetComponent<PlayerAttributes>();
+            if (player != null)
+            {
+                player.TakeDamagefromEnemy(vfxDamage * Time.deltaTime);
+            }
+        }
+    }
 }

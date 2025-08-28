@@ -25717,7 +25717,7 @@ MonoBehaviour:
   - {fileID: 1632199129}
   - {fileID: 2098151089}
   - {fileID: 515911958}
-  startZombies: 3
+  startZombies: 1
   zombiesPerRound: 3
 --- !u!4 &1595701418
 Transform:
