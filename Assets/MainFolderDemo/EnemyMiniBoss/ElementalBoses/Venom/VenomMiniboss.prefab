@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 6790798426563335372}
   m_Layer: 0
-  m_Name: FireMiniboss
+  m_Name: VenomMiniboss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2504,7 +2504,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
-  immuneTo: 8
+  immuneTo: 5
 --- !u!114 &6790798426563335372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2532,10 +2532,10 @@ MonoBehaviour:
   attackRange: 10
   attackAngle: 60
   damageVFXDelay: 0.9
-  attackVFXPrefab: {fileID: 1973075987484898, guid: 85a8802f4a0f29d47857ecb958756496,
+  attackVFXPrefab: {fileID: 1973075987484898, guid: 4dd22e6ac75adb0488fb4471568dc1f4,
     type: 3}
   vfxSpawnPoint: {fileID: 5127682219308295185}
-  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 618bc16e0e32cd746bd2108c05ab0d0d,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
   auraVFXEuler: {x: 0, y: 0, z: 0}
@@ -4207,7 +4207,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: FIRE MINIBOSS
+  m_text: VENOM MINIBOSS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4863,7 +4863,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8529f2e51c23fa74f9f692281d67ae35, type: 2}
+  - {fileID: 2100000, guid: 16474da43bccb8e4e96c2130f8f2648e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

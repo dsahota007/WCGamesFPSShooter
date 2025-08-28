@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.8962264, g: 0.37231228, b: 0.20714669, a: 1}
+      maxColor: {r: 0.30953664, g: 0.8867924, b: 0.26352793, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4965,7 +4965,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0.8773585, g: 0.35834873, b: 0.19450872, a: 1}
+  m_Color: {r: 0.39439553, g: 0.8784314, b: 0.19607842, a: 1}
   m_Intensity: 15
   m_Range: 3
   m_SpotAngle: 30
@@ -5011,7 +5011,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 2.020462e-39}
+  m_BoundingSphereOverride: {x: 1, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -5243,7 +5243,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.31132078, g: 0.31132078, b: 0.31132078, a: 0.69411767}
+      maxColor: {r: 0.25943398, g: 1, b: 0.4516709, a: 0.18431373}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -14716,7 +14716,7 @@ GameObject:
   - component: {fileID: 4678103677468820507}
   - component: {fileID: 3359297173717597582}
   m_Layer: 0
-  m_Name: SmokeMiniboss
+  m_Name: VenomAura
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
