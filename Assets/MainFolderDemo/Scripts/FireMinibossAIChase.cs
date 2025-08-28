@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 using System.Collections;
 
-public class MiniBossAIChase : MonoBehaviour
+public class FireMiniBossAIChase : MonoBehaviour
 {
     private NavMeshAgent enemyAgent;
     public Transform target;

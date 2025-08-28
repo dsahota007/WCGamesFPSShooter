@@ -838,7 +838,7 @@ Transform:
   m_GameObject: {fileID: 2169118345603078319}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.051359117, y: 1.345, z: 0.822}
+  m_LocalPosition: {x: 0.168, y: 1.373, z: 0.937}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2525,12 +2525,12 @@ MonoBehaviour:
   attackCooldownMin: 3
   attackCooldownMax: 5
   attackAnimLength: 5
-  vfxDelay: 2
+  vfxDelay: 2.5
   vfxLifetime: 4.2
   vfxDamage: 6.5
   attackRange: 10
   attackAngle: 60
-  damageVFXDelay: 0.55
+  damageVFXDelay: 0.9
   attackVFXPrefab: {fileID: 1973075987484898, guid: 85a8802f4a0f29d47857ecb958756496,
     type: 3}
   vfxSpawnPoint: {fileID: 5127682219308295185}
