@@ -18428,6 +18428,84 @@ Transform:
   - {fileID: 1545319259}
   m_Father: {fileID: 456614185}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1073616219
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1215716590615722911, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215716590615722911, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.401668
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.77062035
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -13.763761
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4833356874701386499, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5213014239458159033, guid: d28134dce9cca41468f792286a0adc75,
+        type: 3}
+      propertyPath: m_Name
+      value: LightningMiniboss
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d28134dce9cca41468f792286a0adc75, type: 3}
 --- !u!1001 &1080676106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25467,84 +25545,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1569946920}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1573501247
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1215716590615722911, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1215716590615722911, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -12.2316065
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.77062035
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.6649337
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4833356874701386499, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5213014239458159033, guid: 93f1ce912a6127e4f92f346701b6dbc3,
-        type: 3}
-      propertyPath: m_Name
-      value: VenomMiniboss
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 93f1ce912a6127e4f92f346701b6dbc3, type: 3}
 --- !u!1 &1577369119
 GameObject:
   m_ObjectHideFlags: 0
@@ -25774,7 +25774,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1595701417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35663,4 +35663,4 @@ SceneRoots:
   - {fileID: 213364774}
   - {fileID: 1324466619}
   - {fileID: 2107597909}
-  - {fileID: 1573501247}
+  - {fileID: 1073616219}

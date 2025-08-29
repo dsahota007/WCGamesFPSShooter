@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 6790798426563335372}
   m_Layer: 0
-  m_Name: FireMiniboss
+  m_Name: LightningMiniboss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2504,7 +2504,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
-  immuneTo: 1
+  immuneTo: 6
 --- !u!114 &6790798426563335372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sightRange: 15
+  sightRange: 8
   sightAngle: 30
   obstructionMask:
     serializedVersion: 2
@@ -2528,14 +2528,14 @@ MonoBehaviour:
   attackAnimLength: 5
   vfxDelay: 2.5
   vfxLifetime: 4.2
-  vfxDamage: 6.5
-  attackRange: 10
+  vfxDamage: 10
+  attackRange: 9
   attackAngle: 60
   damageVFXDelay: 0.9
-  attackVFXPrefab: {fileID: 1973075987484898, guid: 85a8802f4a0f29d47857ecb958756496,
+  attackVFXPrefab: {fileID: 3473529909581181512, guid: fb0de3b4a2d598142ba12d844037b7b3,
     type: 3}
   vfxSpawnPoint: {fileID: 5127682219308295185}
-  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 1ef5e005a439929488e8dba4237dd725,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
   auraVFXEuler: {x: 0, y: 0, z: 0}
@@ -4863,7 +4863,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 8529f2e51c23fa74f9f692281d67ae35, type: 2}
+  - {fileID: 2100000, guid: a5921432ae394f449a3c1e1eb6840043, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

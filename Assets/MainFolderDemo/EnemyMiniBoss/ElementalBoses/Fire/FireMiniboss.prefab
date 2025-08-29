@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sightRange: 15
+  sightRange: 10
   sightAngle: 30
   obstructionMask:
     serializedVersion: 2
