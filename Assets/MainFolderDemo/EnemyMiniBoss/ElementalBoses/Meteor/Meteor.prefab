@@ -2357,9 +2357,9 @@ GameObject:
   - component: {fileID: -1372523476467760224}
   - component: {fileID: 4882745383516848385}
   - component: {fileID: 8266800471755442685}
-  - component: {fileID: 6790798426563335372}
+  - component: {fileID: 1622243841089407528}
   m_Layer: 0
-  m_Name: LightningMiniboss
+  m_Name: Meteor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2504,8 +2504,8 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
-  immuneTo: 6
---- !u!114 &6790798426563335372
+  immuneTo: 1
+--- !u!114 &1622243841089407528
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2514,32 +2514,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 5213014239458159033}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6667eed2a13db74a8dbe17750974a09, type: 3}
+  m_Script: {fileID: 11500000, guid: f1ad13c5b602eb84896224f19e3f5f6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sightRange: 8
-  sightAngle: 30
+  sightRange: 15
+  sightAngle: 60
   obstructionMask:
     serializedVersion: 2
     m_Bits: 256
   attackCooldownMin: 3
   attackCooldownMax: 5
-  attackAnimLength: 5
-  vfxDelay: 2.5
-  vfxLifetime: 4.2
-  vfxDamage: 10
-  attackRange: 9
-  attackAngle: 60
-  damageVFXDelay: 0.9
-  attackVFXPrefab: {fileID: 3473529909581181512, guid: fb0de3b4a2d598142ba12d844037b7b3,
+  attackAnimLength: 4.5
+  projectileDelay: 3
+  projectileSpeed: 25
+  projectileLifetime: 5
+  projectileSpawnPoint: {fileID: 5127682219308295185}
+  projectilePrefab: {fileID: 3292252372715375916, guid: d1846f42759c3f5409af9b5f43bb7d76,
     type: 3}
-  vfxSpawnPoint: {fileID: 5127682219308295185}
-  auraVFXPrefab: {fileID: 9017484664307500583, guid: 1ef5e005a439929488e8dba4237dd725,
+  launchVFXPrefab: {fileID: 5034656251238326012, guid: 9de2fa19f0390d44491264d9cab8cec5,
+    type: 3}
+  launchVFXDelay: 3
+  launchVFXLifetime: 2
+  launchVFXOffset: {x: 0, y: 0, z: 0}
+  launchVFXEuler: {x: 0, y: 0, z: 0}
+  launchVFXScale: {x: 1, y: 1, z: 1}
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
   auraVFXEuler: {x: 0, y: 0, z: 0}
-  auraVFXScale: {x: 0.8, y: 1, z: 0.8}
+  auraVFXScale: {x: 1, y: 1, z: 1}
 --- !u!1 &5231729452602916517
 GameObject:
   m_ObjectHideFlags: 0
@@ -4207,7 +4211,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: LIGHTNING MINIBOSS
+  m_text: FIRE MINIBOSS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4863,7 +4867,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a5921432ae394f449a3c1e1eb6840043, type: 2}
+  - {fileID: 2100000, guid: c320ba5e22afb854889a97b6ec4acb47, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
