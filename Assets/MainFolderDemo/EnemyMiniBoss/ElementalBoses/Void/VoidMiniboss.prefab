@@ -838,7 +838,7 @@ Transform:
   m_GameObject: {fileID: 2169118345603078319}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.168, y: 1.373, z: 0.937}
+  m_LocalPosition: {x: 0.168, y: 1.797, z: 0.937}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 1622243841089407528}
   m_Layer: 0
-  m_Name: Crystal
+  m_Name: VoidMiniboss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2518,8 +2518,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sightRange: 35
-  sightAngle: 60
+  sightRange: 50
+  sightAngle: 80
   obstructionMask:
     serializedVersion: 2
     m_Bits: 256
@@ -2527,10 +2527,10 @@ MonoBehaviour:
   attackCooldownMax: 5
   attackAnimLength: 4.5
   projectileDelay: 2.5
-  projectileSpeed: 25
+  projectileSpeed: 0.1
   projectileLifetime: 15
   projectileSpawnPoint: {fileID: 5127682219308295185}
-  projectilePrefab: {fileID: 3292252372715375916, guid: be0fcfc67e8295a48a26b49188a3faa2,
+  projectilePrefab: {fileID: 3292252372715375916, guid: df9b543cd3f04d24c8b0b820f5329973,
     type: 3}
   launchVFXPrefab: {fileID: 8145502431507700120, guid: 38b7f58c4e1f9fc4d8b1831c29126086,
     type: 3}
@@ -2539,7 +2539,7 @@ MonoBehaviour:
   launchVFXOffset: {x: 0, y: 0, z: 0}
   launchVFXEuler: {x: 0, y: 20, z: 0}
   launchVFXScale: {x: 2, y: 2, z: 2}
-  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 207506f07992ef84181cc26923ecc1c8,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
   auraVFXEuler: {x: 0, y: 0, z: 0}
@@ -4211,7 +4211,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CRYSTAL MINIBOSS
+  m_text: VOID MINIBOSS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4867,7 +4867,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 891a6dde5c6819944ae7de86fa321810, type: 2}
+  - {fileID: 2100000, guid: 0b55b922a2cbf704cb0706190bbcc585, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

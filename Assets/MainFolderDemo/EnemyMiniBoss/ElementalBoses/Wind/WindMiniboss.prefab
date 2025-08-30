@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 1622243841089407528}
   m_Layer: 0
-  m_Name: Wind
+  m_Name: WindMiniboss
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
