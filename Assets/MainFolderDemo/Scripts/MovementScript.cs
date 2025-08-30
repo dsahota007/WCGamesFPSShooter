@@ -2,6 +2,7 @@
 //using Unity.VisualScripting;
 //using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
+using System.Collections;
 //using static UnityEditor.Experimental.GraphView.GraphView;
 //using static UnityEditorInternal.ReorderableList;
 
@@ -60,6 +61,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 slideDirection;
     private float normalControllerHeight;
     private Vector3 normalControllerCenter;
+
+    private Vector3 externalForce = Vector3.zero;
+
 
 
     void Start()
@@ -182,6 +186,16 @@ public class PlayerMovement : MonoBehaviour
         //grav
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        // === Apply external knockback / launch ===
+        if (externalForce.magnitude > 0.1f)
+        {
+            transform.position += externalForce * Time.deltaTime;
+
+            // Smoothly reduce the force over time
+            externalForce = Vector3.Lerp(externalForce, Vector3.zero, 5f * Time.deltaTime);
+        }
+
 
 
     }
@@ -311,6 +325,44 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //----------------------- Getters
+
+    public void ApplyExternalForce(Vector3 force)
+    {
+        StartCoroutine(ApplyKnockbackWithArc(force));
+    }
+
+    private IEnumerator ApplyKnockbackWithArc(Vector3 initialForce)
+    {
+        float gravity = -30f;  // tweak to match your world gravity
+        Vector3 velocity = initialForce; // start with our launch force
+
+        float timer = 0f;
+        while (timer < 2f)  // stop after 2s if not landed
+        {
+            // apply gravity each frame
+            velocity += Vector3.up * gravity * Time.deltaTime;
+
+            // movement this frame
+            Vector3 move = velocity * Time.deltaTime;
+
+            // check collision
+            if (!Physics.Raycast(transform.position, move.normalized, move.magnitude + 0.1f))
+            {
+                transform.position += move;
+            }
+            else
+            {
+                // hit something -> stop knockback
+                break;
+            }
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+
+
 
     public void ResetSpeedsToBase()   //after death for speed perk
     {

@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 1622243841089407528}
   m_Layer: 0
-  m_Name: Crystal
+  m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2504,7 +2504,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
-  immuneTo: 4
+  immuneTo: 7
 --- !u!114 &1622243841089407528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,7 +2518,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sightRange: 35
+  sightRange: 15
   sightAngle: 60
   obstructionMask:
     serializedVersion: 2
@@ -2526,20 +2526,20 @@ MonoBehaviour:
   attackCooldownMin: 3
   attackCooldownMax: 5
   attackAnimLength: 4.5
-  projectileDelay: 2.5
+  projectileDelay: 3.8
   projectileSpeed: 25
   projectileLifetime: 15
   projectileSpawnPoint: {fileID: 5127682219308295185}
-  projectilePrefab: {fileID: 3292252372715375916, guid: be0fcfc67e8295a48a26b49188a3faa2,
+  projectilePrefab: {fileID: 3292252372715375916, guid: 9f6844847f92c7149980d6656524e597,
     type: 3}
-  launchVFXPrefab: {fileID: 8145502431507700120, guid: 38b7f58c4e1f9fc4d8b1831c29126086,
+  launchVFXPrefab: {fileID: 6441873369525384307, guid: c5b82dbd5f501ae428f424ee92d64a8b,
     type: 3}
-  launchVFXDelay: 2.2
+  launchVFXDelay: 2.8
   launchVFXLifetime: 2
-  launchVFXOffset: {x: 0, y: 0, z: 0}
-  launchVFXEuler: {x: 0, y: 20, z: 0}
+  launchVFXOffset: {x: 0, y: 0.5, z: 0}
+  launchVFXEuler: {x: 0, y: 0, z: 0}
   launchVFXScale: {x: 2, y: 2, z: 2}
-  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 72811007d31a4b749ac4f99815cca9a2,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
   auraVFXEuler: {x: 0, y: 0, z: 0}
@@ -4211,7 +4211,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CRYSTAL MINIBOSS
+  m_text: WIND MINIBOSS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4867,7 +4867,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 891a6dde5c6819944ae7de86fa321810, type: 2}
+  - {fileID: 2100000, guid: 724566f1424783e4abed38fdb134cae3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CrystalMinibossEntity : MonoBehaviour
+public class CrystalAndWindMinibossEntity : MonoBehaviour
 {
     [Header("Slam Attack on Impact")]
     public float slamRadius = 5f;
@@ -8,12 +8,23 @@ public class CrystalMinibossEntity : MonoBehaviour
     public LayerMask playerMask;     // make sure Player is on this layer
 
     [Header("Knockback Settings")]
-    public float knockbackForce = 15f;   // horizontal push force
-    public float upwardForce = 10f;      // vertical launch force (new)
+    public float knockbackForce = 10f;  // horizontal push
+    public float upwardForce = 8f;      // vertical lift
+    public float outwardForce = 5f;     // extra outward (radial) push
 
-    [Header("VFX Effects")]
-    public GameObject PlayerImpactVFX;
-    public GameObject PlayerImpactVFX2;
+    //[Header("Player Impact VFX")]
+    //public GameObject PlayerImpactVFX;
+    //public Vector3 PlayerImpactVFXOffset = Vector3.up * 1f;
+    //public Vector3 PlayerImpactVFXEuler = Vector3.zero;
+    //public Vector3 PlayerImpactVFXScale = Vector3.one;
+    //public float PlayerImpactVFXLifetime = 5f;
+
+    //[Header("Player Impact VFX 2")]
+    //public GameObject PlayerImpactVFX2;
+    //public Vector3 PlayerImpactVFX2Offset = Vector3.zero;
+    //public Vector3 PlayerImpactVFX2Euler = new Vector3(-90f, 0f, -90f);
+    //public Vector3 PlayerImpactVFX2Scale = Vector3.one;
+    //public float PlayerImpactVFX2Lifetime = 25f;
 
     [Header("Ground Slam VFX")]
     public GameObject GroundEntitySlamVFX;
@@ -89,34 +100,40 @@ public class CrystalMinibossEntity : MonoBehaviour
             PlayerAttributes player = hit.GetComponent<PlayerAttributes>();  // fetch player script
             if (player != null)
             {
-                // === Apply damage ===
                 player.TakeDamagefromEnemy(slamDamage);   // simple health damage
 
-                // === Knockback / bounce back ===
-                Rigidbody prb = player.GetComponent<Rigidbody>();
-                if (prb != null)
+                // === Knockback / Launch Upwards + Outwards ===
+                var movement = player.GetComponent<PlayerMovement>(); // player movement script
+                if (movement != null)
                 {
-                    // Horizontal push
-                    Vector3 dir = (player.transform.position - transform.position).normalized;
-                    dir.y = 0f; // keep only horizontal direction
-                    prb.AddForce(dir * knockbackForce, ForceMode.Impulse);
+                    Vector3 dir = (player.transform.position - transform.position).normalized;  //direction from impact and player get direction
+                    dir.y = 0f; // base horizontal direction
 
-                    // Separate upward launch
-                    prb.AddForce(Vector3.up * upwardForce, ForceMode.Impulse);
+                    // Combine outward + upward
+                    Vector3 knockDir = (dir * (knockbackForce + outwardForce)) + Vector3.up * upwardForce;  //calc this and this goes ot player script
+
+                    movement.ApplyExternalForce(knockDir);  // custom method in PlayerMovement
                 }
 
-                // === VFX on hit ===
-                if (PlayerImpactVFX != null)
-                {
-                    GameObject fx = Instantiate(PlayerImpactVFX, player.transform.position + Vector3.up * 1f, Quaternion.identity);
-                    Destroy(fx, 5f);
-                }
+                //// === Spawn Player Impact VFX 1 ===
+                //if (PlayerImpactVFX != null)
+                //{
+                //    GameObject fx = Instantiate(PlayerImpactVFX, player.transform.position, Quaternion.identity);
+                //    fx.transform.localPosition += PlayerImpactVFXOffset;
+                //    fx.transform.localRotation = Quaternion.Euler(PlayerImpactVFXEuler);
+                //    fx.transform.localScale = PlayerImpactVFXScale;
+                //    Destroy(fx, PlayerImpactVFXLifetime);
+                //}
 
-                if (PlayerImpactVFX2 != null)
-                {
-                    GameObject fx = Instantiate(PlayerImpactVFX2, player.transform.position, Quaternion.Euler(-90f, 0f, -90f));
-                    Destroy(fx, 25f);
-                }
+                //// === Spawn Player Impact VFX 2 ===
+                //if (PlayerImpactVFX2 != null)
+                //{
+                //    GameObject fx = Instantiate(PlayerImpactVFX2, player.transform.position, Quaternion.identity);
+                //    fx.transform.localPosition += PlayerImpactVFX2Offset;
+                //    fx.transform.localRotation = Quaternion.Euler(PlayerImpactVFX2Euler);
+                //    fx.transform.localScale = PlayerImpactVFX2Scale;
+                //    Destroy(fx, PlayerImpactVFX2Lifetime);
+                //}
             }
         }
     }
