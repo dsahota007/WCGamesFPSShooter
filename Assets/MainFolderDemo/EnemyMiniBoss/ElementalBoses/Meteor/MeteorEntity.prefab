@@ -4965,9 +4965,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 1, g: 0.6342919, b: 0.3254717, a: 0.8509804}
-  m_Intensity: 200
-  m_Range: 250
+  m_Color: {r: 0.990566, g: 0.4676013, b: 0.023362402, a: 0.8509804}
+  m_Intensity: 20
+  m_Range: 35
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -14785,10 +14785,10 @@ GameObject:
   - component: {fileID: 3833900223263149591}
   - component: {fileID: 5783292596231346641}
   - component: {fileID: 1035826600056507812}
-  - component: {fileID: 90995555510458769}
   - component: {fileID: 3140035660169670401}
+  - component: {fileID: 566050182994399508}
   m_Layer: 18
-  m_Name: Meteor2
+  m_Name: MeteorEntity
   m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14804,7 +14804,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 6.08, y: 3.45, z: -6.68}
-  m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 394837117405680003}
@@ -14887,33 +14887,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &90995555510458769
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3292252372715375916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d9d547e3842972429683ace20d281a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 80
-  lifeTime: 25
-  slamRadius: 250
-  slamDamage: 99999
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 8
-  EnemyImpactVFX: {fileID: 1427962332153456, guid: 301583a5af63a494298d60cd9f296909,
-    type: 3}
-  EnemyImpactVFX2: {fileID: 8793510976239746625, guid: aeb9f4f7f33e60942ae68b9ead1bdbbe,
-    type: 3}
-  GroundEntitySlamVFX: {fileID: 8974203713140315807, guid: c1dfb89e6b268e147b660d8bd11ecbb3,
-    type: 3}
-  GroundEntitySlamVFX2: {fileID: 1427962332153456, guid: 9e2e63edd4cae594aae171f3305de74d,
-    type: 3}
 --- !u!54 &3140035660169670401
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -14941,6 +14914,31 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &566050182994399508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3292252372715375916}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7aaa3fdeae0fb34c9809e8a083a4872, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slamRadius: 20
+  slamDamage: 15
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  PlayerImpactVFX: {fileID: 0}
+  PlayerImpactVFX2: {fileID: 0}
+  GroundEntitySlamVFX: {fileID: 1121192042590650, guid: 5ccb6bd2e0c739846a383ffda64a3fd8,
+    type: 3}
+  GroundVFXOffset: {x: 0, y: 0, z: 0}
+  GroundVFXEuler: {x: 0, y: 0, z: 0}
+  GroundVFXScale: {x: 10, y: 10, z: 10}
+  GroundVFXLifetime: 5
 --- !u!1 &4266522631095656429
 GameObject:
   m_ObjectHideFlags: 0
@@ -19858,7 +19856,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4776676382162067317
 Transform:
   m_ObjectHideFlags: 0
@@ -43954,7 +43952,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7713019603720404310
 Transform:
   m_ObjectHideFlags: 0
@@ -53646,8 +53644,8 @@ Transform:
   m_GameObject: {fileID: 9147931059510743085}
   serializedVersion: 2
   m_LocalRotation: {x: 0.24604823, y: -0.7237534, z: -0.58516896, w: -0.27058932}
-  m_LocalPosition: {x: -10, y: -98, z: 17}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalPosition: {x: -2.9, y: -30.9, z: 5.4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3626058663169968144}
@@ -53736,8 +53734,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
-      minScalar: 4
+      scalar: 2
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:

@@ -2528,9 +2528,9 @@ MonoBehaviour:
   attackAnimLength: 4.5
   projectileDelay: 3
   projectileSpeed: 25
-  projectileLifetime: 5
+  projectileLifetime: 15
   projectileSpawnPoint: {fileID: 5127682219308295185}
-  projectilePrefab: {fileID: 3292252372715375916, guid: d1846f42759c3f5409af9b5f43bb7d76,
+  projectilePrefab: {fileID: 3292252372715375916, guid: a5ca228846c60ad4f8957ba8392343bc,
     type: 3}
   launchVFXPrefab: {fileID: 5034656251238326012, guid: 9de2fa19f0390d44491264d9cab8cec5,
     type: 3}
@@ -2538,7 +2538,7 @@ MonoBehaviour:
   launchVFXLifetime: 2
   launchVFXOffset: {x: 0, y: 0, z: 0}
   launchVFXEuler: {x: 0, y: 0, z: 0}
-  launchVFXScale: {x: 1, y: 1, z: 1}
+  launchVFXScale: {x: 5, y: 5, z: 5}
   auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}

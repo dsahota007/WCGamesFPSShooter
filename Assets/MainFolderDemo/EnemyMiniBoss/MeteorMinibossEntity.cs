@@ -10,7 +10,13 @@ public class MeteorMinibossEntity : MonoBehaviour
     [Header("VFX Effects")]
     public GameObject PlayerImpactVFX;
     public GameObject PlayerImpactVFX2;
+
+    [Header("Ground Slam VFX")]
     public GameObject GroundEntitySlamVFX;
+    public Vector3 GroundVFXOffset = Vector3.zero;  // local/world offset
+    public Vector3 GroundVFXEuler = Vector3.zero;   // rotation override
+    public Vector3 GroundVFXScale = Vector3.one;    // scale override
+    public float GroundVFXLifetime = 10f;           // how long it lasts
 
     private Rigidbody rb;
 
@@ -59,7 +65,13 @@ public class MeteorMinibossEntity : MonoBehaviour
         if (GroundEntitySlamVFX != null)
         {
             GameObject vfx1 = Instantiate(GroundEntitySlamVFX, transform.position, Quaternion.identity);
-            Destroy(vfx1, 10f);
+
+            // Apply customization
+            vfx1.transform.position += GroundVFXOffset;
+            vfx1.transform.rotation = Quaternion.Euler(GroundVFXEuler);
+            vfx1.transform.localScale = GroundVFXScale;
+
+            Destroy(vfx1, GroundVFXLifetime);
         }
     }
 
