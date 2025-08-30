@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Fire
+  m_Name: Crystal
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -81,7 +81,7 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.8962264, g: 0.04650232, b: 0.04650232, a: 1}
-    - _EmissionColor: {r: 1350.25, g: 53.415134, b: 0, a: 1}
+    - _Color: {r: 0.39279994, g: 0.4115346, b: 0.8584906, a: 1}
+    - _EmissionColor: {r: 0, g: 8.265228, b: 137.187, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

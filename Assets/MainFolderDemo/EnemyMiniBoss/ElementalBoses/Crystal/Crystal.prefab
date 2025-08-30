@@ -2359,7 +2359,7 @@ GameObject:
   - component: {fileID: 8266800471755442685}
   - component: {fileID: 1622243841089407528}
   m_Layer: 0
-  m_Name: Meteor
+  m_Name: Crystal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2504,7 +2504,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
-  immuneTo: 8
+  immuneTo: 4
 --- !u!114 &1622243841089407528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2530,7 +2530,7 @@ MonoBehaviour:
   projectileSpeed: 25
   projectileLifetime: 15
   projectileSpawnPoint: {fileID: 5127682219308295185}
-  projectilePrefab: {fileID: 3292252372715375916, guid: a5ca228846c60ad4f8957ba8392343bc,
+  projectilePrefab: {fileID: 3292252372715375916, guid: be0fcfc67e8295a48a26b49188a3faa2,
     type: 3}
   launchVFXPrefab: {fileID: 5034656251238326012, guid: 9de2fa19f0390d44491264d9cab8cec5,
     type: 3}
@@ -4211,7 +4211,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: METEOR MINIBOSS
+  m_text: CRYSTAL MINIBOSS
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4867,7 +4867,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c320ba5e22afb854889a97b6ec4acb47, type: 2}
+  - {fileID: 2100000, guid: 891a6dde5c6819944ae7de86fa321810, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
