@@ -1,24 +1,18 @@
 using UnityEngine;
 using System.Collections;
 
-
 public class VoidMinibossEntity : MonoBehaviour
 {
     [Header("Tracking Settings")]
     public float moveSpeed = 10f;         // how fast it moves
     public float rotateSpeed = 5f;        // how quickly it rotates to face the player
-    public float lifeTime = 8f;           // auto-destroy after this time
+    public float lifeTime = 8f;           // auto-destroy if it never lands
 
-    [Header("Slam Attack on Impact")]
-    public float slamRadius = 6f;
-    public float slamDamage = 25f;       // hurts player instead of enemies
-    public LayerMask playerMask;         // make sure Player is on this layer
-
-    [Header("Wind Pull + Knockback")]
-    public float pullForce = 20f;        // how hard it sucks player inward
-    public float centerThreshold = 1f;   // how close to center before launching
-    public float knockbackForce = 25f;   // outward push
-    public float upwardForce = 12f;      // vertical lift
+    [Header("Void Field Settings")]
+    public float slamRadius = 6f;         // radius of damaging field
+    public float slamDamagePerSecond = 10f; // DPS applied to player
+    public float fieldDuration = 4f;      // how long the void field lasts
+    public LayerMask playerMask;          // player must be on this layer
 
     [Header("VFX Effects")]
     public GameObject PlayerImpactVFX;
@@ -33,6 +27,9 @@ public class VoidMinibossEntity : MonoBehaviour
 
     private Transform playerTarget; // cached player
     private Rigidbody rb;
+    private bool hasLanded = false; // track if we already impacted
+
+    private Vector3 moveDirection; // direction at spawn
 
     void Start()
     {
@@ -41,9 +38,19 @@ public class VoidMinibossEntity : MonoBehaviour
         // find player
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
+        {
             playerTarget = playerObj.transform;
+            moveDirection = (playerTarget.position - transform.position).normalized;
+        }
+        else
+        {
+            moveDirection = transform.forward; // fallback if no player found
+        }
 
-        // safety destroy after lifetime
+        // === Meteor-style movement ===
+        rb.linearVelocity = moveDirection * moveSpeed;
+
+        // safety destroy after lifetime if it never collides
         Destroy(gameObject, lifeTime);
 
         // Ignore collision with enemy who spawned this projectile
@@ -59,36 +66,38 @@ public class VoidMinibossEntity : MonoBehaviour
 
     void Update()
     {
+        if (hasLanded) return; // stop logic after impact
         if (playerTarget == null) return;
 
-        // rotate toward player smoothly
+        // rotate toward player smoothly (cosmetic only, doesn't affect flight path)
         Vector3 dir = (playerTarget.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, rotateSpeed * Time.deltaTime);
-
-        // move forward constantly
-        transform.position += transform.forward * moveSpeed * Time.deltaTime;
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Ground") || other.CompareTag("Wall"))
+        if (other.CompareTag("Ground") || other.CompareTag("Wall") || other.CompareTag("Player"))
         {
-            StartCoroutine(ApplyWindMeteorLogic());
-            SpawnGroundEffects();
-            return;
-        }
-
-        if (other.CompareTag("Player"))
-        {
-            StartCoroutine(ApplyWindMeteorLogic());
+            if (!hasLanded)
+            {
+                hasLanded = true;
+                rb.linearVelocity = Vector3.zero; // stop moving
+                StartCoroutine(VoidFieldDamageOverTime());
+                SpawnGroundEffects();
+            }
         }
     }
 
     void OnCollisionEnter(Collision collision)
     {
-        StartCoroutine(ApplyWindMeteorLogic());
-        SpawnGroundEffects();
+        if (!hasLanded)
+        {
+            hasLanded = true;
+            rb.linearVelocity = Vector3.zero; // stop moving
+            StartCoroutine(VoidFieldDamageOverTime());
+            SpawnGroundEffects();
+        }
     }
 
     void SpawnGroundEffects()
@@ -106,52 +115,35 @@ public class VoidMinibossEntity : MonoBehaviour
         }
     }
 
-    IEnumerator ApplyWindMeteorLogic()
+    IEnumerator VoidFieldDamageOverTime()
     {
-        // Check for player in radius
-        Collider[] hitPlayers = Physics.OverlapSphere(transform.position, slamRadius, playerMask);
+        float timer = 0f;
 
-        foreach (Collider hit in hitPlayers)
+        while (timer < fieldDuration)
         {
-            PlayerAttributes player = hit.GetComponent<PlayerAttributes>();  // fetch player script
-            if (player != null)
+            // Check for player in radius
+            Collider[] hitPlayers = Physics.OverlapSphere(transform.position, slamRadius, playerMask);
+
+            foreach (Collider hit in hitPlayers)
             {
-                player.TakeDamagefromEnemy(slamDamage);   // simple health damage
-
-                // Get movement ref
-                var movement = player.GetComponent<PlayerMovement>();
-                if (movement != null)
+                PlayerAttributes player = hit.GetComponent<PlayerAttributes>();  // fetch player script
+                if (player != null)
                 {
-                    // === Phase 1: pull until close to center ===
-                    while (Vector3.Distance(player.transform.position, transform.position) > centerThreshold)
+                    player.TakeDamagefromEnemy(slamDamagePerSecond * Time.deltaTime); // DPS tick
+
+                    // Spawn hit VFX occasionally (optional)
+                    if (PlayerImpactVFX != null)
                     {
-                        Vector3 pullDir = (transform.position - player.transform.position).normalized;
-                        movement.ApplyExternalForce(pullDir * pullForce);
-                        yield return null; // wait a frame, then continue pulling
+                        GameObject fx = Instantiate(PlayerImpactVFX, player.transform.position + Vector3.up * 1f, Quaternion.identity);
+                        Destroy(fx, 1f);
                     }
-
-                    // === Phase 2: launch outward + upward ===
-                    Vector3 dir = (player.transform.position - transform.position).normalized;
-                    dir.y = 0f; // only horizontal push
-                    Vector3 knockDir = dir * knockbackForce + Vector3.up * upwardForce;
-                    movement.ApplyExternalForce(knockDir);
-                }
-
-                // Spawn player hit VFX
-                if (PlayerImpactVFX != null)
-                {
-                    GameObject fx = Instantiate(PlayerImpactVFX, player.transform.position + Vector3.up * 1f, Quaternion.identity);
-                    Destroy(fx, 5f);
-                }
-
-                if (PlayerImpactVFX2 != null)
-                {
-                    GameObject fx = Instantiate(PlayerImpactVFX2, player.transform.position, Quaternion.Euler(-90f, 0f, -90f));
-                    Destroy(fx, 25f);
                 }
             }
+
+            timer += Time.deltaTime;
+            yield return null;
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject); // remove void after duration
     }
 }

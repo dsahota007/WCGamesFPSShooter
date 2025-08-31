@@ -838,7 +838,7 @@ Transform:
   m_GameObject: {fileID: 2169118345603078319}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.168, y: 1.797, z: 0.937}
+  m_LocalPosition: {x: 0.168, y: 1.373, z: 0.937}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2504,7 +2504,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
-  immuneTo: 4
+  immuneTo: 3
 --- !u!114 &1622243841089407528
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2518,27 +2518,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  sightRange: 50
-  sightAngle: 80
+  sightRange: 15
+  sightAngle: 60
   obstructionMask:
     serializedVersion: 2
     m_Bits: 256
   attackCooldownMin: 3
   attackCooldownMax: 5
   attackAnimLength: 4.5
-  projectileDelay: 2.5
-  projectileSpeed: 0.1
+  projectileDelay: 3
+  projectileSpeed: 25
   projectileLifetime: 15
   projectileSpawnPoint: {fileID: 5127682219308295185}
-  projectilePrefab: {fileID: 3292252372715375916, guid: df9b543cd3f04d24c8b0b820f5329973,
+  projectilePrefab: {fileID: 3292252372715375916, guid: 6e14b90beaf71654288a70dfd6df699b,
     type: 3}
-  launchVFXPrefab: {fileID: 8145502431507700120, guid: 38b7f58c4e1f9fc4d8b1831c29126086,
+  launchVFXPrefab: {fileID: 6441873369525384307, guid: 3f5abfd08f856ee42a41d0dd6d62c779,
     type: 3}
-  launchVFXDelay: 2.2
-  launchVFXLifetime: 2
+  launchVFXDelay: 2
+  launchVFXLifetime: 3
   launchVFXOffset: {x: 0, y: 0, z: 0}
-  launchVFXEuler: {x: 0, y: 20, z: 0}
-  launchVFXScale: {x: 2, y: 2, z: 2}
+  launchVFXEuler: {x: 0, y: 0, z: 0}
+  launchVFXScale: {x: 4, y: 4, z: 4}
   auraVFXPrefab: {fileID: 9017484664307500583, guid: 207506f07992ef84181cc26923ecc1c8,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
