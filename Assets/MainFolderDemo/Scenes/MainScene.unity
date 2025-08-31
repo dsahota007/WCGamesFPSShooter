@@ -2020,7 +2020,7 @@ MonoBehaviour:
   moveInTime: 0.55
   showoffHoldTime: 0.5
   sipTime: 1
-  moveOutTime: 0.25
+  moveOutTime: 1
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: a8c228115d80ce44d91240a4b47f01b8,
     type: 3}
   hasFastHandsPerk: 0
@@ -3181,7 +3181,7 @@ MonoBehaviour:
   moveInTime: 0.55
   showoffHoldTime: 0.5
   sipTime: 1
-  moveOutTime: 0.25
+  moveOutTime: 1
   upgradedWalkSpeed: 10
   upgradedSprintSpeed: 15
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: 02f7c9cd744aa1f49897fb9a102abf37,
@@ -9885,7 +9885,7 @@ MonoBehaviour:
   moveInTime: 0.55
   showoffHoldTime: 0.5
   sipTime: 1
-  moveOutTime: 0.25
+  moveOutTime: 1
   timeToRegen: 3
   regenRatePerSecondIncrease: 10
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: 0d21dc344dcf1f54f9d3c4c70aa73ae2,
@@ -15403,7 +15403,7 @@ MonoBehaviour:
   moveInTime: 0.55
   showoffHoldTime: 0.5
   sipTime: 1
-  moveOutTime: 0.25
+  moveOutTime: 1
   newHealth: 80
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: 7e7e220f62a1ae84bb19e6ce85ebee80,
     type: 3}
@@ -22254,7 +22254,7 @@ MonoBehaviour:
   moveInTime: 0.55
   showoffHoldTime: 0.5
   sipTime: 1
-  moveOutTime: 0.25
+  moveOutTime: 1
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: acc702cf4ed829f45b9a0071ff202552,
     type: 3}
   hasMagicCooldownPerk: 0
@@ -28706,7 +28706,7 @@ MonoBehaviour:
   moveInTime: 0.55
   showoffHoldTime: 0.5
   sipTime: 1
-  moveOutTime: 0.25
+  moveOutTime: 1
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: e08f8ddd58518c647bbb623107be1419,
     type: 3}
   hasMoreFireRatePerk: 0
