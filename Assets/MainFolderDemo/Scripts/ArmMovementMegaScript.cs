@@ -115,7 +115,6 @@ public class ArmMovementMegaScript : MonoBehaviour
         leftDefaultPos = leftArm.localPosition;   //for gernade throw -- find current positon so we can set default variable
         leftDefaultRot = leftArm.localRotation;
 
-
     }
 
     void Update()  //LateUpdate()   -- i got rid of this bc idk
