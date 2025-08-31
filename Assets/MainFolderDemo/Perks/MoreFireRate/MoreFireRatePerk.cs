@@ -15,23 +15,24 @@ public class MoreFireRatePerk : MonoBehaviour
 
     [Header("Flask Offsets")]
     public Vector3 flaskStartLocalPos = new Vector3(-0.09f, -1.1f, 0.42f);
+    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   // 👈 hold up stop
     public Vector3 flaskMouthLocalPos = new Vector3(-0.01f, -0.12f, 0.16f);
+
     public Vector3 flaskStartLocalEuler = Vector3.zero;
+    public Vector3 flaskShowoffLocalEuler = new Vector3(-20f, 0f, 0f);
     public Vector3 flaskSipLocalEuler = new Vector3(-65f, 0f, 0f);
 
     [Header("Timing")]
     public float moveInTime = 0.5f;
+    public float showoffHoldTime = 0.5f;
     public float sipTime = 1f;
     public float moveOutTime = 0.25f;
 
     [Header("Perk Upgrade")]
-    public float upgradedWalkSpeed = 10f;
-    public float upgradedSprintSpeed = 15f;
     public GameObject PlayerDrinkVFX;
     [HideInInspector] public bool hasMoreFireRatePerk = false;
 
     Transform cam;   // Camera.main
-
 
     void Awake()
     {
@@ -39,7 +40,7 @@ public class MoreFireRatePerk : MonoBehaviour
 
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (points == null)      // <-- ADD
+        if (points == null)
             points = FindFirstObjectByType<PointManager>();
     }
 
@@ -49,82 +50,63 @@ public class MoreFireRatePerk : MonoBehaviour
         if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreFireRatePerk)
         {
             UI ui = FindFirstObjectByType<UI>();
-
-            // **PAY OR BLOCK**
-            if (!points.TrySpend(cost))   // <-- ADD
+            if (!points.TrySpend(cost))
             {
                 if (ui != null) ui.ShowTemporaryPerkMessage("Not enough points");
                 return;
             }
 
-            ArmMovementMegaScript arms = FindFirstObjectByType<ArmMovementMegaScript>();   //arm script
+            ArmMovementMegaScript arms = FindFirstObjectByType<ArmMovementMegaScript>();
             if (arms == null || arms.IsGrenadeAnimating || arms.IsPerkAnimating) return;
 
-            StartCoroutine(DoPerkDrink(arms));  //drink if in range
+            StartCoroutine(DoPerkDrink(arms));
         }
     }
 
     IEnumerator DoPerkDrink(ArmMovementMegaScript arms)
     {
         hasMoreFireRatePerk = true;
-        //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
-        Weapon.GlobalFireRateMult *= 1.5f;
-
+        Weapon.GlobalFireRateMult *= 1.5f;   // 👈 perk effect
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.FireRate);
-        //FindFirstObjectByType<UI>()?.RemovePerkIcon(PerkType.Speed);
-
 
         if (player != null && PlayerDrinkVFX != null)
         {
-            //GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position + Vector3.up * 2.85f, Quaternion.Euler(180f, 0f, 0f));  
-            GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position, Quaternion.identity);
-            PerkVFX.transform.SetParent(player.transform, true);
-            Destroy(PerkVFX, 4f);
-
+            GameObject fx = Instantiate(PlayerDrinkVFX, player.transform.position, Quaternion.identity);
+            fx.transform.SetParent(player.transform, true);
+            Destroy(fx, 4f);
         }
 
-        // arm animation
-        arms.StartCoroutine(arms.PerkDrinkDropOnly());    // Play the left-arm drop/drink animation
+        arms.StartCoroutine(arms.PerkDrinkDropOnly());    // arm anim
 
-        // flask (optional)
+        // flask
         if (cam != null && flaskPrefab != null)
         {
-            GameObject flask = Instantiate(flaskPrefab, cam, false);   // parent directly to camera
-            Transform tf = flask.transform;        //we get the point into tf
+            GameObject flask = Instantiate(flaskPrefab, cam, false);
+            Transform tf = flask.transform;
 
-            tf.localPosition = flaskStartLocalPos;      //start offset
-            tf.localRotation = Quaternion.Euler(flaskStartLocalEuler);      //start rot
+            tf.localPosition = flaskStartLocalPos;
+            tf.localRotation = Quaternion.Euler(flaskStartLocalEuler);
 
-            yield return LerpLocal(
-                tf,
-                flaskStartLocalPos, flaskMouthLocalPos,
-                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
-                moveInTime
-            );
+            yield return LerpLocal(tf, flaskStartLocalPos, flaskShowoffLocalPos,
+                                   Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskShowoffLocalEuler), moveInTime);
 
-            // sip
-            yield return new WaitForSeconds(sipTime);
+            if (showoffHoldTime > 0f)
+                yield return new WaitForSeconds(showoffHoldTime);
 
-            // out
-            yield return LerpLocal(         //this func is combign lerp and slerp so we can do rotation and movment 
-                tf,
-                flaskMouthLocalPos, flaskStartLocalPos,
-                Quaternion.Euler(flaskSipLocalEuler), Quaternion.Euler(flaskStartLocalEuler),
-                moveOutTime
-            );
+            yield return LerpLocal(tf, flaskShowoffLocalPos, flaskMouthLocalPos,
+                                   Quaternion.Euler(flaskShowoffLocalEuler), Quaternion.Euler(flaskSipLocalEuler), 0.25f);
+
+            if (sipTime > 0f)
+                yield return new WaitForSeconds(sipTime);
+
+            yield return LerpLocal(tf, flaskMouthLocalPos, flaskStartLocalPos,
+                                   Quaternion.Euler(flaskSipLocalEuler), Quaternion.Euler(flaskStartLocalEuler), moveOutTime);
 
             Destroy(flask);
         }
-        //else
-        //{
-        //    no prefab/cam → just wait roughly same total time so arms look synced
-        //    yield return new WaitForSeconds(moveInTime + sipTime + moveOutTime);
-        //}
 
-        // wait for arm anim to fully finish
         while (arms != null && arms.IsPerkAnimating) yield return null;
-
     }
 
     IEnumerator LerpLocal(Transform t, Vector3 p0, Vector3 p1, Quaternion r0, Quaternion r1, float dur)

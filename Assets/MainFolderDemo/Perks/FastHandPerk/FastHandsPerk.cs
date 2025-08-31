@@ -4,6 +4,7 @@ using System.Collections;
 public class FastHandsPerk : MonoBehaviour
 {
     public PointManager points;
+
     [Header("Interact")]
     public Transform player;
     public PerkType type = PerkType.FastHands;
@@ -15,12 +16,16 @@ public class FastHandsPerk : MonoBehaviour
 
     [Header("Flask Offsets")]
     public Vector3 flaskStartLocalPos = new Vector3(-0.09f, -1.1f, 0.42f);
+    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   // 👈 added stop to hold flask up
     public Vector3 flaskMouthLocalPos = new Vector3(-0.01f, -0.12f, 0.16f);
+
     public Vector3 flaskStartLocalEuler = Vector3.zero;
+    public Vector3 flaskShowoffLocalEuler = new Vector3(-20f, 0f, 0f);         // 👈 showoff pose
     public Vector3 flaskSipLocalEuler = new Vector3(-65f, 0f, 0f);
 
     [Header("Timing")]
     public float moveInTime = 0.5f;
+    public float showoffHoldTime = 0.5f;    // 👈 hold flask up before sipping
     public float sipTime = 1f;
     public float moveOutTime = 0.25f;
 
@@ -31,7 +36,6 @@ public class FastHandsPerk : MonoBehaviour
     [HideInInspector] public bool hasFastHandsPerk = false;
 
     Transform cam;   // Camera.main
-
 
     void Awake()
     {
@@ -68,12 +72,10 @@ public class FastHandsPerk : MonoBehaviour
     {
         hasFastHandsPerk = true;
         //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
-        Weapon.GlobalReloadSpeedMult *= 2f;
-
+        Weapon.GlobalReloadSpeedMult *= 2f;   // upgrade reload speed
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.FastHands);
         //FindFirstObjectByType<UI>()?.RemovePerkIcon(PerkType.Speed);
-
 
         if (player != null && PlayerDrinkVFX != null)
         {
@@ -81,7 +83,6 @@ public class FastHandsPerk : MonoBehaviour
             GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position, Quaternion.identity);
             PerkVFX.transform.SetParent(player.transform, true);
             Destroy(PerkVFX, 4f);
-
         }
 
         // arm animation
@@ -96,18 +97,32 @@ public class FastHandsPerk : MonoBehaviour
             tf.localPosition = flaskStartLocalPos;      //start offset
             tf.localRotation = Quaternion.Euler(flaskStartLocalEuler);      //start rot
 
+            // start → showoff
             yield return LerpLocal(
                 tf,
-                flaskStartLocalPos, flaskMouthLocalPos,
-                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
+                flaskStartLocalPos, flaskShowoffLocalPos,
+                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskShowoffLocalEuler),
                 moveInTime
             );
 
-            // sip
-            yield return new WaitForSeconds(sipTime);
+            // hold at showoff
+            if (showoffHoldTime > 0f)
+                yield return new WaitForSeconds(showoffHoldTime);
 
-            // out
-            yield return LerpLocal(         //this func is combign lerp and slerp so we can do rotation and movment 
+            // showoff → mouth (sip)
+            yield return LerpLocal(
+                tf,
+                flaskShowoffLocalPos, flaskMouthLocalPos,
+                Quaternion.Euler(flaskShowoffLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
+                0.25f
+            );
+
+            // sip
+            if (sipTime > 0f)
+                yield return new WaitForSeconds(sipTime);
+
+            // mouth → start (return)
+            yield return LerpLocal(
                 tf,
                 flaskMouthLocalPos, flaskStartLocalPos,
                 Quaternion.Euler(flaskSipLocalEuler), Quaternion.Euler(flaskStartLocalEuler),
@@ -124,7 +139,6 @@ public class FastHandsPerk : MonoBehaviour
 
         // wait for arm anim to fully finish
         while (arms != null && arms.IsPerkAnimating) yield return null;
-
     }
 
     IEnumerator LerpLocal(Transform t, Vector3 p0, Vector3 p1, Quaternion r0, Quaternion r1, float dur)

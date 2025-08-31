@@ -2009,13 +2009,16 @@ MonoBehaviour:
   type: 4
   cost: 3000
   interactDistance: 2.2
-  flaskPrefab: {fileID: 1681726694830842825, guid: f6e6a740c01169b4091f6b43b9aa8550,
+  flaskPrefab: {fileID: 1681726694830842825, guid: 6460036222d21d1459c55c4214ed64d3,
     type: 3}
   flaskStartLocalPos: {x: -0.09, y: -1.1, z: 0.42}
-  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.16}
+  flaskShowoffLocalPos: {x: -0.06, y: -0.12, z: 0.25}
+  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.15}
   flaskStartLocalEuler: {x: 0, y: 0, z: 0}
+  flaskShowoffLocalEuler: {x: -20, y: 0, z: 0}
   flaskSipLocalEuler: {x: -65, y: 0, z: 0}
-  moveInTime: 0.5
+  moveInTime: 0.55
+  showoffHoldTime: 0.5
   sipTime: 1
   moveOutTime: 0.25
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: a8c228115d80ce44d91240a4b47f01b8,
@@ -3167,13 +3170,16 @@ MonoBehaviour:
   type: 0
   cost: 2000
   interactDistance: 2.2
-  flaskPrefab: {fileID: 1681726694830842825, guid: 7a37e91bca1ad5b45a7c4a0383cd3c28,
+  flaskPrefab: {fileID: 1681726694830842825, guid: 6460036222d21d1459c55c4214ed64d3,
     type: 3}
   flaskStartLocalPos: {x: -0.09, y: -1.1, z: 0.42}
-  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.16}
+  flaskShowoffLocalPos: {x: -0.06, y: -0.12, z: 0.25}
+  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.15}
   flaskStartLocalEuler: {x: 0, y: 0, z: 0}
+  flaskShowoffLocalEuler: {x: -20, y: 0, z: 0}
   flaskSipLocalEuler: {x: -65, y: 0, z: 0}
-  moveInTime: 0.5
+  moveInTime: 0.55
+  showoffHoldTime: 0.5
   sipTime: 1
   moveOutTime: 0.25
   upgradedWalkSpeed: 10
@@ -9868,13 +9874,16 @@ MonoBehaviour:
   type: 2
   cost: 4000
   interactDistance: 2.2
-  flaskPrefab: {fileID: 1681726694830842825, guid: deda649b2b172c3479da13044b329acb,
+  flaskPrefab: {fileID: 1681726694830842825, guid: 6460036222d21d1459c55c4214ed64d3,
     type: 3}
   flaskStartLocalPos: {x: -0.09, y: -1.1, z: 0.42}
-  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.16}
+  flaskShowoffLocalPos: {x: -0.06, y: -0.12, z: 0.25}
+  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.15}
   flaskStartLocalEuler: {x: 0, y: 0, z: 0}
+  flaskShowoffLocalEuler: {x: -20, y: 0, z: 0}
   flaskSipLocalEuler: {x: -65, y: 0, z: 0}
-  moveInTime: 0.5
+  moveInTime: 0.55
+  showoffHoldTime: 0.5
   sipTime: 1
   moveOutTime: 0.25
   timeToRegen: 3
@@ -22234,13 +22243,16 @@ MonoBehaviour:
   type: 5
   cost: 3000
   interactDistance: 2.2
-  flaskPrefab: {fileID: 1681726694830842825, guid: e410da0d684321744906f5580c7be323,
+  flaskPrefab: {fileID: 1681726694830842825, guid: 6460036222d21d1459c55c4214ed64d3,
     type: 3}
   flaskStartLocalPos: {x: -0.09, y: -1.1, z: 0.42}
-  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.16}
+  flaskShowoffLocalPos: {x: -0.06, y: -0.12, z: 0.25}
+  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.15}
   flaskStartLocalEuler: {x: 0, y: 0, z: 0}
+  flaskShowoffLocalEuler: {x: -20, y: 0, z: 0}
   flaskSipLocalEuler: {x: -65, y: 0, z: 0}
-  moveInTime: 0.5
+  moveInTime: 0.55
+  showoffHoldTime: 0.5
   sipTime: 1
   moveOutTime: 0.25
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: acc702cf4ed829f45b9a0071ff202552,
@@ -28683,17 +28695,18 @@ MonoBehaviour:
   type: 3
   cost: 2000
   interactDistance: 2.2
-  flaskPrefab: {fileID: 1681726694830842825, guid: 16eed10c370796243af12753f7be43af,
+  flaskPrefab: {fileID: 1681726694830842825, guid: 6460036222d21d1459c55c4214ed64d3,
     type: 3}
   flaskStartLocalPos: {x: -0.09, y: -1.1, z: 0.42}
-  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.16}
+  flaskShowoffLocalPos: {x: -0.06, y: -0.12, z: 0.25}
+  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.15}
   flaskStartLocalEuler: {x: 0, y: 0, z: 0}
+  flaskShowoffLocalEuler: {x: -20, y: 0, z: 0}
   flaskSipLocalEuler: {x: -65, y: 0, z: 0}
-  moveInTime: 0.5
+  moveInTime: 0.55
+  showoffHoldTime: 0.5
   sipTime: 1
   moveOutTime: 0.25
-  upgradedWalkSpeed: 10
-  upgradedSprintSpeed: 15
   PlayerDrinkVFX: {fileID: 7155335147208632822, guid: e08f8ddd58518c647bbb623107be1419,
     type: 3}
   hasMoreFireRatePerk: 0
@@ -35030,7 +35043,7 @@ MonoBehaviour:
   perkShowoffLocalPos: {x: -0.43, y: -0.07, z: -0.54}
   perkShowoffLocalEuler: {x: 0, y: -207.5, z: 0}
   perkShowoffHoldTime: 0.5
-  lockBobbingDuringPerk: 0
+  lockBobbingDuringPerk: 1
   externalKickbackOffset: {x: 0, y: 0, z: 0}
   rightArm: {fileID: 7138732185366571710}
 --- !u!4 &5640334131998495611

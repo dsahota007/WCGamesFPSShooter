@@ -15,23 +15,24 @@ public class MagicCooldownPerk : MonoBehaviour
 
     [Header("Flask Offsets")]
     public Vector3 flaskStartLocalPos = new Vector3(-0.09f, -1.1f, 0.42f);
+    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   // 👈 added stop to hold flask up
     public Vector3 flaskMouthLocalPos = new Vector3(-0.01f, -0.12f, 0.16f);
+
     public Vector3 flaskStartLocalEuler = Vector3.zero;
+    public Vector3 flaskShowoffLocalEuler = new Vector3(-20f, 0f, 0f);         // 👈 rotation for showoff pose
     public Vector3 flaskSipLocalEuler = new Vector3(-65f, 0f, 0f);
 
     [Header("Timing")]
     public float moveInTime = 0.5f;
+    public float showoffHoldTime = 0.5f;     // 👈 hold flask up before sipping
     public float sipTime = 1f;
     public float moveOutTime = 0.25f;
 
     [Header("Perk Upgrade")]
-    //public float upgradedWalkSpeed = 10f;
-    //public float upgradedSprintSpeed = 15f;
     public GameObject PlayerDrinkVFX;
     [HideInInspector] public bool hasMagicCooldownPerk = false;
 
     Transform cam;   // Camera.main
-
 
     void Awake()
     {
@@ -67,21 +68,15 @@ public class MagicCooldownPerk : MonoBehaviour
     IEnumerator DoPerkDrink(ArmMovementMegaScript arms)
     {
         hasMagicCooldownPerk = true;
-        //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
+        MagicManager.GlobalCooldownMult *= 1.5f;  // 👈 apply magic cooldown upgrade
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.MagicCooldown);
-        MagicManager.GlobalCooldownMult *= 1.5f;
-
-        //FindFirstObjectByType<UI>()?.RemovePerkIcon(PerkType.Speed);
-
 
         if (player != null && PlayerDrinkVFX != null)
         {
-            //GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position + Vector3.up * 2.85f, Quaternion.Euler(180f, 0f, 0f));  
             GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position, Quaternion.identity);
             PerkVFX.transform.SetParent(player.transform, true);
             Destroy(PerkVFX, 4f);
-
         }
 
         // arm animation
@@ -91,23 +86,37 @@ public class MagicCooldownPerk : MonoBehaviour
         if (cam != null && flaskPrefab != null)
         {
             GameObject flask = Instantiate(flaskPrefab, cam, false);   // parent directly to camera
-            Transform tf = flask.transform;        //we get the point into tf
+            Transform tf = flask.transform;
 
             tf.localPosition = flaskStartLocalPos;      //start offset
             tf.localRotation = Quaternion.Euler(flaskStartLocalEuler);      //start rot
 
+            // start → showoff
             yield return LerpLocal(
                 tf,
-                flaskStartLocalPos, flaskMouthLocalPos,
-                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
+                flaskStartLocalPos, flaskShowoffLocalPos,
+                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskShowoffLocalEuler),
                 moveInTime
             );
 
-            // sip
-            yield return new WaitForSeconds(sipTime);
+            // hold at showoff
+            if (showoffHoldTime > 0f)
+                yield return new WaitForSeconds(showoffHoldTime);
 
-            // out
-            yield return LerpLocal(         //this func is combign lerp and slerp so we can do rotation and movment 
+            // showoff → mouth (sip)
+            yield return LerpLocal(
+                tf,
+                flaskShowoffLocalPos, flaskMouthLocalPos,
+                Quaternion.Euler(flaskShowoffLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
+                0.25f
+            );
+
+            // sip
+            if (sipTime > 0f)
+                yield return new WaitForSeconds(sipTime);
+
+            // mouth → start (return)
+            yield return LerpLocal(
                 tf,
                 flaskMouthLocalPos, flaskStartLocalPos,
                 Quaternion.Euler(flaskSipLocalEuler), Quaternion.Euler(flaskStartLocalEuler),
@@ -116,15 +125,9 @@ public class MagicCooldownPerk : MonoBehaviour
 
             Destroy(flask);
         }
-        //else
-        //{
-        //    no prefab/cam → just wait roughly same total time so arms look synced
-        //    yield return new WaitForSeconds(moveInTime + sipTime + moveOutTime);
-        //}
 
         // wait for arm anim to fully finish
         while (arms != null && arms.IsPerkAnimating) yield return null;
-
     }
 
     IEnumerator LerpLocal(Transform t, Vector3 p0, Vector3 p1, Quaternion r0, Quaternion r1, float dur)
