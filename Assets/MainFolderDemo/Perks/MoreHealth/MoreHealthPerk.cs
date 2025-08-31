@@ -1,11 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-
-
 public class MoreHealthPerk : MonoBehaviour
 {
     public PointManager points;
+
     [Header("Interact")]
     public Transform player;
     public PerkType type = PerkType.Health;
@@ -17,12 +16,16 @@ public class MoreHealthPerk : MonoBehaviour
 
     [Header("Flask Offsets")]
     public Vector3 flaskStartLocalPos = new Vector3(-0.09f, -1.1f, 0.42f);
+    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   // 👈 renamed midpoint → showoff
     public Vector3 flaskMouthLocalPos = new Vector3(-0.01f, -0.12f, 0.16f);
+
     public Vector3 flaskStartLocalEuler = Vector3.zero;
+    public Vector3 flaskShowoffLocalEuler = new Vector3(-20f, 0f, 0f);          // 👈 renamed midpoint → showoff
     public Vector3 flaskSipLocalEuler = new Vector3(-65f, 0f, 0f);
 
     [Header("Timing")]
     public float moveInTime = 0.5f;
+    public float showoffHoldTime = 0.5f;   // 👈 renamed midHoldTime → showoffHoldTime
     public float sipTime = 1f;
     public float moveOutTime = 0.25f;
 
@@ -31,9 +34,7 @@ public class MoreHealthPerk : MonoBehaviour
     public GameObject PlayerDrinkVFX;
     [HideInInspector] public bool hasMoreHealthPerk = false;
 
-
     Transform cam;   // Camera.main
- 
 
     void Awake()
     {
@@ -42,8 +43,7 @@ public class MoreHealthPerk : MonoBehaviour
         if (player == null)
             player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-
-        if (points == null)      // <-- ADD
+        if (points == null)
             points = FindFirstObjectByType<PointManager>();
     }
 
@@ -54,17 +54,16 @@ public class MoreHealthPerk : MonoBehaviour
         {
             UI ui = FindFirstObjectByType<UI>();
 
-            // **PAY OR BLOCK**
-            if (!points.TrySpend(cost))   // <-- ADD
+            if (!points.TrySpend(cost))   // check points
             {
                 if (ui != null) ui.ShowTemporaryPerkMessage("Not enough points");
                 return;
             }
 
-            ArmMovementMegaScript arms = FindFirstObjectByType<ArmMovementMegaScript>();   //arm script
+            ArmMovementMegaScript arms = FindFirstObjectByType<ArmMovementMegaScript>();
             if (arms == null || arms.IsGrenadeAnimating || arms.IsPerkAnimating) return;
 
-            StartCoroutine(DoPerkDrink(arms));  //drink if in range
+            StartCoroutine(DoPerkDrink(arms));
         }
     }
 
@@ -75,42 +74,51 @@ public class MoreHealthPerk : MonoBehaviour
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.Health);
 
-
-
         if (player != null && PlayerDrinkVFX != null)
         {
-            //GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position + Vector3.up * 2.85f, Quaternion.Euler(180f, 0f, 0f));  
             GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position, Quaternion.identity);
             PerkVFX.transform.SetParent(player.transform, true);
             Destroy(PerkVFX, 4f);
-
         }
 
-
         // arm animation
-        arms.StartCoroutine(arms.PerkDrinkDropOnly());    // Play the left-arm drop/drink animation
+        arms.StartCoroutine(arms.PerkDrinkDropOnly());
 
         // flask (optional)
         if (cam != null && flaskPrefab != null)
         {
-            GameObject flask = Instantiate(flaskPrefab, cam, false);   // parent directly to camera
-            Transform tf = flask.transform;        //we get the point into tf
+            GameObject flask = Instantiate(flaskPrefab, cam, false);
+            Transform tf = flask.transform;
 
-            tf.localPosition = flaskStartLocalPos;      //start offset
-            tf.localRotation = Quaternion.Euler(flaskStartLocalEuler);      //start rot
+            tf.localPosition = flaskStartLocalPos;
+            tf.localRotation = Quaternion.Euler(flaskStartLocalEuler);
 
+            // start → showoff
             yield return LerpLocal(
                 tf,
-                flaskStartLocalPos, flaskMouthLocalPos,
-                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
+                flaskStartLocalPos, flaskShowoffLocalPos,
+                Quaternion.Euler(flaskStartLocalEuler), Quaternion.Euler(flaskShowoffLocalEuler),
                 moveInTime
             );
 
-            // sip
-            yield return new WaitForSeconds(sipTime);
+            // hold at showoff
+            if (showoffHoldTime > 0f)
+                yield return new WaitForSeconds(showoffHoldTime);
 
-            // out
-            yield return LerpLocal(         //this func is combign lerp and slerp so we can do rotation and movment 
+            // showoff → mouth (sip)
+            yield return LerpLocal(
+                tf,
+                flaskShowoffLocalPos, flaskMouthLocalPos,
+                Quaternion.Euler(flaskShowoffLocalEuler), Quaternion.Euler(flaskSipLocalEuler),
+                0.25f
+            );
+
+            // sip
+            if (sipTime > 0f)
+                yield return new WaitForSeconds(sipTime);
+
+            // mouth → start (return)
+            yield return LerpLocal(
                 tf,
                 flaskMouthLocalPos, flaskStartLocalPos,
                 Quaternion.Euler(flaskSipLocalEuler), Quaternion.Euler(flaskStartLocalEuler),
@@ -119,15 +127,9 @@ public class MoreHealthPerk : MonoBehaviour
 
             Destroy(flask);
         }
-        //else
-        //{
-        //    no prefab/cam → just wait roughly same total time so arms look synced
-        //    yield return new WaitForSeconds(moveInTime + sipTime + moveOutTime);
-        //}
 
-        // wait for arm anim to fully finish
-        while (arms != null && arms.IsPerkAnimating) yield return null;
-
+        while (arms != null && arms.IsPerkAnimating)
+            yield return null;
     }
 
     IEnumerator LerpLocal(Transform t, Vector3 p0, Vector3 p1, Quaternion r0, Quaternion r1, float dur)

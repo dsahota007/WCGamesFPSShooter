@@ -79,6 +79,10 @@ public class ArmMovementMegaScript : MonoBehaviour
     public float perkToMidTime = 0.18f;  // drop → mid travel time
     public float perkMidHoldTime = 0.35f;  // hold at mid before returning
 
+    public Vector3 perkShowoffLocalPos = new Vector3(-0.15f, -0.25f, 0.25f); // arm position when flask is held up
+    public Vector3 perkShowoffLocalEuler = new Vector3(-20f, 0f, 0f);         // rotation of arm in showoff pose
+    public float perkShowoffHoldTime = 0.5f;
+
     public bool lockBobbingDuringPerk = true;
     private bool isPerkAnimPlaying = false;
     public bool IsPerkAnimating => isPerkAnimPlaying;
@@ -411,55 +415,73 @@ public class ArmMovementMegaScript : MonoBehaviour
         isPerkAnimPlaying = true;
 
         // cache defaults captured in Start()
-        Vector3 startPos = leftDefaultPos;      //grab start 
+        Vector3 startPos = leftDefaultPos;
         Quaternion startRot = leftDefaultRot;
 
-        Vector3 dropPos = leftDefaultPos + perkDropOffset;   //add new position
+        Vector3 dropPos = leftDefaultPos + perkDropOffset;
         Quaternion dropRot = leftDefaultRot;
 
-        Vector3 midPos = perkMidLocalPos;           //add mid stop for drinking
-        Quaternion midRot = Quaternion.Euler(perkMidLocalEuler);
+        Vector3 showoffPos = perkShowoffLocalPos;             // 👈 new stop: hold flask up
+        Quaternion showoffRot = Quaternion.Euler(perkShowoffLocalEuler);
+
+        Vector3 sipPos = perkMidLocalPos;                     // reuse as sip (mouth)
+        Quaternion sipRot = Quaternion.Euler(perkMidLocalEuler);
 
         // 1) Start → Drop
-        float t = 0f, dur = Mathf.Max(0.01f, perkDropTime);   //start progress time so if 0 start 1 is done
-        while (t < 1f) //when time is less than 1 
+        float t = 0f, dur = Mathf.Max(0.01f, perkDropTime);
+        while (t < 1f)
         {
-            t += Time.deltaTime / dur;      //If you’re around 60 FPS, Time.deltaTime ≈ 1/60 ≈ 0.0167.
-            leftArm.localPosition = Vector3.Lerp(startPos, dropPos, t); // t is time yk so this is LERP 
+            t += Time.deltaTime / dur;
+            leftArm.localPosition = Vector3.Lerp(startPos, dropPos, t);
             leftArm.localRotation = Quaternion.Slerp(startRot, dropRot, t);
             yield return null;
         }
 
         // 2) Hold at Drop
-        if (perkHoldTime > 0f) // if its more than 0 seconds hold that shit
+        if (perkHoldTime > 0f)
             yield return new WaitForSeconds(perkHoldTime);
 
-        // 3) Drop → Mid (the “specific point”)
+        // 3) Drop → Showoff
         t = 0f; dur = Mathf.Max(0.01f, perkToMidTime);
         while (t < 1f)
         {
             t += Time.deltaTime / dur;
-            leftArm.localPosition = Vector3.Lerp(dropPos, midPos, t);   
-            leftArm.localRotation = Quaternion.Slerp(dropRot, midRot, t);
+            leftArm.localPosition = Vector3.Lerp(dropPos, showoffPos, t);
+            leftArm.localRotation = Quaternion.Slerp(dropRot, showoffRot, t);
             yield return null;
         }
 
-        // 4) Hold at Mid
+        // 4) Hold at Showoff
+        if (perkShowoffHoldTime > 0f)
+            yield return new WaitForSeconds(perkShowoffHoldTime);
+
+        // 5) Showoff → Sip (mouth)
+        t = 0f; dur = Mathf.Max(0.01f, perkToMidTime);
+        while (t < 1f)
+        {
+            t += Time.deltaTime / dur;
+            leftArm.localPosition = Vector3.Lerp(showoffPos, sipPos, t);
+            leftArm.localRotation = Quaternion.Slerp(showoffRot, sipRot, t);
+            yield return null;
+        }
+
+        // 6) Hold at Sip
         if (perkMidHoldTime > 0f)
             yield return new WaitForSeconds(perkMidHoldTime);
 
-        // 5) Mid → Start (return to OG)
+        // 7) Sip → Start (return to OG)
         t = 0f; dur = Mathf.Max(0.01f, perkReturnTime);
         while (t < 1f)
         {
             t += Time.deltaTime / dur;
-            leftArm.localPosition = Vector3.Lerp(midPos, startPos, t);
-            leftArm.localRotation = Quaternion.Slerp(midRot, startRot, t);
+            leftArm.localPosition = Vector3.Lerp(sipPos, startPos, t);
+            leftArm.localRotation = Quaternion.Slerp(sipRot, startRot, t);
             yield return null;
         }
 
         isPerkAnimPlaying = false;
     }
+
     public bool DrinkingPerk => isPerkAnimPlaying;
 
 
