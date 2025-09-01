@@ -226,7 +226,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.19140005, g: 0, b: 1, a: 1}
+      maxColor: {r: 0.053014517, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -24499,7 +24499,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.3229085, g: 0.061409745, b: 0.8679245, a: 1}
+      maxColor: {r: 0.053014517, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -58803,7 +58803,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.35384893, g: 0, b: 1, a: 1}
+      maxColor: {r: 0.053014517, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -63544,7 +63544,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0.42060566, g: 0, b: 1, a: 1}
+  m_Color: {r: 0, g: 1, b: 0.031219244, a: 1}
   m_Intensity: 2
   m_Range: 8
   m_SpotAngle: 30
@@ -63590,7 +63590,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 1.5e-44, y: 1.7e-44, z: 1.8e-44, w: -5.6098394e-37}
+  m_BoundingSphereOverride: {x: 0, y: 9e-44, z: 0, w: 9e-44}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -63822,7 +63822,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.3229085, g: 0.061409745, b: 0.8679245, a: 1}
+      maxColor: {r: 0.053014517, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -73234,7 +73234,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3e703f1bc2a4cf146b3ada58052c4e21, type: 2}
+  - {fileID: 2100000, guid: db0e70e0569fecd4db56f3efbf27bbdd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83105,7 +83105,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 62b1fd47af43be447b3e593c4ce301e5,
         type: 3}
       propertyPath: m_Name
-      value: PurpleCauldron
+      value: GreenCauldron
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
