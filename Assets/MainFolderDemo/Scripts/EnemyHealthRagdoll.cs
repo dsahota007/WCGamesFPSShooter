@@ -558,6 +558,11 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
     void Die(Vector3 hitDirection)
     {
+        if (ragdollRoot == null)
+        {
+            Debug.LogError("RagdollRoot is not assigned! Enemy will fall through map.");
+            return;
+        }
         isDead = true;
         PointManager.Instance.AddPoints(50);
 
@@ -599,6 +604,7 @@ public class EnemyHealthRagdoll : MonoBehaviour
         Destroy(gameObject, 30f);    //make bodies dissapear. 
 
         SetHealthUIVisible(false);
+
 
     }
 

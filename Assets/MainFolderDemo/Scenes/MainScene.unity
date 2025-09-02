@@ -8796,7 +8796,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2.363, y: -0.766, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2.62, y: 4.85, z: 6.88}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1698164548}
@@ -8903,7 +8903,7 @@ MonoBehaviour:
     type: 3}
   readyVFXOffset: {x: 0, y: 0, z: 0}
   readyVFXRotation: {x: 0, y: 0, z: 0}
-  readyVFXScale: {x: 7, y: 7, z: 7}
+  readyVFXScale: {x: 5, y: 5, z: 5}
 --- !u!1 &514869509
 GameObject:
   m_ObjectHideFlags: 0
@@ -9605,6 +9605,10 @@ MonoBehaviour:
     type: 3}
   KineticUnderneathSlamImpactVFX5: {fileID: 8974203713140315807, guid: 0b5454bed045dda4a82682995df04371,
     type: 3}
+  dashSpeed: 40
+  dashDuration: 0.1
+  dashCooldown: 0.2
+  dashVFX: {fileID: 0}
 --- !u!143 &561119874
 CharacterController:
   m_ObjectHideFlags: 0
@@ -14154,7 +14158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 1868043674}
+  mat: {fileID: 1370042892}
   flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
   bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
   ColorBleed: 0.25
@@ -23391,6 +23395,46 @@ MonoBehaviour:
   magicType: 2
   interactionRange: 3
   cost: 3000
+--- !u!21 &1370042892
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/DarkBringerRefined_1_2
+  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BayerTex:
+        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Lut2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1389579824
 GameObject:
   m_ObjectHideFlags: 0
@@ -26055,7 +26099,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1595701417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26069,12 +26113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefabs:
-  - {fileID: 5213014239458159033, guid: 2d01a6a0bf7e47b4da7d0e4d8251c563, type: 3}
-  - {fileID: 5213014239458159033, guid: 4d75010ad04ddce4f8f88434f2d50394, type: 3}
-  - {fileID: 5213014239458159033, guid: d28134dce9cca41468f792286a0adc75, type: 3}
-  - {fileID: 5213014239458159033, guid: 873b8ac6960d7fe45a75b4ee8bf2f0c7, type: 3}
-  - {fileID: 5213014239458159033, guid: e32340792b79b6f459a3c0ba9ca8a735, type: 3}
-  - {fileID: 5213014239458159033, guid: 93f1ce912a6127e4f92f346701b6dbc3, type: 3}
   - {fileID: 6149432723859890116, guid: e20a78585e15dfc47872c97297648c17, type: 3}
   - {fileID: 7224478408790448130, guid: cd1b764f06bfee844a726211ef5fee4c, type: 3}
   - {fileID: 7560827146355968688, guid: 89d43b2956839244988f109367c4f229, type: 3}
@@ -27977,8 +28015,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1698164547}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -211.32, y: 108.91268, z: -500.53}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -223.9, y: 108.91268, z: -500.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -27987,7 +28025,7 @@ Transform:
   - {fileID: 187162875}
   - {fileID: 1786322671}
   m_Father: {fileID: 1049969704}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1700985535
 GameObject:
   m_ObjectHideFlags: 0
@@ -29725,46 +29763,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1866011677}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1868043674
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/DarkBringerRefined_1_2
-  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BayerTex:
-        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Lut2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1871936850
 GameObject:
   m_ObjectHideFlags: 0
@@ -33476,7 +33474,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -4.6664, y: 0, z: -1.9238}
-  m_LocalScale: {x: 54.11709, y: -1.5412409, z: 75.32821}
+  m_LocalScale: {x: 54.11709, y: 1, z: 75.32821}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1127819399}

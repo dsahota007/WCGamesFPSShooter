@@ -64,6 +64,18 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 externalForce = Vector3.zero;
 
+    [Header("Dash Settings")]
+    public float dashSpeed = 20f;
+    public float dashDuration = 0.2f;
+    public float dashCooldown = 2f;
+    public GameObject dashVFX;
+
+    private bool isDashing = false;
+    private float dashTimer = 0f;
+    private float lastDashTime;
+    private Vector3 dashDirection;
+
+
 
 
     void Start()
@@ -196,9 +208,55 @@ public class PlayerMovement : MonoBehaviour
             externalForce = Vector3.Lerp(externalForce, Vector3.zero, 5f * Time.deltaTime);
         }
 
+        // === DASH ===
+        if (!isDashing && Input.GetKeyDown(KeyCode.E) && Time.time >= lastDashTime + dashCooldown)
+        {
+            StartDash();
+        }
+
+        if (isDashing)
+        {
+            dashTimer += Time.deltaTime;
+            controller.Move(dashDirection * dashSpeed * Time.deltaTime);
+
+            if (dashTimer >= dashDuration)
+            {
+                EndDash();
+            }
+        }
 
 
     }
+
+    void StartDash()
+    {
+        isDashing = true;
+        dashTimer = 0f;
+        lastDashTime = Time.time;
+
+        // Direction = input direction, fallback to forward
+        float x_input = Input.GetAxisRaw("Horizontal");
+        float z_input = Input.GetAxisRaw("Vertical");
+        Vector3 inputDir = (transform.right * x_input + transform.forward * z_input).normalized;
+
+        dashDirection = inputDir.magnitude > 0 ? inputDir : transform.forward;
+
+        // Optional: zero vertical velocity during dash
+        velocity.y = 0f;
+
+        // Spawn VFX
+        if (dashVFX != null)
+        {
+            GameObject vfx = Instantiate(dashVFX, transform.position, Quaternion.identity);
+            Destroy(vfx, 2f);
+        }
+    }
+
+    void EndDash()
+    {
+        isDashing = false;
+    }
+
 
     //------------------------------------------------------------ Kinetic Slam
     void StartKineticSlam()
@@ -382,6 +440,11 @@ public class PlayerMovement : MonoBehaviour
     public bool IsSprinting()
     {
         return Input.GetKey(KeyCode.LeftShift) && controller.velocity.magnitude > 0.1f;
+    }
+
+    public bool IsDashing()
+    {
+        return isDashing;
     }
 
 }

@@ -174,7 +174,7 @@ GameObject:
   - component: {fileID: 1670114529699785796}
   - component: {fileID: 5492843648476915817}
   - component: {fileID: 6262662712947748699}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -345,7 +345,7 @@ GameObject:
   - component: {fileID: 6240358555998348034}
   - component: {fileID: 2097639641139569501}
   - component: {fileID: 6767324110725103889}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 1193018206857768879}
   - component: {fileID: 324877228655392140}
   - component: {fileID: 2481128875080046501}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -822,7 +822,7 @@ GameObject:
   - component: {fileID: 2494401385787889727}
   - component: {fileID: 3192661167481855231}
   - component: {fileID: 6522920890718558834}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: BackgroundDamageChip
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2492,7 +2492,7 @@ GameObject:
   - component: {fileID: 6099991639922772896}
   - component: {fileID: 1638869062173580556}
   - component: {fileID: 8377899848241540261}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: EnemyTag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3278,7 +3278,7 @@ GameObject:
   - component: {fileID: 4793761758370145261}
   - component: {fileID: 8010170803463205312}
   - component: {fileID: 5222877547513938789}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3715,7 +3715,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.46, y: 2.11, z: -0.22}
+  m_Size: {x: 0.46, y: 2.11, z: 0.2}
   m_Center: {x: -0.000000029802322, y: 0.99, z: -0.0150710195}
 --- !u!114 &8332707890062512581
 MonoBehaviour:
@@ -3789,6 +3789,7 @@ MonoBehaviour:
     m_Bits: 4294967295
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
+  immuneTo: 0
 --- !u!1 &6297278405393693907
 GameObject:
   m_ObjectHideFlags: 0
@@ -4186,7 +4187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1122790102811523704}
-  m_Layer: 5
+  m_Layer: 3
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
