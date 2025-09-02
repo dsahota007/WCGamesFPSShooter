@@ -15,6 +15,26 @@ public class PackAPunch : MonoBehaviour
     private bool isReady = false;
     private int storedIndex = -1;
 
+    [Header("Showcase Animation")]
+    public float floatSpeed = 1.5f;
+    public float floatHeight = 0.2f;
+    public float spinSpeed = 60f;
+
+    [Header("Cooking VFX")]
+    public GameObject cookingVFXPrefab;
+    public Vector3 cookingVFXOffset = Vector3.zero;
+    public Vector3 cookingVFXRotation = Vector3.zero;
+    public Vector3 cookingVFXScale = Vector3.one;
+
+    [Header("Ready VFX")]
+    public GameObject readyVFXPrefab;
+    public Vector3 readyVFXOffset = Vector3.zero;
+    public Vector3 readyVFXRotation = Vector3.zero;
+    public Vector3 readyVFXScale = Vector3.one;
+
+    private GameObject activeCookingVFX;
+    private GameObject activeReadyVFX;
+
     void Start()
     {
         weaponManager = FindFirstObjectByType<WeaponManager>();
@@ -40,11 +60,18 @@ public class PackAPunch : MonoBehaviour
                         StartCoroutine(SendWeaponToShowcase());
                     }
                 }
+
             }
             else if (isReady)
             {
                 RetrieveAndUpgradeWeapon();
             }
+        }
+        if ((isCooking || isReady) && showcasedWeapon != null)  //spinning logic + spinngin when ready 
+        {
+            Vector3 floatPos = showcasePoint.position + Vector3.up * (Mathf.Sin(Time.time * floatSpeed) * floatHeight);
+            showcasedWeapon.transform.position = floatPos;
+            showcasedWeapon.transform.Rotate(Vector3.up, spinSpeed * Time.deltaTime, Space.World);
         }
     }
 
@@ -118,6 +145,14 @@ public class PackAPunch : MonoBehaviour
         foreach (var comp in showcasedWeapon.GetComponentsInChildren<MonoBehaviour>())
             Destroy(comp);
 
+        if (cookingVFXPrefab != null)
+        {
+            activeCookingVFX = Instantiate(cookingVFXPrefab, showcasePoint);
+            activeCookingVFX.transform.localPosition = cookingVFXOffset;
+            activeCookingVFX.transform.localEulerAngles = cookingVFXRotation;
+            activeCookingVFX.transform.localScale = cookingVFXScale;
+        }
+
         Weapon realWeapon = currentWeaponGO.GetComponent<Weapon>();
 
 
@@ -148,6 +183,16 @@ public class PackAPunch : MonoBehaviour
         }
 
         yield return new WaitForSeconds(cookTime);
+
+        if (activeCookingVFX != null) Destroy(activeCookingVFX);
+
+        if (readyVFXPrefab != null && showcasedWeapon != null)
+        {
+            activeReadyVFX = Instantiate(readyVFXPrefab, showcasedWeapon.transform);
+            activeReadyVFX.transform.localPosition = readyVFXOffset;
+            activeReadyVFX.transform.localEulerAngles = readyVFXRotation;
+            activeReadyVFX.transform.localScale = readyVFXScale;
+        }
 
         isCooking = false;
         isReady = true;
