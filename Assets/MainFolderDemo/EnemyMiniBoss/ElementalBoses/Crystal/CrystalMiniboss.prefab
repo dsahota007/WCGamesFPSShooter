@@ -2364,7 +2364,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4833356874701386499
 Transform:
   m_ObjectHideFlags: 0
@@ -2539,7 +2539,7 @@ MonoBehaviour:
   launchVFXOffset: {x: 0, y: 0, z: 0}
   launchVFXEuler: {x: 0, y: 20, z: 0}
   launchVFXScale: {x: 2, y: 2, z: 2}
-  auraVFXPrefab: {fileID: 9017484664307500583, guid: 319e1bd5df446234ab37fa3e24787160,
+  auraVFXPrefab: {fileID: 9017484664307500583, guid: 1bdcffc368c8a4a4d8a73f6bb4b9588a,
     type: 3}
   auraVFXOffset: {x: 0, y: 0, z: 0}
   auraVFXEuler: {x: 0, y: 0, z: 0}
