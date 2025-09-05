@@ -21,12 +21,12 @@ public class MeteorMagic : MonoBehaviour
         rb.linearVelocity = transform.forward * speed;
         Destroy(gameObject, lifeTime);
 
-        // Ignore player colliders
-        Collider[] playerColliders = GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider>();
-        foreach (Collider col in playerColliders)
-        {
-            Physics.IgnoreCollision(GetComponent<Collider>(), col);
-        }
+        //// Ignore player colliders
+        //Collider[] playerColliders = GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider>();
+        //foreach (Collider col in playerColliders)
+        //{
+        //    Physics.IgnoreCollision(GetComponent<Collider>(), col);
+        //}
     }
 
     void OnTriggerEnter(Collider other)

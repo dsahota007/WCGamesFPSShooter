@@ -28,11 +28,11 @@ public class VenomMagic : MonoBehaviour
         rb.linearVelocity = transform.forward * speed;  //we wanna launch str8 forward
         Destroy(gameObject, lifeTime);
 
-        Collider[] playerColliders = GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider>();  // we use this to make sure it does not hit us 
-        foreach (Collider col in playerColliders)
-        {
-            Physics.IgnoreCollision(GetComponent<Collider>(), col);
-        }
+        //Collider[] playerColliders = GameObject.FindGameObjectWithTag("Player").GetComponentsInChildren<Collider>();  // we use this to make sure it does not hit us 
+        //foreach (Collider col in playerColliders)
+        //{
+        //    Physics.IgnoreCollision(GetComponent<Collider>(), col);
+        //}
     }
 
     void OnTriggerEnter(Collider other)
