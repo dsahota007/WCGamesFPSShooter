@@ -1,8 +1,8 @@
-ï»¿using UnityEngine;
+using UnityEngine;
 using UnityEngine.AI;
 using System.Collections;
 
-public class EntityElementalMiniBossAIChase : MonoBehaviour
+public class EntityVoidElementalMiniBossAIChase : MonoBehaviour
 {
     private NavMeshAgent enemyAgent;
     public Transform target;
@@ -22,13 +22,17 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
     private bool isInCooldown = false;
 
     [Header("Projectile Attack Settings")]
-    public float projectileDelay = 3f;        // delay before projectile is actually fired
-    public float projectileSpeed = 10f;       // speed of fireball/iceball/whatever
-    public float projectileLifetime = 5f;     // how long projectile exists
-    public Transform projectileSpawnPoint;    // where projectile comes out of
+    public float projectileDelay = 1f;          // delay before first projectile is fired
+    public float projectileSpeed = 10f;         // speed of fireball/iceball/whatever
+    public float projectileLifetime = 5f;       // how long projectile exists
+    public Transform projectileSpawnPoint;      // where projectile comes out of
 
     [Header("Projectile Prefab")]
     public GameObject projectilePrefab;       // reference to fireball prefab (BallEntity, Iceball, etc.)
+
+    [Header("Multi-Shot Settings")]
+    public int projectilesPerAttack = 3;        //NEW: how many projectiles fired in a single attack cycle
+    public float timeBetweenProjectiles = 0.4f; //spacing between each projectile fired
 
     [Header("Launch VFX")]
     public GameObject launchVFXPrefab;        // VFX that appears when miniboss is preparing to launch
@@ -89,7 +93,7 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
             else if (!isAttacking)
             {
                 enemyAgent.isStopped = false;                   //turn off stopping so he can move
-                enemyAgent.SetDestination(target.position);     //set deestiantion to player so they can follow on the navmesh
+                enemyAgent.SetDestination(target.position);     //set destination to player so they can follow on the navmesh
             }
         }
 
@@ -118,7 +122,7 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
         {
             Vector3 dir = (target.position - transform.position);  //pointing vector --- player to enemy 
             dir.y = 0f;   //ignore up down diff
-            if (dir.sqrMagnitude > 0.01f)  //Make sure the direction vector isnâ€™t â€œalmost zeroâ€
+            if (dir.sqrMagnitude > 0.01f)  //Make sure the direction vector isn’t “almost zero”
             {
                 Quaternion targetRot = Quaternion.LookRotation(dir);  //build rotation look towards player
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, 200f * Time.deltaTime);
@@ -136,7 +140,7 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
             float angle = Vector3.Angle(transform.forward, dirToPlayer);   //if were in front of the player directly (face to face)
             if (angle < sightAngle / 2f)  //Only proceed if the player is inside the vision cone (field of view).
             {
-                if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstructionMask))  //if your not hitting a wall than return true 
+                if (!Physics.Raycast(transform.position + Vector3.up, dirToPlayer, distanceToPlayer, obstructionMask))  //if your not hitting a wall then return true 
                 {
                     return true;
                 }
@@ -182,20 +186,28 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
         if (remaining > 0f)
             yield return new WaitForSeconds(remaining);
 
-        if (projectilePrefab != null && target != null)
+        //loop to fire multiple projectiles per attack cycle
+        for (int i = 0; i < projectilesPerAttack; i++)
         {
-            Transform spawnAt = projectileSpawnPoint != null ? projectileSpawnPoint : transform;
-            GameObject proj = Instantiate(projectilePrefab, spawnAt.position, spawnAt.rotation);
-
-            Rigidbody rb = proj.GetComponent<Rigidbody>();
-            if (rb != null)
+            if (projectilePrefab != null && target != null)
             {
-                // Calculate direction NOW (after delays) so it accounts for vertical difference
-                Vector3 dir = (target.position - spawnAt.position).normalized;
-                rb.linearVelocity = dir * projectileSpeed;
+                Transform spawnAt = projectileSpawnPoint != null ? projectileSpawnPoint : transform;
+                GameObject proj = Instantiate(projectilePrefab, spawnAt.position, spawnAt.rotation);
+
+                Rigidbody rb = proj.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    // Calculate direction for each projectile (still locked-on to player each shot)
+                    Vector3 dir = (target.position - spawnAt.position).normalized;
+                    rb.linearVelocity = dir * projectileSpeed;
+                }
+
+                Destroy(proj, projectileLifetime);
             }
 
-            Destroy(proj, projectileLifetime);
+            // Wait between each projectile, except after the last one
+            if (i < projectilesPerAttack - 1)
+                yield return new WaitForSeconds(timeBetweenProjectiles);
         }
 
         yield return new WaitForSeconds(attackAnimLength - projectileDelay);
@@ -205,5 +217,4 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
         isInCooldown = false;
     }
-
 }

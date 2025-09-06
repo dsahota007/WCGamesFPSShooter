@@ -43725,7 +43725,7 @@ GameObject:
   - component: {fileID: 5783292596231346641}
   - component: {fileID: 1035826600056507812}
   - component: {fileID: 3140035660169670401}
-  - component: {fileID: 5138768219089804862}
+  - component: {fileID: 2898536757519205569}
   m_Layer: 18
   m_Name: VoidEntity
   m_TagString: Asteroid
@@ -43861,7 +43861,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5138768219089804862
+--- !u!114 &2898536757519205569
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -43870,26 +43870,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 3292252372715375916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 64f81a6fe6cfcdb4eb15f9f74d5f7cd6, type: 3}
+  m_Script: {fileID: 11500000, guid: b7aaa3fdeae0fb34c9809e8a083a4872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 25
-  rotateSpeed: 5
-  lifeTime: 8
-  slamRadius: 13
-  slamDamagePerSecond: 5
-  fieldDuration: 5
+  slamRadius: 15
+  slamDamage: 5
   playerMask:
     serializedVersion: 2
     m_Bits: 128
   PlayerImpactVFX: {fileID: 0}
   PlayerImpactVFX2: {fileID: 0}
-  GroundEntitySlamVFX: {fileID: 7478731271839673279, guid: 3994ec769523fe241a94769308b8be86,
-    type: 3}
-  GroundVFXOffset: {x: 0, y: -0.5, z: 0}
+  GroundEntitySlamVFX: {fileID: 0}
+  GroundVFXOffset: {x: 0, y: 0, z: 0}
   GroundVFXEuler: {x: 0, y: 0, z: 0}
-  GroundVFXScale: {x: 3, y: 3, z: 3}
-  GroundVFXLifetime: 10
+  GroundVFXScale: {x: 1, y: 1, z: 1}
+  GroundVFXLifetime: 5
 --- !u!1 &3719345740828534259
 GameObject:
   m_ObjectHideFlags: 0

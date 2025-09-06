@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class VoidMinibossEntity : MonoBehaviour
+public class CrimsonMinibossEntity : MonoBehaviour
 {
     [Header("Tracking Settings")]
     public float moveSpeed = 10f;         // how fast it moves

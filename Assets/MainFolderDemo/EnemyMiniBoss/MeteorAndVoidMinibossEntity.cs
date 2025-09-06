@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class MeteorMinibossEntity : MonoBehaviour
+public class MeteorAndVoidMinibossEntity : MonoBehaviour
 {
     [Header("Slam Attack on Impact")]
     public float slamRadius = 5f;
