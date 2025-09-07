@@ -143,6 +143,9 @@ public class MagicManager : MonoBehaviour
         currentMagicType = newType;  // Change current magic
         UpdateMagicType();           // Apply the change
 
+        FindFirstObjectByType<UI>()?.UpdateMagicSlot(newType); // slot image as well now
+
+
         //if (newType == MagicType.None)
         //{
         //    Debug.Log("No magic equipped - Q key disabled");

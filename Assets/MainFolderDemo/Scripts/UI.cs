@@ -77,9 +77,23 @@ public class UI : MonoBehaviour
     [Header("Magic Cooldown UI")]
     public Slider magicCooldownSlider;
     public Text magicStatusText;
- 
+
+    [Header("Magic Slot UI")]
+    public Image magicSlotIcon;  // assign in inspector
+    public Sprite noneIcon;
+    public Sprite normalIcon;
+    public Sprite crystalIcon;
+    public Sprite voidIcon;
+    public Sprite iceIcon;
+    public Sprite venomIcon;
+    public Sprite lightningIcon;
+    public Sprite windIcon;
+    public Sprite meteorIcon;
+    public Sprite crimsonIcon;
+
+    //-------------------- grenade
+
     [Header("Grenade Chest UI")]
- 
     public GrenadeChest grenadeChest;   
     public Text grenadePrompt;     // "Press [E] to open"
     public GameObject grenadePanel;
@@ -618,7 +632,7 @@ public class UI : MonoBehaviour
             var t = grenadeManager.currentType;
             int have = grenadeManager.GetCount(t);
             int cap = grenadeManager.GetCap(t);
-            grenadeAmountText.text = have + " / " + cap;   // e.g. "4 / 6"
+            grenadeAmountText.text = have.ToString();      //have + " / " + cap;   // e.g. "4 / 6"
         }
         // Example for 4 perks:
 
@@ -678,51 +692,7 @@ public class UI : MonoBehaviour
 
         HandleInfuseStationUI();
 
-
-
-
     }
-
-    //-----------------------MAGIC prompt text
-    void UpdateMagicPrompts()
-    {
-        if (magicStations == null || player == null || magicManager == null) return;  //get out if we dont have one of these
-
-        int points = (PointManager.Instance != null) ? PointManager.Instance.GetPoints() : 0;    //grab the player’s current points once - if dont have points assume its 0
-
-        foreach (var e in magicStations) //loop through all stations 
-        {
-            if (e == null || e.station == null || e.text == null) continue;   //skip any incomplete entry so we don’t crash
-
-            float dist = Vector3.Distance(player.position, e.station.transform.position);  //find position from station to player
-            bool inRange = dist <= e.station.interactionRange;  //in range bc we see dist and check if were within the interaction range
-
-            if (!inRange)
-            {
-                e.text.gameObject.SetActive(false);         //turn off text when we aint in range
-                continue;
-            }
-
-            e.text.gameObject.SetActive(true);      //show the prompt, then decide what it should say
-
-            bool equipped = (magicManager.GetCurrentMagicType() == e.type); //if already equipped
-            if (equipped)
-            {
-                e.text.text = $"{e.label} Magic Equipped";
-            }
-            else
-            {
-                int cost = e.station.cost;          //if statement to see if you can afford
-                e.text.text = (points < cost)
-                    ? $"Need {cost} Points for {e.label} Magic"
-                    : $"Press [E] to buy {e.label} Magic ({cost} Points)";
-            }
-
-        }
-
- 
-    }
-
 
     //------------------------------------ grenade logic
     void HandleGrenadeChestUI()
@@ -857,6 +827,43 @@ public class UI : MonoBehaviour
 
     //-------------------------MAGIC functions
 
+    //---MAGIC prompt text
+    void UpdateMagicPrompts()
+    {
+        if (magicStations == null || player == null || magicManager == null) return;  //get out if we dont have one of these
+
+        int points = (PointManager.Instance != null) ? PointManager.Instance.GetPoints() : 0;    //grab the player’s current points once - if dont have points assume its 0
+
+        foreach (var e in magicStations) //loop through all stations 
+        {
+            if (e == null || e.station == null || e.text == null) continue;   //skip any incomplete entry so we don’t crash
+
+            float dist = Vector3.Distance(player.position, e.station.transform.position);  //find position from station to player
+            bool inRange = dist <= e.station.interactionRange;  //in range bc we see dist and check if were within the interaction range
+
+            if (!inRange)
+            {
+                e.text.gameObject.SetActive(false);         //turn off text when we aint in range
+                continue;
+            }
+
+            e.text.gameObject.SetActive(true);      //show the prompt, then decide what it should say
+
+            bool equipped = (magicManager.GetCurrentMagicType() == e.type); //if already equipped
+            if (equipped)
+            {
+                e.text.text = $"{e.label} Magic Equipped";
+            }
+            else
+            {
+                int cost = e.station.cost;          //if statement to see if you can afford
+                e.text.text = (points < cost)
+                    ? $"Need {cost} Points for {e.label} Magic"
+                    : $"Press [E] to buy {e.label} Magic ({cost} Points)";
+            }
+        }
+    }
+
     public void ShowTemporaryMagicMessage(string message)
     {
         StopAllCoroutines(); // cancel any old message timers
@@ -872,6 +879,42 @@ public class UI : MonoBehaviour
 
         magicStatusText.gameObject.SetActive(false);
     }
+    //--- Magic slot bottom right image
+    public void UpdateMagicSlot(MagicType type)
+    {
+        if (magicSlotIcon == null) return;
+
+        magicSlotIcon.sprite = GetMagicSprite(type);
+        magicSlotIcon.enabled = (magicSlotIcon.sprite != null);
+
+        if (magicSlotIcon.enabled)
+        {
+            // reset rotation each time
+            magicSlotIcon.rectTransform.localRotation = Quaternion.identity;
+
+            // apply a 45 degree rotation on Z axis (UI is 2D so Z = screen depth)
+            magicSlotIcon.rectTransform.Rotate(0f, 0f, 45f);
+        }
+    }
+
+    private Sprite GetMagicSprite(MagicType type)
+    {
+        switch (type)
+        {
+            case MagicType.Normal: return normalIcon;
+            case MagicType.Crystal: return crystalIcon;
+            case MagicType.Void: return voidIcon;
+            case MagicType.Ice: return iceIcon;
+            case MagicType.Venom: return venomIcon;
+            case MagicType.Lightning: return lightningIcon;
+            case MagicType.Wind: return windIcon;
+            case MagicType.Meteor: return meteorIcon;
+            case MagicType.Crimson: return crimsonIcon;
+            default: return noneIcon;
+        }
+    }
+
+
     //-------------------------health functions
     public void UpdateHealthBar(float value)
     {
