@@ -31,7 +31,7 @@ public class EntityVoidElementalMiniBossAIChase : MonoBehaviour
     public GameObject projectilePrefab;       // reference to fireball prefab (BallEntity, Iceball, etc.)
 
     [Header("Multi-Shot Settings")]
-    public int projectilesPerAttack = 3;        //NEW: how many projectiles fired in a single attack cycle
+    public int projectilesPerAttack = 3;        
     public float timeBetweenProjectiles = 0.4f; //spacing between each projectile fired
 
     [Header("Launch VFX")]
@@ -160,9 +160,23 @@ public class EntityVoidElementalMiniBossAIChase : MonoBehaviour
         animator.SetTrigger("Attack");
         animator.SetFloat("Speed", 0f);
 
+        if (healthScript != null && healthScript.IsDead())
+        {
+            isAttacking = false;
+            isInCooldown = false;
+            yield break; // cancel attack if dead
+        }
+
         // === Wait before showing launch VFX ===
         if (launchVFXPrefab != null && launchVFXDelay > 0f)
             yield return new WaitForSeconds(launchVFXDelay);
+
+        if (healthScript != null && healthScript.IsDead())
+        {
+            isAttacking = false;
+            isInCooldown = false;
+            yield break;
+        }
 
         // === Spawn launch VFX ===
         if (launchVFXPrefab != null)
@@ -183,8 +197,18 @@ public class EntityVoidElementalMiniBossAIChase : MonoBehaviour
 
         // === Wait remaining time until projectile fires ===
         float remaining = Mathf.Max(0f, projectileDelay - launchVFXDelay);
+
         if (remaining > 0f)
+        {
             yield return new WaitForSeconds(remaining);
+        }
+        if (healthScript != null && healthScript.IsDead())
+        {
+            isAttacking = false;
+            isInCooldown = false;
+            yield break;
+        }
+
 
         //loop to fire multiple projectiles per attack cycle
         for (int i = 0; i < projectilesPerAttack; i++)

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Collider))]
+//[RequireComponent(typeof(Collider))]
 public class IceMinibossEntity : MonoBehaviour
 {
     [Header("Slam")]
@@ -24,11 +24,27 @@ public class IceMinibossEntity : MonoBehaviour
     public Vector3 GroundVFXScale = Vector3.one;    // scale override
     public float GroundVFXLifetime = 10f;           // how long it lasts
 
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+
+        // Ignore collision with enemy who spawned this projectile (so it doesn’t slow them down to some other shit)
+        Collider[] shooterColliders = GameObject.FindGameObjectWithTag("Enemy")?.GetComponentsInChildren<Collider>();
+        if (shooterColliders != null)
+        {
+            foreach (Collider col in shooterColliders)
+            {
+                Physics.IgnoreCollision(GetComponent<Collider>(), col);
+            }
+        }
+    }
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Ground") || other.CompareTag("Wall"))
         {
-            Impact();                // apply damage + slow + player VFX
+            ApplyIceballSlamDamageAndEffect();                // apply damage + slow + player VFX
             SpawnGroundEffects();    // ground decal/impact (same as other script)
             Destroy(gameObject);
             return;
@@ -36,20 +52,37 @@ public class IceMinibossEntity : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
-            Impact();                // no ground VFX on direct player hit (same behavior)
+            ApplyIceballSlamDamageAndEffect();                // no ground VFX on direct player hit (same behavior)
             Destroy(gameObject);
         }
     }
 
-    void OnCollisionEnter(Collision _)
+    void OnCollisionEnter(Collision collision)
     {
         // Backup collision detection in case trigger doesn't work
-        Impact();
+        ApplyIceballSlamDamageAndEffect();
         SpawnGroundEffects();
         Destroy(gameObject);
+        return;
     }
 
-    void Impact()
+ 
+    void SpawnGroundEffects()
+    {
+        if (GroundEntitySlamVFX != null)
+        {
+            GameObject vfx1 = Instantiate(GroundEntitySlamVFX, transform.position, Quaternion.identity);
+
+            // Apply customization
+            vfx1.transform.position += GroundVFXOffset;
+            vfx1.transform.rotation = Quaternion.Euler(GroundVFXEuler);
+            vfx1.transform.localScale = GroundVFXScale;
+
+            Destroy(vfx1, GroundVFXLifetime);
+        }
+    }
+
+    void ApplyIceballSlamDamageAndEffect()
     {
         var hits = Physics.OverlapSphere(transform.position, slamRadius, playerMask);
 
@@ -77,29 +110,20 @@ public class IceMinibossEntity : MonoBehaviour
 
             // slow (no PlayerMovement edits needed)
             var pm = col.GetComponent<PlayerMovement>() ?? col.GetComponentInParent<PlayerMovement>();
-            if (pm != null) pm.StartCoroutine(SlowFor(pm, slowMultiplier, slowDuration));
+            if (pm != null)
+            {
+                pm.StartCoroutine(SlowFor(pm, slowMultiplier, slowDuration));
+            }
         }
     }
 
-    void SpawnGroundEffects()
-    {
-        if (GroundEntitySlamVFX != null)
-        {
-            GameObject vfx1 = Instantiate(GroundEntitySlamVFX, transform.position, Quaternion.identity);
-
-            // Apply customization
-            vfx1.transform.position += GroundVFXOffset;
-            vfx1.transform.rotation = Quaternion.Euler(GroundVFXEuler);
-            vfx1.transform.localScale = GroundVFXScale;
-
-            Destroy(vfx1, GroundVFXLifetime);
-        }
-    }
 
     static IEnumerator SlowFor(PlayerMovement pm, float mult, float dur)
     {
-        // snapshot current speeds, apply slow
-        float ow = pm.walkSpeed, os = pm.sprintSpeed, oa = pm.aimSpeed;
+        float ow = pm.walkSpeed;  //get current speed of call  
+        float os = pm.sprintSpeed;
+        float oa = pm.aimSpeed;
+
         pm.walkSpeed = ow * mult;
         pm.sprintSpeed = os * mult;
         pm.aimSpeed = oa * mult;

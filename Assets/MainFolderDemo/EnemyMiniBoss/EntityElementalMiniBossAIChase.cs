@@ -153,12 +153,26 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
         enemyAgent.isStopped = true;
         enemyAgent.velocity = Vector3.zero;
 
+        if (healthScript != null && healthScript.IsDead())
+        {
+            isAttacking = false;
+            isInCooldown = false;
+            yield break; // cancel attack if dead
+        }
+
         animator.SetTrigger("Attack");
         animator.SetFloat("Speed", 0f);
 
         // === Wait before showing launch VFX ===
         if (launchVFXPrefab != null && launchVFXDelay > 0f)
             yield return new WaitForSeconds(launchVFXDelay);
+
+        if (healthScript != null && healthScript.IsDead())
+        {
+            isAttacking = false;
+            isInCooldown = false;
+            yield break;
+        }
 
         // === Spawn launch VFX ===
         if (launchVFXPrefab != null)
@@ -179,8 +193,19 @@ public class EntityElementalMiniBossAIChase : MonoBehaviour
 
         // === Wait remaining time until projectile fires ===
         float remaining = Mathf.Max(0f, projectileDelay - launchVFXDelay);
+
         if (remaining > 0f)
+        {
             yield return new WaitForSeconds(remaining);
+        }
+
+        if (healthScript != null && healthScript.IsDead())
+        {
+            isAttacking = false;
+            isInCooldown = false;
+            yield break;
+        }
+
 
         if (projectilePrefab != null && target != null)
         {

@@ -2494,7 +2494,7 @@ MonoBehaviour:
   BoxRootCollider: {fileID: -1372523476467760224}
   healthCanvas: {fileID: 8527396997444183098}
   healthBar: {fileID: 4628725113711381733}
-  nameTagGO: {fileID: 0}
+  nameTagGO: {fileID: 7796151479206853992}
   healthBarOffset: {x: 0, y: 4.5, z: 0}
   showMaxDistance: 25
   centerDotThreshold: 0.85
