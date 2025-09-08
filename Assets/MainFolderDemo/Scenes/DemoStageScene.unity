@@ -1707,11 +1707,11 @@ MonoBehaviour:
   grenadeAmountText: {fileID: 486131191}
   grenadeStatusText: {fileID: 584999889}
   grenadeSlotIcon: {fileID: 1399107424}
-  fragIcon: {fileID: 21300000, guid: 8a5f9829a049c704fa992203bfc451f2, type: 3}
-  impactIcon: {fileID: 21300000, guid: 2c04f4986ebc72e48a8b0c3eb2e42db2, type: 3}
-  semtexIcon: {fileID: 21300000, guid: 2d089513ae4adfc48a683c362ad9992c, type: 3}
-  bioIcon: {fileID: 0}
-  sulfuricNapalmIcon: {fileID: 0}
+  fragIcon: {fileID: 21300000, guid: a34efd49c0b4cfa46a51fa69b8793f41, type: 3}
+  impactIcon: {fileID: 21300000, guid: e31ef93765cbb57469eaf127f4974588, type: 3}
+  semtexIcon: {fileID: 21300000, guid: 7c21fc7b801b9fc409236927868c456e, type: 3}
+  bioIcon: {fileID: 21300000, guid: b595d65c9cfc02e4dac5520de4d18997, type: 3}
+  sulfuricNapalmIcon: {fileID: 21300000, guid: 169075f1bd691b245bbf5d061175f89a, type: 3}
   crystalClusterIcon: {fileID: 0}
   bastionIcon: {fileID: 21300000, guid: 7092324b93851a14c858530cca4a6b26, type: 3}
   ragnarokIcon: {fileID: 0}
@@ -16057,6 +16057,46 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 624201729}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &627351157
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/DarkBringerRefined_1_2
+  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BayerTex:
+        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Lut2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &629420578
 GameObject:
   m_ObjectHideFlags: 0
@@ -19529,7 +19569,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 893803993}
+  mat: {fileID: 627351157}
   flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
   bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
   ColorBleed: 0.25
@@ -20710,46 +20750,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
---- !u!21 &893803993
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/DarkBringerRefined_1_2
-  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BayerTex:
-        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Lut2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &896716870
 GameObject:
   m_ObjectHideFlags: 0
@@ -34432,7 +34432,7 @@ MonoBehaviour:
     type: 3}
   semtexPrefab: {fileID: 8177116219481987225, guid: 70b99d9635b9bdb4bb726d05a0fbcf9b,
     type: 3}
-  bioPrefab: {fileID: 8177116219481987225, guid: f6f9a7da912bcd74aa961e4f4ae35871,
+  bioPrefab: {fileID: 8177116219481987225, guid: c2726889c530a5c44af95e38538cd291,
     type: 3}
   sulfuricNapalmPrefab: {fileID: 8177116219481987225, guid: 133f12074666f9442a9ab88e3e9a8cc5,
     type: 3}
