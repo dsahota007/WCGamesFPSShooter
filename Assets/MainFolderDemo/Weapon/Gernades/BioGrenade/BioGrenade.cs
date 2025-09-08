@@ -41,7 +41,7 @@ public class BioGrenade : MonoBehaviour
         if (spinTorque > 0f && rb != null)
             rb.AddTorque(Random.onUnitSphere * spinTorque, ForceMode.Impulse);    //spin logic
 
-        // if you’re throwing via ApplyThrow() you can ignore this forward kick
+        // if you’re throwing via ApplyThrow() you can ignore this forward kick  --- THIS WAS COMMENTED OUT BC THIS WAS THE BUG WHERE IT WOULD GO RIGHT AND DOWN
         //if (rb != null && speed > 0f)
         //    rb.linearVelocity = transform.forward * speed;  //we wanna launch str8 forward
 
