@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public enum GrenadeType { None, Frag, Impact, Semtex, Bio, SulfuricNapalm, CrystalCluster, Bastion, Ragnarok }  //enumeration fo all the gernades we can have
+public enum GrenadeType { None, Frag, Impact, Semtex, Bio, SulfuricNapalm, CrystalCluster, Bastion, Ragnarok, Spider }  //enumeration fo all the gernades we can have
 
 public class GrenadeManager : MonoBehaviour
 {
@@ -14,6 +14,7 @@ public class GrenadeManager : MonoBehaviour
     public GameObject crystalClusterPrefab;
     public GameObject BastionPrefab;
     public GameObject RagnarokPrefab;
+    public GameObject SpiderPrefab;
 
 
     [Header("Caps (set these manually)")]
@@ -25,6 +26,7 @@ public class GrenadeManager : MonoBehaviour
     public int crystalClusterCap = 3;
     public int bastionCap = 3;
     public int ragnarokCap = 3;
+    public int spiderCap = 8;
 
 
     [Header("State")]
@@ -65,7 +67,8 @@ public class GrenadeManager : MonoBehaviour
             { GrenadeType.SulfuricNapalm, sulfuricNapalmPrefab },
             { GrenadeType.CrystalCluster, crystalClusterPrefab },
             { GrenadeType.Bastion, BastionPrefab },
-            { GrenadeType.Ragnarok, RagnarokPrefab }
+            { GrenadeType.Ragnarok, RagnarokPrefab },
+            { GrenadeType.Spider, SpiderPrefab }
         };
 
         count = new Dictionary<GrenadeType, int>();             //empty dict will hold each nade type 
@@ -99,6 +102,7 @@ public class GrenadeManager : MonoBehaviour
             case GrenadeType.CrystalCluster: return Mathf.Max(0, crystalClusterCap);
             case GrenadeType.Bastion: return Mathf.Max(0, bastionCap);
             case GrenadeType.Ragnarok: return Mathf.Max(0, ragnarokCap);
+            case GrenadeType.Spider: return Mathf.Max(0, spiderCap);
             default: return 0;
         }
     }

@@ -113,6 +113,7 @@ public class UI : MonoBehaviour
     public Sprite crystalClusterIcon;
     public Sprite bastionIcon;
     public Sprite ragnarokIcon;
+    public Sprite spiderIcon;
     public Sprite noneGrenadeIcon;
 
     //-------------------------
@@ -850,6 +851,12 @@ public class UI : MonoBehaviour
     {
         var gm = FindFirstObjectByType<GrenadeManager>();
         if (gm) gm.SetType(GrenadeType.Ragnarok);
+        CloseGrenadePanel();
+    }
+    public void OnPickSpider()
+    {
+        var gm = FindFirstObjectByType<GrenadeManager>();
+        if (gm) gm.SetType(GrenadeType.Spider);
         CloseGrenadePanel();
     }
 

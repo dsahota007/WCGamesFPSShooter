@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3187101317417401291
 Transform:
   m_ObjectHideFlags: 0
@@ -4917,7 +4917,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6026501951721591337
 Transform:
   m_ObjectHideFlags: 0
@@ -9808,7 +9808,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &6092943598310543193
 Transform:
   m_ObjectHideFlags: 0
@@ -14708,7 +14708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &955884948630895739
 Transform:
   m_ObjectHideFlags: 0
@@ -24511,7 +24511,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8018772970214966194
 Transform:
   m_ObjectHideFlags: 0
@@ -29525,7 +29525,7 @@ GameObject:
   - component: {fileID: 720325515038598322}
   - component: {fileID: 668786554398026484}
   m_Layer: 0
-  m_Name: Plexus AoE
+  m_Name: Plexus AoE 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29567,7 +29567,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 1
-  looping: 1
+  looping: 0
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
