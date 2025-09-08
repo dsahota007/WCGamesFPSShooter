@@ -76,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 dashDirection;
 
 
+    [Header("Perk/Effects Multipliers")]
+    public float ExternalSpeedMult = 1f; // used by perks like Adrenaline
 
 
     void Start()
@@ -144,6 +146,8 @@ public class PlayerMovement : MonoBehaviour
             currentSpeed = sprintSpeed;
         else
             currentSpeed = walkSpeed;
+
+        currentSpeed *= ExternalSpeedMult; // this is for the adrenaline ICU type perk
 
         float x_input = Input.GetAxisRaw("Horizontal");
         float z_input = Input.GetAxisRaw("Vertical");
@@ -426,6 +430,8 @@ public class PlayerMovement : MonoBehaviour
     {
         walkSpeed = _baseWalkSpeed;
         sprintSpeed = _baseSprintSpeed;
+        ExternalSpeedMult = 1f;
+
     }
 
 

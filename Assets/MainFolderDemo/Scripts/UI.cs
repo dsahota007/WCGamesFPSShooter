@@ -129,6 +129,7 @@ public class UI : MonoBehaviour
     public Sprite fastHandsIcon;
     public Sprite magicCooldownIcon;
     public Sprite moreDropsIcon;
+    public Sprite adrenalineIcon;
 
     private readonly List<PerkType> _perkOrder = new List<PerkType>();  //a list that remembers which perks were added and in what order (first → last). Useful if you ever need to read them back in order.
     private readonly Dictionary<PerkType, Image> _activePerkIcons = new Dictionary<PerkType, Image>();  //map/dict so we can perkkType --> img assign to that perk. 
@@ -140,7 +141,7 @@ public class UI : MonoBehaviour
     public Text fastHandsPerkText;
     public Text magicCooldownPerkText;
     public Text moreDropsPerkText;
-
+    public Text adrenalinePerkText;  
     //-------------------------- PACK
     [Header("Pack A Punch")]
     public Text packAPunchText;           // Text to show Pack-A-Punch prompts
@@ -736,6 +737,13 @@ public class UI : MonoBehaviour
             FindFirstObjectByType<MoreDropsPerk>()?.hasMoreDropsPerk ?? false,
             FindFirstObjectByType<MoreDropsPerk>()?.cost ?? 0
         );
+        HandlePerkStationUI(
+            FindFirstObjectByType<AdrenalinePerk>(),
+            adrenalinePerkText,
+            "Adrenaline (speed boost before death)",
+            FindFirstObjectByType<AdrenalinePerk>()?.hasAdrenalinePerk ?? false,
+            FindFirstObjectByType<AdrenalinePerk>()?.cost ?? 0
+        );
 
 
         if (packAPunchMachine != null && packAPunchText != null)
@@ -1082,6 +1090,7 @@ public class UI : MonoBehaviour
             case PerkType.FastHands: return fastHandsIcon;
             case PerkType.MagicCooldown: return magicCooldownIcon;
             case PerkType.MoreDrop: return moreDropsIcon;
+            case PerkType.Adrenaline: return adrenalineIcon;
 
 
             default: return null;

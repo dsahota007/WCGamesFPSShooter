@@ -141,7 +141,7 @@ public class PlayerAttributes : MonoBehaviour
         var fasthands = FindFirstObjectByType<FastHandsPerk>(); if (fasthands) fasthands.hasFastHandsPerk = false;
         var magicCooldonw = FindFirstObjectByType<MagicCooldownPerk>(); if (magicCooldonw) magicCooldonw.hasMagicCooldownPerk = false;
         var drop = FindFirstObjectByType<MoreDropsPerk>(); if (drop) drop.hasMoreDropsPerk = false;
-
+        var adrenaline = FindFirstObjectByType<AdrenalinePerk>(); if (adrenaline) adrenaline.hasAdrenalinePerk = false;
         // 5) remove perk icons from the bar
         var ui = FindFirstObjectByType<UI>();
         if (ui != null)
@@ -153,6 +153,7 @@ public class PlayerAttributes : MonoBehaviour
             ui.RemovePerkIcon(PerkType.FastHands);
             ui.RemovePerkIcon(PerkType.MagicCooldown);
             ui.RemovePerkIcon(PerkType.MoreDrop);
+            ui.RemovePerkIcon(PerkType.Adrenaline);
         }
     }
 
