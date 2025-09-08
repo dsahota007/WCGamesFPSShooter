@@ -1692,15 +1692,15 @@ MonoBehaviour:
   magicStatusText: {fileID: 913009173}
   magicSlotIcon: {fileID: 1551727685}
   noneIcon: {fileID: 0}
-  normalIcon: {fileID: 21300000, guid: 2d089513ae4adfc48a683c362ad9992c, type: 3}
-  crystalIcon: {fileID: 21300000, guid: 8a5f9829a049c704fa992203bfc451f2, type: 3}
-  voidIcon: {fileID: 0}
-  iceIcon: {fileID: 0}
-  venomIcon: {fileID: 0}
-  lightningIcon: {fileID: 0}
-  windIcon: {fileID: 21300000, guid: 7092324b93851a14c858530cca4a6b26, type: 3}
-  meteorIcon: {fileID: 0}
-  crimsonIcon: {fileID: 0}
+  normalIcon: {fileID: 21300000, guid: e682fe0322cec8944955a0045f5eaa66, type: 3}
+  crystalIcon: {fileID: 21300000, guid: ec3ba3c5bb66c5f4fabe6106f3d852a2, type: 3}
+  voidIcon: {fileID: 21300000, guid: 6e2101c7bc4f36644bda0af3001aafdf, type: 3}
+  iceIcon: {fileID: 21300000, guid: 39b09df80d2dca44d9aeb0f7d0d97d77, type: 3}
+  venomIcon: {fileID: 21300000, guid: c4a504dec73bebb46bb048c7929d530a, type: 3}
+  lightningIcon: {fileID: 21300000, guid: eb0f1e70e560608498cb616b179560b4, type: 3}
+  windIcon: {fileID: 21300000, guid: 7e70528d844969c49a38c6932634418e, type: 3}
+  meteorIcon: {fileID: 21300000, guid: 705518a7e058c2c4ebb964819ec623a2, type: 3}
+  crimsonIcon: {fileID: 21300000, guid: 38a6654fd456ec541afd827b66a9aa17, type: 3}
   grenadeChest: {fileID: 1649048623}
   grenadePrompt: {fileID: 429056151}
   grenadePanel: {fileID: 1156089615}
@@ -19529,7 +19529,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 1033732754}
+  mat: {fileID: 893803993}
   flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
   bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
   ColorBleed: 0.25
@@ -20710,6 +20710,46 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!21 &893803993
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/DarkBringerRefined_1_2
+  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BayerTex:
+        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Lut2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &896716870
 GameObject:
   m_ObjectHideFlags: 0
@@ -23616,46 +23656,6 @@ MonoBehaviour:
   grainToggle: {fileID: 1672518159}
   postProcessVolume: {fileID: 2107597908}
   enemyHealthBarToggle: {fileID: 892723702}
---- !u!21 &1033732754
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/DarkBringerRefined_1_2
-  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BayerTex:
-        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Lut2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1040950952
 GameObject:
   m_ObjectHideFlags: 0
