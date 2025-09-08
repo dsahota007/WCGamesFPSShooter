@@ -192,7 +192,7 @@ public class UI : MonoBehaviour
 
         if (grenadeManager != null)
         {
-            UpdateGrenadeSlot(grenadeManager.currentType);
+            GetGrenadeSpriteForSlots(grenadeManager.currentType);
         }
 
 
@@ -858,7 +858,7 @@ public class UI : MonoBehaviour
         grenadeMsgCo = null;
     }
 
-    public void UpdateGrenadeSlot(GrenadeType type)   // this is for the logo
+    public void GetGrenadeSpriteForSlots(GrenadeType type)   // this is for the logo
     {
         if (grenadeSlotIcon == null) return;
 
@@ -937,7 +937,7 @@ public class UI : MonoBehaviour
     {
         if (magicSlotIcon == null) return;
 
-        magicSlotIcon.sprite = GetMagicSprite(type);
+        magicSlotIcon.sprite = GetMagicSpriteForSlots(type);
         magicSlotIcon.enabled = (magicSlotIcon.sprite != null);
 
         if (magicSlotIcon.enabled)
@@ -950,7 +950,7 @@ public class UI : MonoBehaviour
         }
     }
 
-    private Sprite GetMagicSprite(MagicType type)
+    private Sprite GetMagicSpriteForSlots(MagicType type)
     {
         switch (type)
         {
@@ -1309,14 +1309,14 @@ public class UI : MonoBehaviour
     {
         if (weapon == null)
         {
-            UpdateInfusionSlot(InfusionType.None);
+            GetInfusionSpriteForSlots(InfusionType.None);
             return;
         }
 
-        UpdateInfusionSlot(weapon.infusion);  // whichever infusion this weapon has
+        GetInfusionSpriteForSlots(weapon.infusion);  // whichever infusion this weapon has
     }
 
-    public void UpdateInfusionSlot(InfusionType type)
+    public void GetInfusionSpriteForSlots(InfusionType type)
     {
         if (infusionSlotIcon == null) return;
 

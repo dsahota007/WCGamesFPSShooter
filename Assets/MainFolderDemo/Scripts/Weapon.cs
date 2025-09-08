@@ -723,7 +723,7 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
-        FindFirstObjectByType<UI>()?.UpdateInfusionSlot(type);   //this is for the SLOT in bottom right in UI
+        FindFirstObjectByType<UI>()?.GetInfusionSpriteForSlots(type);   //this is for the SLOT in bottom right in UI
 
     }
 
