@@ -73,7 +73,12 @@ public class GrenadeManager : MonoBehaviour
             count[gerType] = GetCap(gerType);
     }
 
-    public void SetType(GrenadeType type) => currentType = type; //weWhen the player selects a grenade type in your UI panel, you call this. It simply records “the current grenade type” you’re using.
+    public void SetType(GrenadeType type)
+    {
+        currentType = type; //weWhen the player selects a grenade type in your UI panel, you call this. It simply records “the current grenade type” you’re using.
+        FindFirstObjectByType<UI>()?.UpdateGrenadeSlot(type);  // this is to set the image in UI
+
+    }
 
     public GameObject GetCurrentPrefab()
     {

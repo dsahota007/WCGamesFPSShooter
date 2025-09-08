@@ -663,6 +663,7 @@ public class Weapon : MonoBehaviour
     {
         infusedElement = element;
         Debug.Log($"[Weapon] Infused with {element} magic.");
+
     }
 
     //----------
@@ -723,6 +724,9 @@ public class Weapon : MonoBehaviour
                 RestorePAPSkinIfNeeded();
                 break;
         }
+
+        FindFirstObjectByType<UI>()?.UpdateInfusionSlot(type);   //this is for the SLOT in bottom right in UI
+
     }
 
 

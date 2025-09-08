@@ -78,6 +78,7 @@ public class UI : MonoBehaviour
     public Slider magicCooldownSlider;
     public Text magicStatusText;
 
+    
     [Header("Magic Slot UI")]
     public Image magicSlotIcon;  // assign in inspector
     public Sprite noneIcon;
@@ -102,6 +103,18 @@ public class UI : MonoBehaviour
     private Coroutine grenadeMsgCo;
     private bool grenadePanelOpen = false;
 
+    [Header("Grenade Slot UI")]
+    public Image grenadeSlotIcon;
+    public Sprite fragIcon;
+    public Sprite impactIcon;
+    public Sprite semtexIcon;
+    public Sprite bioIcon;
+    public Sprite sulfuricNapalmIcon;
+    public Sprite crystalClusterIcon;
+    public Sprite bastionIcon;
+    public Sprite ragnarokIcon;
+    public Sprite noneGrenadeIcon;
+
     //-------------------------
 
     [Header("Perk Bar")]
@@ -125,7 +138,7 @@ public class UI : MonoBehaviour
     public Text fastHandsPerkText;
     public Text magicCooldownPerkText;
 
-    //--------------------------
+    //-------------------------- PACK
     [Header("Pack A Punch")]
     public Text packAPunchText;           // Text to show Pack-A-Punch prompts
     public PackAPunch packAPunchMachine;
@@ -140,6 +153,7 @@ public class UI : MonoBehaviour
     private readonly System.Collections.Generic.Dictionary<string, Coroutine> _timedCoroutines =
         new System.Collections.Generic.Dictionary<string, Coroutine>();
 
+    //------------------ INFUSION 
     [Header("Infusion UI")]
     public GameObject infusePanel;
     public Text infusePromptText;
@@ -147,6 +161,20 @@ public class UI : MonoBehaviour
     private bool infusePanelOpen = false;
     public Text infuseStatusText;
     [HideInInspector] Weapon currentWeapon;  //we need for cur weapon.
+
+    [Header("Infusion Slot UI")]
+    public Image infusionSlotIcon;
+    public Sprite infusionNoneIcon;
+    public Sprite infusionFireIcon;
+    public Sprite infusionCrystalIcon;
+    public Sprite infusionVoidIcon;
+    public Sprite infusionIceIcon;
+    public Sprite infusionVenomIcon;
+    public Sprite infusionLightningIcon;
+    public Sprite infusionWindIcon;
+    public Sprite infusionMeteorIcon;
+    public Sprite infusionCrimsonIcon;
+
 
     void Start()
     {
@@ -825,6 +853,25 @@ public class UI : MonoBehaviour
         grenadeMsgCo = null;
     }
 
+    public void UpdateGrenadeSlot(GrenadeType type)   // this is for the logo
+    {
+        if (grenadeSlotIcon == null) return;
+
+        switch (type)
+        {
+            case GrenadeType.Frag: grenadeSlotIcon.sprite = fragIcon; break;
+            case GrenadeType.Impact: grenadeSlotIcon.sprite = impactIcon; break;
+            case GrenadeType.Semtex: grenadeSlotIcon.sprite = semtexIcon; break;
+            case GrenadeType.Bio: grenadeSlotIcon.sprite = bioIcon; break;
+            case GrenadeType.SulfuricNapalm: grenadeSlotIcon.sprite = sulfuricNapalmIcon; break;
+            case GrenadeType.CrystalCluster: grenadeSlotIcon.sprite = crystalClusterIcon; break;
+            case GrenadeType.Bastion: grenadeSlotIcon.sprite = bastionIcon; break;
+            case GrenadeType.Ragnarok: grenadeSlotIcon.sprite = ragnarokIcon; break;
+            default: grenadeSlotIcon.sprite = noneGrenadeIcon; break;
+        }
+    }
+
+
     //-------------------------MAGIC functions
 
     //---MAGIC prompt text
@@ -1188,6 +1235,7 @@ public class UI : MonoBehaviour
         }
     }
 
+    //------------------------ INFUSE UI
     public void OnClickInfuseFire()
     {
         InfuseWith(InfusionType.Fire);
@@ -1250,6 +1298,27 @@ public class UI : MonoBehaviour
         }
         CloseInfusePanel();
     }
+
+    public void UpdateInfusionSlot(InfusionType type)
+    {
+        if (infusionSlotIcon == null) return;
+
+        switch (type)
+        {
+            case InfusionType.Fire: infusionSlotIcon.sprite = infusionFireIcon; break;
+            case InfusionType.Crystal: infusionSlotIcon.sprite = infusionCrystalIcon; break;
+            case InfusionType.Void: infusionSlotIcon.sprite = infusionVoidIcon; break;
+            case InfusionType.Ice: infusionSlotIcon.sprite = infusionIceIcon; break;
+            case InfusionType.Venom: infusionSlotIcon.sprite = infusionVenomIcon; break;
+            case InfusionType.Lightning: infusionSlotIcon.sprite = infusionLightningIcon; break;
+            case InfusionType.Wind: infusionSlotIcon.sprite = infusionWindIcon; break;
+            case InfusionType.Meteor: infusionSlotIcon.sprite = infusionMeteorIcon; break;
+            case InfusionType.Crimson: infusionSlotIcon.sprite = infusionCrimsonIcon; break;
+            default: infusionSlotIcon.sprite = infusionNoneIcon; break;
+        }
+    }
+
+
 }
 
 
