@@ -190,6 +190,11 @@ public class UI : MonoBehaviour
 
         if (infuseStatusText) infuseStatusText.text = "";   //start empty
 
+        if (grenadeManager != null)
+        {
+            UpdateGrenadeSlot(grenadeManager.currentType);
+        }
+
 
     }
 
@@ -867,7 +872,8 @@ public class UI : MonoBehaviour
             case GrenadeType.CrystalCluster: grenadeSlotIcon.sprite = crystalClusterIcon; break;
             case GrenadeType.Bastion: grenadeSlotIcon.sprite = bastionIcon; break;
             case GrenadeType.Ragnarok: grenadeSlotIcon.sprite = ragnarokIcon; break;
-            default: grenadeSlotIcon.sprite = noneGrenadeIcon; break;
+
+            default: grenadeSlotIcon.sprite = fragIcon; break;
         }
     }
 
@@ -1299,9 +1305,29 @@ public class UI : MonoBehaviour
         CloseInfusePanel();
     }
 
+    public void UpdateInfusionFromWeapon(Weapon weapon)
+    {
+        if (weapon == null)
+        {
+            UpdateInfusionSlot(InfusionType.None);
+            return;
+        }
+
+        UpdateInfusionSlot(weapon.infusion);  // whichever infusion this weapon has
+    }
+
     public void UpdateInfusionSlot(InfusionType type)
     {
         if (infusionSlotIcon == null) return;
+
+        if (type == InfusionType.None)
+        {
+            // hide the icon, show just your empty background frame
+            infusionSlotIcon.enabled = false;
+            return;
+        }
+
+        infusionSlotIcon.enabled = true;
 
         switch (type)
         {
@@ -1314,9 +1340,9 @@ public class UI : MonoBehaviour
             case InfusionType.Wind: infusionSlotIcon.sprite = infusionWindIcon; break;
             case InfusionType.Meteor: infusionSlotIcon.sprite = infusionMeteorIcon; break;
             case InfusionType.Crimson: infusionSlotIcon.sprite = infusionCrimsonIcon; break;
-            default: infusionSlotIcon.sprite = infusionNoneIcon; break;
         }
     }
+
 
 
 }

@@ -307,29 +307,6 @@ public class Weapon : MonoBehaviour
     public Vector3 crimsonOnEnemyVFXScale = Vector3.one;
     public float crimsonOnEnemyVFXLifetime = 4f;     // auto-destroy (0 = don't auto destroy)
     public float crimsonHealPercentPerHit = 0.001f;  // 0.1%
- 
-
-
-
-    public void ApplyPackAPunchSkin()
-    {
-        if (isSkinned) return;
-
-        if (!hasInfusionSkin)   // Only apply PAP skin if no infusion skin is active (infusion has priority)
-        {
-            if (gunRenderer != null && papGunMaterial != null)
-            {
-                gunRenderer.material = papGunMaterial;
-            }
-
-            if (magazineRenderer != null && papMagMaterial != null)
-            {
-                magazineRenderer.material = papMagMaterial;
-            }
-        }
-
-        isSkinned = true;
-    }
 
 
     void Start()
@@ -392,6 +369,27 @@ public class Weapon : MonoBehaviour
             armMover.externalKickbackOffset = currentKickbackOffset;
 
     }
+
+    public void ApplyPackAPunchSkin()
+    {
+        if (isSkinned) return;
+
+        if (!hasInfusionSkin)   // Only apply PAP skin if no infusion skin is active (infusion has priority)
+        {
+            if (gunRenderer != null && papGunMaterial != null)
+            {
+                gunRenderer.material = papGunMaterial;
+            }
+
+            if (magazineRenderer != null && papMagMaterial != null)
+            {
+                magazineRenderer.material = papMagMaterial;
+            }
+        }
+
+        isSkinned = true;
+    }
+
 
     private GameObject GetMuzzleFlashPrefab()
     {

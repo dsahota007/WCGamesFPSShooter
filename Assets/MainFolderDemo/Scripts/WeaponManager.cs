@@ -131,7 +131,12 @@ public class WeaponManager : MonoBehaviour
         ActiveWeapon.CancelReload();
 
         if (ui != null)
+        {
             ui.SetCurrentWeapon(ActiveWeapon);
+            ui.UpdateInfusionFromWeapon(ActiveWeapon);  //this is for the slot updates
+        }
+
+
 
 
         isSwitching = false;
@@ -169,7 +174,10 @@ public class WeaponManager : MonoBehaviour
         ActiveWeapon = weaponScripts[index];
 
         if (ui != null)
+        {
             ui.SetCurrentWeapon(ActiveWeapon);
+            ui.UpdateInfusionFromWeapon(ActiveWeapon);  //this is for the slot updates
+        }
 
 
     }
