@@ -722,7 +722,7 @@ public class UI : MonoBehaviour
             FindFirstObjectByType<MagicCooldownPerk>()?.cost ?? 0
         );
         HandlePerkStationUI(
-            FindFirstObjectByType<MagicCooldownPerk>(),
+            FindFirstObjectByType<MoreDropsPerk>(),
             moreDropsPerkText,
             "Increase Drop Chance",
             FindFirstObjectByType<MoreDropsPerk>()?.hasMoreDropsPerk ?? false,
