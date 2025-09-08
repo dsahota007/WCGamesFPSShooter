@@ -1715,7 +1715,7 @@ MonoBehaviour:
   crystalClusterIcon: {fileID: 21300000, guid: 36fcb84daa886da4d8b684a040066667, type: 3}
   bastionIcon: {fileID: 21300000, guid: ecfe6580a647fc84090b192756e41350, type: 3}
   ragnarokIcon: {fileID: 21300000, guid: c36267d6f5533cd4f8709261cd397681, type: 3}
-  spiderIcon: {fileID: 0}
+  spiderIcon: {fileID: 21300000, guid: cc9d4af5b28c67849b250ea0f0ed2279, type: 3}
   noneGrenadeIcon: {fileID: 0}
   perkBar: {fileID: 1429916975}
   perkIconPrefab: {fileID: 1830997629482401065, guid: dd4089848153a2b4380c05ec95742021,
@@ -3136,6 +3136,46 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 153509745}
   m_PrefabAsset: {fileID: 0}
+--- !u!21 &157236739
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/DarkBringerRefined_1_2
+  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BayerTex:
+        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Lut2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &157872181
 GameObject:
   m_ObjectHideFlags: 0
@@ -19530,7 +19570,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 1961008994}
+  mat: {fileID: 157236739}
   flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
   bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
   ColorBleed: 0.25
@@ -31986,9 +32026,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefabs:
-  - {fileID: 5213014239458159033, guid: 8339c0fe9dc32ab48b69174d23421ca3, type: 3}
   - {fileID: 6149432723859890116, guid: e20a78585e15dfc47872c97297648c17, type: 3}
-  - {fileID: 7224478408790448130, guid: cd1b764f06bfee844a726211ef5fee4c, type: 3}
   spawnPoints:
   - {fileID: 1408653337}
   - {fileID: 1920125453}
@@ -36695,46 +36733,6 @@ RectTransform:
   m_AnchoredPosition: {x: 5.0000076, y: -89.49999}
   m_SizeDelta: {x: 455.4779, y: 305.3063}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!21 &1961008994
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/DarkBringerRefined_1_2
-  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BayerTex:
-        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Lut2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1961012784
 GameObject:
   m_ObjectHideFlags: 0

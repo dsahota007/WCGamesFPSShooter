@@ -890,6 +890,7 @@ public class UI : MonoBehaviour
             case GrenadeType.CrystalCluster: grenadeSlotIcon.sprite = crystalClusterIcon; break;
             case GrenadeType.Bastion: grenadeSlotIcon.sprite = bastionIcon; break;
             case GrenadeType.Ragnarok: grenadeSlotIcon.sprite = ragnarokIcon; break;
+            case GrenadeType.Spider: grenadeSlotIcon.sprite = spiderIcon; break;
 
             default: grenadeSlotIcon.sprite = fragIcon; break;
         }

@@ -15092,8 +15092,7 @@ GameObject:
   - component: {fileID: 3670815050899265297}
   - component: {fileID: -3906799101948438632}
   - component: {fileID: 7771067425648079068}
-  - component: {fileID: 4532403883366351155}
-  - component: {fileID: 4985810906863833738}
+  - component: {fileID: 1584716767893743099}
   m_Layer: 0
   m_Name: SpiderGrenade
   m_TagString: Untagged
@@ -15186,33 +15185,7 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4532403883366351155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8177116219481987225}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 494234c7cc14f9d46aa3d05b72ea5038, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fuseTime: 2
-  explosionRadius: 9
-  explosionDamage: 999999
-  explosionForce: 5
-  upwardModifier: 0.5
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 8
-  explosionVFX: {fileID: 8974203713140315807, guid: f01a1e775dbe5654e9e546bdec82411f,
-    type: 3}
-  vfxLifetime: 5
-  EnemyImpactVFX: {fileID: 3958596659431381315, guid: 3fbf483ab42363b4387653d01c64bc49,
-    type: 3}
-  spinTorque: 5
---- !u!114 &4985810906863833738
+--- !u!114 &1584716767893743099
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15221,18 +15194,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 8177116219481987225}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 674ad2d49c521a0438022da6516f5518, type: 3}
+  m_Script: {fileID: 11500000, guid: 1f8acea2d21af5d41a34e10f78818a7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 20
-  lifeTime: 5
-  gasRadius: 5
-  gasDuration: 5
+  speed: 35
+  lifeTime: 7
+  gasRadius: 12
+  webDuration: 5
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
-  GroundImpactVFX: {fileID: 5610010966355794069, guid: 9781d49e37711414fad2d9323b3a96bb,
-    type: 3}
-  GasCloudVFX: {fileID: 8974203713140315807, guid: 556d26080af684e49a5b0a80a94e581b,
+  GroundImpactVFX: {fileID: 8974203713140315807, guid: 6218f0db92b555d4cbe7747cfdc7b16c,
     type: 3}
   spinTorque: 1
+  slowPercent: 0.855
+  refreshTick: 5
+  webOnEnemyVFXPrefab: {fileID: 8974203713140315807, guid: d0daa04b616352b4ca7a09a626dae3ba,
+    type: 3}
+  webOnEnemyVFXOffset: {x: 0, y: 0, z: 0}
+  webOnEnemyVFXEuler: {x: 0, y: 0, z: 0}
+  webOnEnemyVFXScale: {x: 1, y: 1, z: 1}
+  webOnEnemyVFXLifetime: 5
