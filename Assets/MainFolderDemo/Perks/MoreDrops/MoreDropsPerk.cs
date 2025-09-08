@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MoreFireRatePerk : MonoBehaviour
+public class MoreDropsPerk : MonoBehaviour
 {
     public PointManager points;
     [Header("Interact")]
     public Transform player;
     public PerkType type = PerkType.FireRate;
-    public int cost = 3000;
-    public float interactDistance = 2.2f;
+    public int cost = 4500;
+    public float interactDistance = 3f;
 
     [Header("Flask")]
     public GameObject flaskPrefab;           // leave null if you only want the arm anim
 
     [Header("Flask Offsets")]
     public Vector3 flaskStartLocalPos = new Vector3(-0.09f, -1.1f, 0.42f);
-    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   // 👈 hold up stop
+    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   //hold up stop
     public Vector3 flaskMouthLocalPos = new Vector3(-0.01f, -0.12f, 0.16f);
 
     public Vector3 flaskStartLocalEuler = Vector3.zero;
@@ -29,8 +29,9 @@ public class MoreFireRatePerk : MonoBehaviour
     public float moveOutTime = 0.25f;
 
     [Header("Perk Upgrade")]
+    public float dropChanceMultiplier = 2f;
     public GameObject PlayerDrinkVFX;
-    [HideInInspector] public bool hasMoreFireRatePerk = false;
+    [HideInInspector] public bool hasMoreDropsPerk = false;
 
     Transform cam;   // Camera.main
 
@@ -47,7 +48,7 @@ public class MoreFireRatePerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreFireRatePerk)
+        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreDropsPerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))
@@ -65,10 +66,13 @@ public class MoreFireRatePerk : MonoBehaviour
 
     IEnumerator DoPerkDrink(ArmMovementMegaScript arms)
     {
-        hasMoreFireRatePerk = true;
-        Weapon.GlobalFireRateMult *= 1.5f;   //perk effect
+        hasMoreDropsPerk = true;
+        //Weapon.GlobalFireRateMult *= 1.5f;   // 👈 perk effect
+        DropSpawner.GlobalDropChanceMult *= Mathf.Max(0.01f, dropChanceMultiplier);
 
-        FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.FireRate);
+
+
+        FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.MoreDrop);
 
         if (player != null && PlayerDrinkVFX != null)
         {

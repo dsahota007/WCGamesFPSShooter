@@ -119,6 +119,8 @@ public class PlayerAttributes : MonoBehaviour
         Weapon.GlobalFireRateMult = 1f;
         Weapon.GlobalReloadSpeedMult = 1f;
         MagicManager.GlobalCooldownMult = 1f;     // back to normal cooldown
+        DropSpawner.GlobalDropChanceMult = 1f;
+
 
 
         // 2) player stats back to base
@@ -138,6 +140,7 @@ public class PlayerAttributes : MonoBehaviour
         var revive = FindFirstObjectByType<MoreRevivePerk>(); if (revive) revive.hasMoreRevivePerk = false;
         var fasthands = FindFirstObjectByType<FastHandsPerk>(); if (fasthands) fasthands.hasFastHandsPerk = false;
         var magicCooldonw = FindFirstObjectByType<MagicCooldownPerk>(); if (magicCooldonw) magicCooldonw.hasMagicCooldownPerk = false;
+        var drop = FindFirstObjectByType<MoreDropsPerk>(); if (drop) drop.hasMoreDropsPerk = false;
 
         // 5) remove perk icons from the bar
         var ui = FindFirstObjectByType<UI>();
@@ -149,6 +152,7 @@ public class PlayerAttributes : MonoBehaviour
             ui.RemovePerkIcon(PerkType.Revive);
             ui.RemovePerkIcon(PerkType.FastHands);
             ui.RemovePerkIcon(PerkType.MagicCooldown);
+            ui.RemovePerkIcon(PerkType.MoreDrop);
         }
     }
 
