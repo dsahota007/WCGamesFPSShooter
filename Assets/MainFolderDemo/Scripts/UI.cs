@@ -700,6 +700,14 @@ public class UI : MonoBehaviour
         );
 
         HandlePerkStationUI(
+            FindFirstObjectByType<FastHandsPerk>(),
+            fastHandsPerkText,
+            "Faster Reload",
+            FindFirstObjectByType<FastHandsPerk>() != null && FindFirstObjectByType<FastHandsPerk>().hasFastHandsPerk,
+            FindFirstObjectByType<FastHandsPerk>() != null ? FindFirstObjectByType<FastHandsPerk>().cost : 0
+        );
+
+        HandlePerkStationUI(
             FindFirstObjectByType<MoreHealthPerk>(),
             healthPerkText,
             "More Health",
@@ -724,7 +732,7 @@ public class UI : MonoBehaviour
         HandlePerkStationUI(
             FindFirstObjectByType<MoreDropsPerk>(),
             moreDropsPerkText,
-            "Increase Drop Chance",
+            "Increase Drop Chance & 10% Not Consume Ammo",
             FindFirstObjectByType<MoreDropsPerk>()?.hasMoreDropsPerk ?? false,
             FindFirstObjectByType<MoreDropsPerk>()?.cost ?? 0
         );

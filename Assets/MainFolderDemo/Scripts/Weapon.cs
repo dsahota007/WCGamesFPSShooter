@@ -116,6 +116,7 @@ public class Weapon : MonoBehaviour
     [Header("Global Weapon/Perk Variables")]
     public static float GlobalReloadSpeedMult = 1f;
     public static float GlobalFireRateMult = 1f;   //new multiplier for double tap concept
+    public static float GlobalNoConsumeAmmoChance = 0f; //this is for not consum ammo 
     private float ShotDelay => Mathf.Max(0.02f, fireRate / Mathf.Max(0.01f, GlobalFireRateMult));
     private float BurstDelayM => Mathf.Max(0.02f, burstDelay / Mathf.Max(0.01f, GlobalFireRateMult));
 
@@ -452,9 +453,12 @@ public class Weapon : MonoBehaviour
         if (ui.IsInfusePanelOpen) return;
         if (isWeaponBeingShowcased || !CanShoot() || isReloading || IsSprinting()) return; //leave func if u cant
 
-        var dm = FindFirstObjectByType<DropManager>();  
+        var dm = FindFirstObjectByType<DropManager>();
         if (dm == null || !dm.IsInfiniteAmmo)
-            currentAmmo--;      //only reduce ammo if not in infiteAmmo drop
+        { 
+            if (Random.value >= GlobalNoConsumeAmmoChance)
+                currentAmmo--;
+        }
 
         if (bulletPrefab && firePoint)
         {

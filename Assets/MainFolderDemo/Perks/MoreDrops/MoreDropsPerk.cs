@@ -69,6 +69,8 @@ public class MoreDropsPerk : MonoBehaviour
         hasMoreDropsPerk = true;
         //Weapon.GlobalFireRateMult *= 1.5f;   // 👈 perk effect
         DropSpawner.GlobalDropChanceMult *= Mathf.Max(0.01f, dropChanceMultiplier);
+        Weapon.GlobalNoConsumeAmmoChance = Mathf.Max(Weapon.GlobalNoConsumeAmmoChance, 0.10f); // 10%
+
 
 
 

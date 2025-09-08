@@ -120,7 +120,7 @@ public class PlayerAttributes : MonoBehaviour
         Weapon.GlobalReloadSpeedMult = 1f;
         MagicManager.GlobalCooldownMult = 1f;     // back to normal cooldown
         DropSpawner.GlobalDropChanceMult = 1f;
-
+        Weapon.GlobalNoConsumeAmmoChance = 0f;
 
 
         // 2) player stats back to base
