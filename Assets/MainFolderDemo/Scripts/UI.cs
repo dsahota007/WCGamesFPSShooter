@@ -77,8 +77,19 @@ public class UI : MonoBehaviour
     [Header("Magic Cooldown UI")]
     public Slider magicCooldownSlider;
     public Text magicStatusText;
+    public Image magicCooldownFill;
 
-    
+    [Header("Magic Cooldown Colors")]
+    public Color normalColor = new Color(1f, 0.35f, 0.2f);      
+    public Color crystalColor = new Color(0.35f, 0.85f, 1f);
+    public Color voidColor = new Color(0.6f, 0.3f, 1f);
+    public Color iceColor = new Color(0.6f, 0.9f, 1f);
+    public Color venomColor = new Color(0.5f, 1f, 0.4f);
+    public Color lightningColor = new Color(1f, 1f, 0.4f);
+    public Color windColor = new Color(0.8f, 1f, 0.9f);
+    public Color meteorColor = new Color(1f, 0.5f, 0.1f);
+    public Color crimsonColor = new Color(1f, 0.2f, 0.35f);
+
     [Header("Magic Slot UI")]
     public Image magicSlotIcon;  // assign in inspector
     public Sprite noneIcon;
@@ -212,6 +223,11 @@ public class UI : MonoBehaviour
             GetGrenadeSpriteForSlots(grenadeManager.currentType);
         }
 
+        //coloring the fill Bar
+        if (magicCooldownFill == null && magicCooldownSlider != null && magicCooldownSlider.fillRect != null)
+        {
+            magicCooldownFill = magicCooldownSlider.fillRect.GetComponent<Image>();
+        }
 
     }
 
@@ -1027,9 +1043,33 @@ public class UI : MonoBehaviour
             magicSlotIcon.rectTransform.localRotation = Quaternion.identity;
             magicSlotIcon.rectTransform.Rotate(0f, 0f, 45f);
         }
+
+        SetMagicCooldownColor(type);  //this is to change color of the fill bar
     }
 
+    private void SetMagicCooldownColor(MagicType type)
+    {
+        if (magicCooldownFill == null) return;
 
+        // keep whatever alpha the fill currently has
+        float a = magicCooldownFill.color.a;
+        Color c = normalColor;
+
+        switch (type)
+        {
+            case MagicType.Normal: c = normalColor; break;
+            case MagicType.Crystal: c = crystalColor; break;
+            case MagicType.Void: c = voidColor; break;
+            case MagicType.Ice: c = iceColor; break;
+            case MagicType.Venom: c = venomColor; break;
+            case MagicType.Lightning: c = lightningColor; break;
+            case MagicType.Wind: c = windColor; break;
+            case MagicType.Meteor: c = meteorColor; break;
+            case MagicType.Crimson: c = crimsonColor; break;
+        }
+
+        magicCooldownFill.color = new Color(c.r, c.g, c.b, a);
+    }
 
 
     private Sprite GetMagicSpriteForSlots(MagicType type)
@@ -1127,6 +1167,7 @@ public class UI : MonoBehaviour
             yield return null;
         }
 
+        // this is all to increase transparency so its not see thru
         cg.alpha = 1f;
         img.canvasRenderer.SetAlpha(1f);
         var c = img.color; img.color = new Color(c.r, c.g, c.b, 1f);
