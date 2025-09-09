@@ -38,6 +38,7 @@ public class UI : MonoBehaviour
     [Header("Kinetic Slam UI")]
     public Slider slamCooldownSlider;
     public PlayerMovement playerMovement;
+    public Text kineticJumpHintText;
 
     [Header("Player Health UI")]
     public Slider playerHealthSlider;  
@@ -203,6 +204,12 @@ public class UI : MonoBehaviour
     public GameObject meteorMagicVFX;
     public GameObject crimsonMagicVFX;
 
+    [Header("Dash UI")]
+    public Slider dashCooldownSlider;    
+    public Image dashFill;               
+    public Color dashReadyColor = Color.white;
+    //public Color dashRechargingColor = new Color(1f, 1f, 1f, 0.6f);
+
 
     void Start()
     {
@@ -229,6 +236,16 @@ public class UI : MonoBehaviour
             magicCooldownFill = magicCooldownSlider.fillRect.GetComponent<Image>();
         }
 
+        //dash Recharge Bar
+        if (dashFill == null && dashCooldownSlider != null && dashCooldownSlider.fillRect != null)
+        {
+            dashFill = dashCooldownSlider.fillRect.GetComponent<Image>();
+        }
+
+        if (kineticJumpHintText)  //disable on start
+        {
+            kineticJumpHintText.gameObject.SetActive(false);
+        }
     }
 
     //bool chestPanelOpen = false;
@@ -788,6 +805,42 @@ public class UI : MonoBehaviour
         }
 
         HandleInfuseStationUI();
+
+        // --- Dash Cooldown UI ---
+        if (playerMovement != null && dashCooldownSlider != null)
+        {
+            float dashTimePassed = Time.time - playerMovement.LastDashTime;
+            float dashProgress = Mathf.Clamp01(dashTimePassed / playerMovement.dashCooldown);
+            dashCooldownSlider.value = dashProgress;
+
+            //// optional: color swap when ready vs recharging
+            //if (dashFill != null)
+            //{
+            //    dashFill.color = (dashProgress >= 1f) ? dashReadyColor : dashRechargingColor;
+
+            //}
+        }
+        // --- Kinetic Jump HUD hint ---
+        if (playerMovement != null && kineticJumpHintText != null)
+        {
+            bool show = playerMovement.CanKineticJumpNow;  //get the getter in playerMovement and see if we can KINETIC jump
+            if (show)  //if true
+            {
+                if (!kineticJumpHintText.gameObject.activeSelf) 
+                { 
+                    kineticJumpHintText.gameObject.SetActive(true);  //acivate it 
+                }
+                kineticJumpHintText.text = "Press [SPACE] to Kinetic Jump";  //this is the text here 
+
+                //// force fully opaque (solid)
+                //var c = kineticJumpHintText.color;
+                //kineticJumpHintText.color = new Color(c.r, c.g, c.b, 1f);
+            }
+            else if (kineticJumpHintText.gameObject.activeSelf)
+            {
+                kineticJumpHintText.gameObject.SetActive(false);  //otherwise turn it off
+            }
+        }
 
     }
 
@@ -1472,9 +1525,6 @@ public class UI : MonoBehaviour
             case InfusionType.Crimson: infusionSlotIcon.sprite = infusionCrimsonIcon; break;
         }
     }
-
-
-
 }
 
 

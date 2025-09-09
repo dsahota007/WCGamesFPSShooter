@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     public float slamCooldown = 10f;
 
     private bool isKineticJump = false;
+    public float minSlideTimeForKineticJump = 0.5f;
+    public bool CanKineticJumpNow => isGrounded && isSliding && (slideTimer >= minSlideTimeForKineticJump);  //this is a getter for UI 
     private bool isSlamming = false;
     private float lastSlamTime;
 
@@ -73,6 +75,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isDashing = false;
     private float dashTimer = 0f;
     private float lastDashTime;
+    public float LastDashTime => lastDashTime; //some sort of getter
     private Vector3 dashDirection;
 
 
@@ -92,6 +95,8 @@ public class PlayerMovement : MonoBehaviour
 
         _baseWalkSpeed = walkSpeed;             //-- for perk resetting
         _baseSprintSpeed = sprintSpeed;
+
+        lastDashTime = -dashCooldown;  //bar starts full / dash ready
 
     }
 
@@ -189,14 +194,25 @@ public class PlayerMovement : MonoBehaviour
         {
             if (isSliding)
             {
+                // Only allow Kinetic Jump if we’ve slid long enough
+                bool allowKinetic = slideTimer >= minSlideTimeForKineticJump;
 
-                velocity.y = KineticJumpForce;               // Boosted jump while sliding
+                if (allowKinetic)
+                {
+                    velocity.y = KineticJumpForce; // boosted jump
+                    isKineticJump = true;          // enables slam in-air
+                }
+                else
+                {
+                    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); // normal jump
+                    isKineticJump = false;                                // no slam
+                }
+
                 EndSlide();
-                isKineticJump = true;
             }
             else
             {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); // normal jump
             }
         }
         //grav
