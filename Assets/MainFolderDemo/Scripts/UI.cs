@@ -734,7 +734,7 @@ public class UI : MonoBehaviour
         HandlePerkStationUI(
             FindFirstObjectByType<MoreSpeedPerk>(),
             speedPerkText,
-            "More Running Speed",
+            "More Running Speed and Slide Speed",
             FindFirstObjectByType<MoreSpeedPerk>() != null && FindFirstObjectByType<MoreSpeedPerk>().hasMoreSpeedPerk,
             FindFirstObjectByType<MoreSpeedPerk>() != null ? FindFirstObjectByType<MoreSpeedPerk>().cost : 0
         );
@@ -795,7 +795,7 @@ public class UI : MonoBehaviour
         HandlePerkStationUI(
             FindFirstObjectByType<MoreDashSlamPerk>(),
             moreDashSlamPerkText,
-            "More Dash and slam",
+            "Dash further, faster, more often and Faster Kinetic Jump window",
             FindFirstObjectByType<MoreDashSlamPerk>()?.hasMoreDashSlamPerk ?? false,
             FindFirstObjectByType<MoreDashSlamPerk>()?.cost ?? 0
         );
@@ -1432,7 +1432,7 @@ public class UI : MonoBehaviour
             // Check the actual InfusionType enum instead of the string
             if (weapon.infusion != InfusionType.None)
             {
-                infuseStatusText.text = $"{weapon.infusion}";
+                infuseStatusText.text = $"{weapon.infusion} Magic Infused";
             }
             else if (!string.IsNullOrEmpty(weapon.infusedElement))
             {

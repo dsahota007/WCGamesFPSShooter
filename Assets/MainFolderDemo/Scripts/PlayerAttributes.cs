@@ -122,6 +122,12 @@ public class PlayerAttributes : MonoBehaviour
         DropSpawner.GlobalDropChanceMult = 1f;
         Weapon.GlobalNoConsumeAmmoChance = 0f;
 
+        var pm = FindFirstObjectByType<PlayerMovement>();
+        if (pm != null)
+        {
+            pm.ResetSpeedsToBase();
+            pm.ResetDashSlamToBase(); 
+        }
 
         // 2) player stats back to base
         maxStartingHealth = _baseMaxHealth;
@@ -130,7 +136,7 @@ public class PlayerAttributes : MonoBehaviour
         currentHealth = Mathf.Min(currentHealth, maxStartingHealth);
 
         // 3) speeds back to base (if speed perk changed them)
-        var pm = FindFirstObjectByType<PlayerMovement>();
+        //var pm = FindFirstObjectByType<PlayerMovement>();  deleted this bc we have one above
         if (pm != null) pm.ResetSpeedsToBase();   // add tiny method below in PlayerMovement
 
         // 4) clear perk “owned” flags so you can buy again
@@ -142,6 +148,9 @@ public class PlayerAttributes : MonoBehaviour
         var magicCooldonw = FindFirstObjectByType<MagicCooldownPerk>(); if (magicCooldonw) magicCooldonw.hasMagicCooldownPerk = false;
         var drop = FindFirstObjectByType<MoreDropsPerk>(); if (drop) drop.hasMoreDropsPerk = false;
         var adrenaline = FindFirstObjectByType<AdrenalinePerk>(); if (adrenaline) adrenaline.hasAdrenalinePerk = false;
+        var dashSlam = FindFirstObjectByType<MoreDashSlamPerk>(); if (dashSlam) dashSlam.hasMoreDashSlamPerk = false;
+        var resurrect = FindFirstObjectByType<ResurrectPerk>(); if (resurrect) resurrect.hasResurrectPerk = false;
+
         // 5) remove perk icons from the bar
         var ui = FindFirstObjectByType<UI>();
         if (ui != null)
@@ -154,6 +163,8 @@ public class PlayerAttributes : MonoBehaviour
             ui.RemovePerkIcon(PerkType.MagicCooldown);
             ui.RemovePerkIcon(PerkType.MoreDrop);
             ui.RemovePerkIcon(PerkType.Adrenaline);
+            ui.RemovePerkIcon(PerkType.MoreDashSlam);
+            ui.RemovePerkIcon(PerkType.Resurrect);
         }
     }
 

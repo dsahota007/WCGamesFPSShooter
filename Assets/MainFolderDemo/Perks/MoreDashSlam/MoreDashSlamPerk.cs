@@ -67,6 +67,20 @@ public class MoreDashSlamPerk : MonoBehaviour
         hasMoreDashSlamPerk = true;
         //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
 
+
+        var pm = FindFirstObjectByType<PlayerMovement>();
+        if (pm != null)
+        {
+            pm.ApplyMoreDashSlamBuffs(
+                dashSpeedMult: 1.8f,      // speed by 180%
+                dashDurationMult: 1.1f,        //10 % longer
+                dashCooldownMult: 0.75f,          // 50% faster recharge
+                minSlideTimeForKineticMult: 0.35f,
+                newKineticJumpWindow: 0.40f
+            );
+        }
+
+
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.MoreDashSlam);
 
         if (player != null && PlayerDrinkVFX != null)

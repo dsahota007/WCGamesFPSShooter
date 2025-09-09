@@ -34,9 +34,14 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isKineticJump = false;
     public float minSlideTimeForKineticJump = 0.5f;
-    public bool CanKineticJumpNow => isGrounded && isSliding && (slideTimer >= minSlideTimeForKineticJump);  //this is a getter for UI 
+    //public bool CanKineticJumpNow => isGrounded && isSliding && (slideTimer >= minSlideTimeForKineticJump);  //this is a getter for UI 
     private bool isSlamming = false;
     private float lastSlamTime;
+
+    // --- Kinetic jump grace window (lets you jump right after slide ends) -- for dashSlam perk
+    public float kineticJumpWindow = 0.35f;   // seconds after slide ends where Kinetic Jump is still allowed
+    private float lastSlideEndTime = -999f;   // when the last slide ended
+
 
     [Header("Slam Attack Settings")]
     public float slamRadius = 5f;
@@ -79,8 +84,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 dashDirection;
 
 
+
     [Header("Perk/Effects Multipliers")]
     public float ExternalSpeedMult = 1f; // used by perks like Adrenaline
+    private float _baseDashSpeed, _baseDashDuration, _baseDashCooldown, _baseMinSlideTimeForKinetic;
+
 
 
     void Start()
@@ -97,6 +105,13 @@ public class PlayerMovement : MonoBehaviour
         _baseSprintSpeed = sprintSpeed;
 
         lastDashTime = -dashCooldown;  //bar starts full / dash ready
+
+        //-- this is for the perk 
+        _baseDashSpeed = dashSpeed;
+        _baseDashDuration = dashDuration;
+        _baseDashCooldown = dashCooldown;
+        _baseMinSlideTimeForKinetic = minSlideTimeForKineticJump;
+
 
     }
 
@@ -212,7 +227,17 @@ public class PlayerMovement : MonoBehaviour
             }
             else
             {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity); // normal jump
+                // NEW: short grace window after slide
+                bool withinGrace = (Time.time - lastSlideEndTime) <= kineticJumpWindow;
+                if (withinGrace)
+                {
+                    velocity.y = KineticJumpForce;
+                    isKineticJump = true;
+                }
+                else
+                {
+                    velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                }
             }
         }
         //grav
@@ -279,6 +304,51 @@ public class PlayerMovement : MonoBehaviour
 
 
     //------------------------------------------------------------ Kinetic Slam
+
+    public void ApplyMoreDashSlamBuffs(
+    float dashSpeedMult = 1.25f,
+    float dashDurationMult = 1.15f,
+    float dashCooldownMult = 0.60f,
+    float minSlideTimeForKineticMult = 0.60f,
+    float newKineticJumpWindow = 0.40f)   // optional: widen grace a bit
+    {
+        dashSpeed = _baseDashSpeed * dashSpeedMult;
+        dashDuration = _baseDashDuration * dashDurationMult;
+        dashCooldown = _baseDashCooldown * dashCooldownMult;
+
+        minSlideTimeForKineticJump = _baseMinSlideTimeForKinetic * minSlideTimeForKineticMult;
+        kineticJumpWindow = newKineticJumpWindow;
+    }
+
+    // (optional) reset if you ever remove the perk
+    public void ResetDashSlamToBase()
+    {
+        dashSpeed = _baseDashSpeed;
+        dashDuration = _baseDashDuration;
+        dashCooldown = _baseDashCooldown;
+        minSlideTimeForKineticJump = _baseMinSlideTimeForKinetic;
+
+        // if you added this field for grace window, reset to your default
+        kineticJumpWindow = 0.35f;
+
+        // also clear runtime dash state
+        isDashing = false;
+        dashTimer = 0f;
+        lastDashTime = -dashCooldown; // bar shows ready again
+    }
+
+
+    public bool CanKineticJumpNow
+    {
+        get
+        {
+            bool readyDuringSlide = isGrounded && isSliding && (slideTimer >= minSlideTimeForKineticJump);
+            bool readyAfterSlide = isGrounded && !isSliding && ((Time.time - lastSlideEndTime) <= kineticJumpWindow);
+            return readyDuringSlide || readyAfterSlide;
+        }
+    }
+
+
     void StartKineticSlam()
     {
         isSlamming = true;
@@ -392,6 +462,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isSliding = false;
         slideTimer = 0f;
+        lastSlideEndTime = Time.time;  //for the dashSlam perk
         controller.height = normalControllerHeight;        // Restore normal controller dimensions
         controller.center = normalControllerCenter;
     }
