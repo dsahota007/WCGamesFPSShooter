@@ -1595,6 +1595,7 @@ RectTransform:
   - {fileID: 1657502407}
   - {fileID: 438763055}
   - {fileID: 464111143}
+  - {fileID: 429979130}
   - {fileID: 907004786}
   - {fileID: 678398244}
   - {fileID: 629420580}
@@ -1730,6 +1731,8 @@ MonoBehaviour:
   magicCooldownIcon: {fileID: 21300000, guid: de90f26365e6c1a44ba901254a3dee4e, type: 3}
   moreDropsIcon: {fileID: 21300000, guid: bc76bd627c12d5a4ebec3310ca7ab2ea, type: 3}
   adrenalineIcon: {fileID: 21300000, guid: c624a9fee6dbae542babed39b051d6f4, type: 3}
+  lessAmmoConsumeIcon: {fileID: 21300000, guid: 440883ce936bd5949b16c92b880077b2,
+    type: 3}
   fireRatePerkText: {fileID: 244930446}
   speedPerkText: {fileID: 114269988}
   healthPerkText: {fileID: 1310030576}
@@ -1738,6 +1741,7 @@ MonoBehaviour:
   magicCooldownPerkText: {fileID: 1657502405}
   moreDropsPerkText: {fileID: 438763053}
   adrenalinePerkText: {fileID: 464111144}
+  lessAmmoConsumePerkText: {fileID: 429979128}
   packAPunchText: {fileID: 907004784}
   packAPunchMachine: {fileID: 510396133}
   statusStackRoot: {fileID: 2142661633}
@@ -7871,6 +7875,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 429056149}
   m_CullTransparentMesh: 1
+--- !u!1 &429979127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 429979130}
+  - component: {fileID: 429979129}
+  - component: {fileID: 429979128}
+  m_Layer: 5
+  m_Name: LessAmmoConsumeText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &429979128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429979127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 963a52344813d664898a85ecc83899d3, type: 3}
+    m_FontSize: 13
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 0
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: AdrenalineText
+--- !u!222 &429979129
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429979127}
+  m_CullTransparentMesh: 1
+--- !u!224 &429979130
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 429979127}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 89101273}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 5.0000076, y: -89.49999}
+  m_SizeDelta: {x: 455.4779, y: 305.3063}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &438763052
 GameObject:
   m_ObjectHideFlags: 0
@@ -16983,46 +17066,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 643918294}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &644789987
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/DarkBringerRefined_1_2
-  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BayerTex:
-        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Lut2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &647788110
 GameObject:
   m_ObjectHideFlags: 0
@@ -17211,8 +17254,9 @@ GameObject:
   - component: {fileID: 648183720}
   - component: {fileID: 648183719}
   - component: {fileID: 648183718}
+  - component: {fileID: 648183721}
   m_Layer: 0
-  m_Name: NewPinkPerk
+  m_Name: LessAmmoConsumePerk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17309,6 +17353,39 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 648183715}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &648183721
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648183715}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6d67bade8643245baae35107ee3a5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  points: {fileID: 1577369121}
+  player: {fileID: 561119877}
+  type: 8
+  cost: 4500
+  interactDistance: 3
+  flaskPrefab: {fileID: 1681726694830842825, guid: 12778b8e18bb4ea448c95ebae8ccb036,
+    type: 3}
+  flaskStartLocalPos: {x: -0.09, y: -1.1, z: 0.42}
+  flaskShowoffLocalPos: {x: -0.06, y: -0.12, z: 0.25}
+  flaskMouthLocalPos: {x: -0.01, y: -0.12, z: 0.15}
+  flaskStartLocalEuler: {x: 0, y: 0, z: 0}
+  flaskShowoffLocalEuler: {x: -20, y: 0, z: 0}
+  flaskSipLocalEuler: {x: -65, y: 0, z: 0}
+  moveInTime: 0.55
+  showoffHoldTime: 0.5
+  sipTime: 1
+  moveOutTime: 1
+  AmountOfPrecentToNotConsume: 0.15
+  PlayerDrinkVFX: {fileID: 7155335147208632822, guid: fba9c047b5d6cdd42999d97e1d75be68,
+    type: 3}
+  hasLessAmmoPerk: 0
 --- !u!1001 &664531144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20346,7 +20423,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 644789987}
+  mat: {fileID: 1752914557}
   flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
   bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
   ColorBleed: 0.25
@@ -36023,6 +36100,46 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!21 &1752914557
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Hidden/DarkBringerRefined_1_2
+  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _BayerTex:
+        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Lut2D:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats: []
+    m_Colors: []
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!1 &1754670752
 GameObject:
   m_ObjectHideFlags: 0
@@ -40054,7 +40171,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: NewPinkPerk
+  m_text: LessAmmoConsumePerk
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

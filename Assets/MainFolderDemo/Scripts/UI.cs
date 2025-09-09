@@ -130,6 +130,7 @@ public class UI : MonoBehaviour
     public Sprite magicCooldownIcon;
     public Sprite moreDropsIcon;
     public Sprite adrenalineIcon;
+    public Sprite lessAmmoConsumeIcon;
 
     private readonly List<PerkType> _perkOrder = new List<PerkType>();  //a list that remembers which perks were added and in what order (first → last). Useful if you ever need to read them back in order.
     private readonly Dictionary<PerkType, Image> _activePerkIcons = new Dictionary<PerkType, Image>();  //map/dict so we can perkkType --> img assign to that perk. 
@@ -141,7 +142,8 @@ public class UI : MonoBehaviour
     public Text fastHandsPerkText;
     public Text magicCooldownPerkText;
     public Text moreDropsPerkText;
-    public Text adrenalinePerkText;  
+    public Text adrenalinePerkText;
+    public Text lessAmmoConsumePerkText;
     //-------------------------- PACK
     [Header("Pack A Punch")]
     public Text packAPunchText;           // Text to show Pack-A-Punch prompts
@@ -733,7 +735,7 @@ public class UI : MonoBehaviour
         HandlePerkStationUI(
             FindFirstObjectByType<MoreDropsPerk>(),
             moreDropsPerkText,
-            "Increase Drop Chance & 10% Not Consume Ammo",
+            "Increase Drop Chance",
             FindFirstObjectByType<MoreDropsPerk>()?.hasMoreDropsPerk ?? false,
             FindFirstObjectByType<MoreDropsPerk>()?.cost ?? 0
         );
@@ -743,6 +745,14 @@ public class UI : MonoBehaviour
             "Adrenaline (speed boost before death)",
             FindFirstObjectByType<AdrenalinePerk>()?.hasAdrenalinePerk ?? false,
             FindFirstObjectByType<AdrenalinePerk>()?.cost ?? 0
+        );
+
+        HandlePerkStationUI(
+            FindFirstObjectByType<LessAmmoConsumePerk>(),
+            lessAmmoConsumePerkText,
+            "15% Chance to not consume ammunition",
+            FindFirstObjectByType<LessAmmoConsumePerk>()?.hasLessAmmoPerk ?? false,
+            FindFirstObjectByType<LessAmmoConsumePerk>()?.cost ?? 0
         );
 
 
@@ -1091,6 +1101,7 @@ public class UI : MonoBehaviour
             case PerkType.MagicCooldown: return magicCooldownIcon;
             case PerkType.MoreDrop: return moreDropsIcon;
             case PerkType.Adrenaline: return adrenalineIcon;
+            case PerkType.LessAmmoConsume: return lessAmmoConsumeIcon;
 
 
             default: return null;

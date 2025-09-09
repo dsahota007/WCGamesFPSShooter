@@ -1,21 +1,21 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class MoreDropsPerk : MonoBehaviour
+public class LessAmmoConsumePerk : MonoBehaviour
 {
     public PointManager points;
     [Header("Interact")]
     public Transform player;
-    public PerkType type = PerkType.FireRate;
+    public PerkType type = PerkType.LessAmmoConsume;
     public int cost = 4500;
     public float interactDistance = 3f;
 
     [Header("Flask")]
-    public GameObject flaskPrefab;           // leave null if you only want the arm anim
+    public GameObject flaskPrefab;
 
     [Header("Flask Offsets")]
     public Vector3 flaskStartLocalPos = new Vector3(-0.09f, -1.1f, 0.42f);
-    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);   //hold up stop
+    public Vector3 flaskShowoffLocalPos = new Vector3(-0.05f, -0.5f, 0.25f);
     public Vector3 flaskMouthLocalPos = new Vector3(-0.01f, -0.12f, 0.16f);
 
     public Vector3 flaskStartLocalEuler = Vector3.zero;
@@ -29,11 +29,11 @@ public class MoreDropsPerk : MonoBehaviour
     public float moveOutTime = 0.25f;
 
     [Header("Perk Upgrade")]
-    public float dropChanceMultiplier = 2f;
+    public float AmountOfPrecentToNotConsume = 0.15f;
     public GameObject PlayerDrinkVFX;
-    [HideInInspector] public bool hasMoreDropsPerk = false;
+    [HideInInspector] public bool hasLessAmmoPerk = false;
 
-    Transform cam;   // Camera.main
+    Transform cam;
 
     void Awake()
     {
@@ -48,7 +48,7 @@ public class MoreDropsPerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreDropsPerk)
+        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasLessAmmoPerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))
@@ -66,15 +66,12 @@ public class MoreDropsPerk : MonoBehaviour
 
     IEnumerator DoPerkDrink(ArmMovementMegaScript arms)
     {
-        hasMoreDropsPerk = true;
-        //Weapon.GlobalFireRateMult *= 1.5f;   // 👈 perk effect
-        DropSpawner.GlobalDropChanceMult *= Mathf.Max(0.01f, dropChanceMultiplier);
-        //Weapon.GlobalNoConsumeAmmoChance = Mathf.Max(Weapon.GlobalNoConsumeAmmoChance, 0.10f); // 10%
+        hasLessAmmoPerk = true;
+        //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
+        Weapon.GlobalNoConsumeAmmoChance = Mathf.Max(Weapon.GlobalNoConsumeAmmoChance, AmountOfPrecentToNotConsume); // 15%
 
 
-
-
-        FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.MoreDrop);
+        FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.LessAmmoConsume);
 
         if (player != null && PlayerDrinkVFX != null)
         {
@@ -83,9 +80,8 @@ public class MoreDropsPerk : MonoBehaviour
             Destroy(fx, 4f);
         }
 
-        arms.StartCoroutine(arms.PerkDrinkDropOnly());    // arm anim
+        arms.StartCoroutine(arms.PerkDrinkDropOnly());
 
-        // flask
         if (cam != null && flaskPrefab != null)
         {
             GameObject flask = Instantiate(flaskPrefab, cam, false);
