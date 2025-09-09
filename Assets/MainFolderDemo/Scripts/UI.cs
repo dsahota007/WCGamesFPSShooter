@@ -143,6 +143,8 @@ public class UI : MonoBehaviour
     public Sprite moreDropsIcon;
     public Sprite adrenalineIcon;
     public Sprite lessAmmoConsumeIcon;
+    public Sprite moreDashSlamIcon;
+    public Sprite resurrectIcon;
 
     private readonly List<PerkType> _perkOrder = new List<PerkType>();  //a list that remembers which perks were added and in what order (first → last). Useful if you ever need to read them back in order.
     private readonly Dictionary<PerkType, Image> _activePerkIcons = new Dictionary<PerkType, Image>();  //map/dict so we can perkkType --> img assign to that perk. 
@@ -156,6 +158,8 @@ public class UI : MonoBehaviour
     public Text moreDropsPerkText;
     public Text adrenalinePerkText;
     public Text lessAmmoConsumePerkText;
+    public Text moreDashSlamPerkText;
+    public Text resurrectPerkText;
     //-------------------------- PACK
     [Header("Pack A Punch")]
     public Text packAPunchText;           // Text to show Pack-A-Punch prompts
@@ -788,6 +792,22 @@ public class UI : MonoBehaviour
             FindFirstObjectByType<LessAmmoConsumePerk>()?.cost ?? 0
         );
 
+        HandlePerkStationUI(
+            FindFirstObjectByType<MoreDashSlamPerk>(),
+            moreDashSlamPerkText,
+            "More Dash and slam",
+            FindFirstObjectByType<MoreDashSlamPerk>()?.hasMoreDashSlamPerk ?? false,
+            FindFirstObjectByType<MoreDashSlamPerk>()?.cost ?? 0
+        );
+        
+        HandlePerkStationUI(
+            FindFirstObjectByType<ResurrectPerk>(),
+            resurrectPerkText,
+            "Come back from the Dead",
+            FindFirstObjectByType<ResurrectPerk>()?.hasResurrectPerk ?? false,
+            FindFirstObjectByType<ResurrectPerk>()?.cost ?? 0
+        );
+
 
         if (packAPunchMachine != null && packAPunchText != null)
         {
@@ -1195,6 +1215,8 @@ public class UI : MonoBehaviour
             case PerkType.MoreDrop: return moreDropsIcon;
             case PerkType.Adrenaline: return adrenalineIcon;
             case PerkType.LessAmmoConsume: return lessAmmoConsumeIcon;
+            case PerkType.MoreDashSlam: return moreDashSlamIcon;
+            case PerkType.Resurrect: return resurrectIcon;
 
 
             default: return null;
