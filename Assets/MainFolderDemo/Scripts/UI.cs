@@ -11,7 +11,7 @@ public class MagicStationUI
     public MagicStation station; // the scene object
     public Text text;            // the UI Text to show
     public MagicType type;       // which magic this station equips
-    public string label;         // nice name, e.g. "Crystal"
+    public string label;         // nice name, for ex) crystal
 }
 
 
@@ -1070,7 +1070,7 @@ public class UI : MonoBehaviour
         img.SetNativeSize();                                            // optional
                                                                         // optional: clamp size
         var rt = img.rectTransform;
-        rt.sizeDelta = new Vector2(24, 24);
+        rt.sizeDelta = new Vector2(30, 30);
 
         // pop-in anim
         StartCoroutine(PopIn(img));
@@ -1126,6 +1126,10 @@ public class UI : MonoBehaviour
             img.rectTransform.localScale = new Vector3(s, s, 1f);
             yield return null;
         }
+
+        cg.alpha = 1f;
+        img.canvasRenderer.SetAlpha(1f);
+        var c = img.color; img.color = new Color(c.r, c.g, c.b, 1f);
     }
 
     //----- Perk UI
