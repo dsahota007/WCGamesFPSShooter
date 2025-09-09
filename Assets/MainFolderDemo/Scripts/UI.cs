@@ -1410,12 +1410,12 @@ public class UI : MonoBehaviour
             // Check the actual InfusionType enum instead of the string
             if (weapon.infusion != InfusionType.None)
             {
-                infuseStatusText.text = $"{weapon.infusion} Magic Infused!";
+                infuseStatusText.text = $"{weapon.infusion}";
             }
             else if (!string.IsNullOrEmpty(weapon.infusedElement))
             {
                 // Fallback to string version if enum is None but string exists
-                infuseStatusText.text = $"{weapon.infusedElement} Magic Infused!";
+                infuseStatusText.text = $"{weapon.infusedElement} XXX ERROR Magic Infused!";
             }
             else
             {
@@ -1479,7 +1479,7 @@ public class UI : MonoBehaviour
             currentWeapon.SetInfusedElement(type.ToString());
 
             if (infuseStatusText != null)
-                infuseStatusText.text = $"{type} Magic Infused!";
+                infuseStatusText.text = $"{type} Magic Infused";
         }
         else
         {
