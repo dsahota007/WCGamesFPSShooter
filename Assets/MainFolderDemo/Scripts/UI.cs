@@ -39,6 +39,7 @@ public class UI : MonoBehaviour
     public Slider slamCooldownSlider;
     public PlayerMovement playerMovement;
     public Text kineticJumpHintText;
+    public Text slamHintText;
 
     [Header("Player Health UI")]
     public Slider playerHealthSlider;  
@@ -249,6 +250,11 @@ public class UI : MonoBehaviour
         if (kineticJumpHintText)  //disable on start
         {
             kineticJumpHintText.gameObject.SetActive(false);
+        }
+
+        if (slamHintText)  //turn off slam text on start
+        {
+            slamHintText.gameObject.SetActive(false);
         }
     }
 
@@ -861,6 +867,25 @@ public class UI : MonoBehaviour
                 kineticJumpHintText.gameObject.SetActive(false);  //otherwise turn it off
             }
         }
+
+        // --- Airborne Slam HUD hint ---
+        if (playerMovement != null && slamHintText != null)
+        {
+            if (playerMovement.CanSlamNow)
+            {
+                if (!slamHintText.gameObject.activeSelf)
+                    slamHintText.gameObject.SetActive(true);
+
+                slamHintText.text = "Press [SPACE] to SLAM";
+                // ensure fully opaque if you’ve got any fades elsewhere
+                // var c = slamHintText.color; slamHintText.color = new Color(c.r, c.g, c.b, 1f);
+            }
+            else if (slamHintText.gameObject.activeSelf)
+            {
+                slamHintText.gameObject.SetActive(false);
+            }
+        }
+
 
     }
 

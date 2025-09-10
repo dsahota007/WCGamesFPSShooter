@@ -37,6 +37,8 @@ public class PlayerMovement : MonoBehaviour
     //public bool CanKineticJumpNow => isGrounded && isSliding && (slideTimer >= minSlideTimeForKineticJump);  //this is a getter for UI 
     private bool isSlamming = false;
     private float lastSlamTime;
+    public bool IsKineticJumping => isKineticJump;  //this is for SLAM downwards text 
+
 
     // --- Kinetic jump grace window (lets you jump right after slide ends) -- for dashSlam perk
     public float kineticJumpWindow = 0.35f;   // seconds after slide ends where Kinetic Jump is still allowed
@@ -345,6 +347,16 @@ public class PlayerMovement : MonoBehaviour
             bool readyDuringSlide = isGrounded && isSliding && (slideTimer >= minSlideTimeForKineticJump);
             bool readyAfterSlide = isGrounded && !isSliding && ((Time.time - lastSlideEndTime) <= kineticJumpWindow);
             return readyDuringSlide || readyAfterSlide;
+        }
+    }
+
+    public bool CanSlamNow  //this is for the slam text
+    {
+        get
+        {
+            // same logic you use before calling StartKineticSlam()
+            bool canSlam = Time.time >= lastSlamTime + slamCooldown;
+            return isKineticJump && !isGrounded && !isSlamming && canSlam;
         }
     }
 
