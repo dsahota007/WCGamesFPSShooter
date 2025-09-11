@@ -13,6 +13,7 @@ public class ZombieSpawner : MonoBehaviour
     [Header("Round Settings")]
     public int startZombies = 6;
     public int zombiesPerRound = 3;
+    public float timeBetweenRounds = 10f;  
     private int currentRound = 1;
     private int zombiesRemaining;
 
@@ -54,9 +55,17 @@ public class ZombieSpawner : MonoBehaviour
         if (zombiesRemaining <= 0)
         {
             currentRound++;
-            Debug.Log("Next round: " + currentRound);
-            StartCoroutine(SpawnRound());
+            //Debug.Log("Round " + (currentRound - 1) + " complete. Next round in " + timeBetweenRounds + "s...");
+            FindFirstObjectByType<UI>().ShowRoundCountdown(timeBetweenRounds);  //for the ui
+            StartCoroutine(NextRoundCountdown());
         }
+    }
+
+    IEnumerator NextRoundCountdown()
+    {
+        //Debug.Log("Waiting " + timeBetweenRounds + "s before starting round " + currentRound);
+        yield return new WaitForSeconds(timeBetweenRounds);
+        StartCoroutine(SpawnRound());
     }
 
     public int GetCurrentRound()   //for ui just fetching the round

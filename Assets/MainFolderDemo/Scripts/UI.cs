@@ -33,6 +33,7 @@ public class UI : MonoBehaviour
 
     [Header("Round UI")]
     public Text roundText;
+    public Text roundCountdownText;
     public ZombieSpawner zombieSpawner;  //getting script
 
     [Header("Kinetic Slam UI")]
@@ -888,6 +889,34 @@ public class UI : MonoBehaviour
 
 
     }
+    //------------------------------------ round UI logic
+    public void ShowRoundCountdown(float countdownSeconds)
+    {
+        StartCoroutine(RoundCountdownRoutine(countdownSeconds));
+    }
+
+    private IEnumerator RoundCountdownRoutine(float countdownSeconds)
+    {
+        int currentRound = zombieSpawner.GetCurrentRound() - 1; // previous round just ended
+
+        // Show "Wave X completed"
+        roundCountdownText.text = $"Wave {currentRound} completed!";
+        roundCountdownText.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+
+        // Countdown
+        float t = countdownSeconds;
+        while (t > 0)
+        {
+            roundCountdownText.text = $"Next wave begins in {Mathf.CeilToInt(t)}...";
+            yield return new WaitForSeconds(1f);
+            t -= 1f;
+        }
+
+        // Hide after countdown
+        roundCountdownText.gameObject.SetActive(false);
+    }
+
 
     //------------------------------------ grenade logic
     void HandleGrenadeChestUI()
