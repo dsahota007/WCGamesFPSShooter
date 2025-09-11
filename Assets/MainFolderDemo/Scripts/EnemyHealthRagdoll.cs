@@ -566,6 +566,12 @@ public class EnemyHealthRagdoll : MonoBehaviour
         isDead = true;
         PointManager.Instance.AddPoints(50);
 
+        var ui = FindFirstObjectByType<UI>();
+        if (ui != null)
+        {
+            ui.ShowEliminationMessage(50, "Zombie");
+        }
+
         if (animator) animator.enabled = false;         //turn all that shit off animations, navmesh and the boxCollider so we dont run into it 
         if (agent) agent.enabled = false;
         if (BoxRootCollider) BoxRootCollider.enabled = false;

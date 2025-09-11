@@ -2,6 +2,8 @@
 using UnityEngine.UI; // for Image
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Rendering.PostProcessing;  // for dash VFX
+
 //using UnityEngine.EventSystems;
 //using Unity.VisualScripting;
 
@@ -216,6 +218,14 @@ public class UI : MonoBehaviour
     public Color dashReadyColor = Color.white;
     //public Color dashRechargingColor = new Color(1f, 1f, 1f, 0.6f);
 
+    [Header("Post Processing")]
+    public PostProcessVolume postProcessVolume;
+    private ChromaticAberration chromaticAberration;
+
+    [Header("Elimination UI")]
+    public RectTransform eliminationStackRoot;
+    public Text eliminationRowPrefab;
+
 
     void Start()
     {
@@ -257,6 +267,17 @@ public class UI : MonoBehaviour
         {
             slamHintText.gameObject.SetActive(false);
         }
+
+        if (postProcessVolume != null && postProcessVolume.profile != null)
+        {
+            postProcessVolume.profile.TryGetSettings(out chromaticAberration);
+            if (chromaticAberration != null)
+            {
+                chromaticAberration.intensity.Override(0f); // start off
+                chromaticAberration.active = true;         // keep it enabled, just zeroed
+            }
+        }
+
     }
 
     //bool chestPanelOpen = false;
@@ -887,8 +908,20 @@ public class UI : MonoBehaviour
             }
         }
 
-
+        //dash VFX to enabel chromatic abbriation
+        if (playerMovement != null && chromaticAberration != null)
+        {
+            if (playerMovement.IsDashing())
+            {
+                chromaticAberration.intensity.Override(1.0f);
+            }
+            else
+            {
+                chromaticAberration.intensity.Override(0f);
+            }
+        }
     }
+
     //------------------------------------ round UI logic
     public void ShowRoundCountdown(float countdownSeconds)
     {
@@ -1356,6 +1389,62 @@ public class UI : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
         t.gameObject.SetActive(false);
     }
+    //-------------------- Enemy Kill Feed text 
+
+    public void ShowEliminationMessage(int awardedPoints, string enemyName = "Zombie")
+    {
+        if (eliminationStackRoot == null || eliminationRowPrefab == null) return;  //gtfo this code if we dont have
+
+        int UpdatedAwardedPoints = Mathf.RoundToInt(awardedPoints * PointManager.GlobalPointsMult);
+
+        var row = Instantiate(eliminationRowPrefab, eliminationStackRoot);  //spawn here and what to spawn 
+        row.text = $"+{UpdatedAwardedPoints} {enemyName} Eliminated";                 // what the text says
+        StartCoroutine(PopInAndFadeOut(row));
+    }
+
+    private IEnumerator PopInAndFadeOut(Text row)
+    {
+        if (row == null) yield break;
+
+        // Ensure CanvasGroup is present
+        CanvasGroup cg = row.GetComponent<CanvasGroup>();
+        if (cg == null) cg = row.gameObject.AddComponent<CanvasGroup>();
+
+        // Initial state
+        cg.alpha = 0f;
+        row.rectTransform.localScale = Vector3.one * 0.6f;
+
+        // --- POP IN ---
+        float t = 0f; 
+        float popDuration = 0.25f;
+
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / popDuration;
+            cg.alpha = Mathf.Lerp(0f, 1f, t);
+            float s = Mathf.Lerp(0.6f, 1f, t);
+            row.rectTransform.localScale = new Vector3(s, s, 1f);
+            yield return null;
+        }
+
+        // Hold for a moment
+        yield return new WaitForSecondsRealtime(0.7f);
+
+        // --- FADE OUT ---
+        t = 0f;
+        float fadeDuration = 0.5f;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / fadeDuration;
+            cg.alpha = Mathf.Lerp(1f, 0f, t);
+            yield return null;
+        }
+
+        Destroy(row.gameObject);
+    }
+
+
+
 
     // ---------------- Drops text
     public void ShowToast(string message, float seconds = 1.5f)
