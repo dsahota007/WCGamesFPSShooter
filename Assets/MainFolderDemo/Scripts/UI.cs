@@ -28,6 +28,8 @@ public class UI : MonoBehaviour
     [Header("Weapon Info UI")]
     public Text WeaponAmmoText;
     public Text WeaponNameText;
+    public Text setBonusText;
+
 
     [Header("Mystery Box Popup UI")]
     public Text MysteryBoxText;
@@ -326,8 +328,56 @@ public class UI : MonoBehaviour
             WeaponNameText.text = "No Weapon";
         }
 
+        //--------------------------------------------------------------- Set Bonus UI
+        if (setBonusText != null)
+        {
+            if (currentWeapon != null && WeaponManager.HasSetBonus())
+            {
+                Color c = GetColorForInfusion(currentWeapon.infusion);
+                string hex = ColorUtility.ToHtmlStringRGB(c);
+
+                switch (currentWeapon.infusion)
+                {
+                    case InfusionType.Fire:
+                        setBonusText.text = $"<color=#{hex}>Fire Infused Magic Set Bonus</color>\n25% Increased on Burn Damage";
+                        break;
+                    case InfusionType.Ice:
+                        setBonusText.text = $"<color=#{hex}>Ice Infused Magic Set Bonus:</color>\n10% Increased Freeze Time\n10% Additonal Decrease Enemy Speed";
+                        break;
+                    case InfusionType.Wind:
+                        setBonusText.text = $"<color=#{hex}>Wind Infused Magic Set Bonus:</color>\n15% Increased Knockback";
+                        break;
+                    case InfusionType.Lightning:
+                        setBonusText.text = $"<color=#{hex}>Lightning Infused Magic Set Bonus:</color>\n30% Increased Lightning Distance";
+                        break;
+                    case InfusionType.Crystal:
+                        setBonusText.text = $"<color=#{hex}>Crystal Infused Magic Set Bonus:</color>\n25% Increased Crystal Shatter Distance";
+                        break;
+                    case InfusionType.Venom:
+                        setBonusText.text = $"<color=#{hex}>Venom Infused Magic Set Bonus:</color>\n45% Increased on Poison Venom Damage";
+                        break;
+                    case InfusionType.Meteor:
+                        setBonusText.text = $"<color=#{hex}>Meteor Infused Magic Set Bonus:</color>\n12.5% Increased Damage for each Meteor";
+                        break;
+                    case InfusionType.Crimson:
+                        setBonusText.text = $"<color=#{hex}>Crimson Infused Magic Set Bonus:</color>\n10% Increase Healing Per Bullet";
+                        break;
+                    case InfusionType.Void:
+                        setBonusText.text = $"<color=#{hex}>Void Infused Magic Set Bonus</color>\n35% Increased on Portal Damage";
+                        break;
+                    default:
+                        setBonusText.text = "";
+                        break;
+                }
+            }
+            else
+            {
+                setBonusText.text = ""; // hide when no bonus
+            }
+        }
+
         //--------------------------------------------------------------- Mystery Box UI
-         
+
         const int BOX_COST = 950;  // always 950 points
 
         float distanceToBox = Vector3.Distance(player.position, mysteryBox.transform.position);   //we check distance from player and box
@@ -1249,6 +1299,24 @@ public class UI : MonoBehaviour
             case MagicType.Meteor: return meteorIcon;
             case MagicType.Crimson: return crimsonIcon;
             default: return noneIcon;
+        }
+    }
+
+    //this is for magic infusion to change color 
+    private Color GetColorForInfusion(InfusionType type)
+    {
+        switch (type)
+        {
+            case InfusionType.Fire: return normalColor;
+            case InfusionType.Crystal: return crystalColor;
+            case InfusionType.Void: return voidColor;
+            case InfusionType.Ice: return iceColor;
+            case InfusionType.Venom: return venomColor;
+            case InfusionType.Lightning: return lightningColor;
+            case InfusionType.Wind: return windColor;
+            case InfusionType.Meteor: return meteorColor;
+            case InfusionType.Crimson: return crimsonColor;
+            default: return Color.white;
         }
     }
 
