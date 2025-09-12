@@ -132,9 +132,17 @@ public class Bullet : MonoBehaviour
                         Destroy(fx, sourceWeapon.crystalImpactVFXLifetime);
                     }
                 }
+                float splashRadius = sourceWeapon.crystalSplashRadius;
+
+                // --- Set bonus: Crystal magic + Crystal infusion ---
+                if (WeaponManager.HasSetBonus() && sourceWeapon.infusion == InfusionType.Crystal)
+                {
+                    splashRadius *= 1.25f; // +25% larger radius
+                }
+
 
                 // Find all enemies in radius
-                Collider[] hits = Physics.OverlapSphere(center, sourceWeapon.crystalSplashRadius, sourceWeapon.crystalEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
+                Collider[] hits = Physics.OverlapSphere(center, splashRadius, sourceWeapon.crystalEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
 
                 foreach (var c in hits)   //one collider from the sphere check
                 {   // e is enemy
@@ -180,9 +188,17 @@ public class Bullet : MonoBehaviour
                         Destroy(fx, sourceWeapon.LightningImpactVFXLifetime);
                     }
                 }
+                // Find all enemies in radius
+                float splashRadius = sourceWeapon.LightningSplashRadius;
+
+                // --- Set bonus
+                if (WeaponManager.HasSetBonus() && sourceWeapon.infusion == InfusionType.Lightning)
+                {
+                    splashRadius *= 1.3f; // +30% larger radius
+                }
 
                 // Find all enemies in radius
-                Collider[] hits = Physics.OverlapSphere(center, sourceWeapon.LightningSplashRadius, sourceWeapon.LightningEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
+                Collider[] hits = Physics.OverlapSphere(center, splashRadius, sourceWeapon.LightningEnemyMask, QueryTriggerInteraction.Ignore);  // -- (center of the sphere, radisu of the sphere, layerMask,  Specifies whether this query should hit Triggers  tells Unity to ignore trigger colliders (only use solid hit colliders))  
 
                 foreach (var c in hits)   //one collider from the sphere check
                 {   // e is enemy
@@ -238,6 +254,12 @@ public class Bullet : MonoBehaviour
                         continue;
 
                     float dmg = Mathf.Max(1f, e.Health * sourceWeapon.MeteorSplashPercent);  // we dont need that 1f and math max this makes sure its never under 1 percent ? 
+                                                                                             // --- Set bonus: Meteor magic + Meteor infusion ---
+                    if (WeaponManager.HasSetBonus() && sourceWeapon.infusion == InfusionType.Meteor)
+                    {
+                        dmg *= 1.25f; // +25% AoE damage
+                    }
+
                     Vector3 pushDir = (e.transform.position - center).normalized;  //for ragdoll we find direction and in take damage implment that 
 
                     e.TakeDamage(dmg, pushDir);
@@ -261,7 +283,14 @@ public class Bullet : MonoBehaviour
                         var attrs = player.GetComponentInChildren<PlayerAttributes>();  //fethc attirbutes for health
                         if (attrs != null)
                         {
-                            attrs.Heal(healAmt);         //heal the amount per bullet
+                            float finalHeal = healAmt;
+
+                            // --- Set bonus
+                            if (WeaponManager.HasSetBonus() && sourceWeapon.infusion == InfusionType.Crimson)
+                            {
+                                finalHeal *= 1.1f; // heal 10% more per bullet
+                            }
+                            attrs.Heal(finalHeal);
                         }
                     }
                     // Spawn quick crimson VFX ON the enemy at custom offset/rotation/scale

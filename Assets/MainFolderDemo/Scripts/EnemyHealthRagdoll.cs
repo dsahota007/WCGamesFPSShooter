@@ -273,11 +273,12 @@ public class EnemyHealthRagdoll : MonoBehaviour
         fireDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
         fireNextTickTime = Time.time + 1f; // tick every 1s
 
-
+        //---- Set Bonus
         if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Fire)
         {
             fireDotPctPerSec *= 1.25f; // +25% stronger more damage over time  (more burn)
         }
+        //---------
 
         // Attach/refresh VFX
         if (onEnemyVFXPrefab != null)
@@ -306,6 +307,13 @@ public class EnemyHealthRagdoll : MonoBehaviour
         VoidDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
         VoidNextTickTime = Time.time + 1f; // tick every 1s
 
+        //set BONUS
+        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Ice)
+        {
+            VoidDotPctPerSec *= 1.35f;  //increase damage for 35%
+        }
+        //--------
+
         // Attach/refresh VFX
         if (onEnemyVFXPrefab != null)
         {
@@ -333,9 +341,19 @@ public class EnemyHealthRagdoll : MonoBehaviour
         // Clamp multiplier (0 = frozen, 1 = no slow)
         speedMultiplier = Mathf.Clamp01(speedMultiplier);
 
+        //set BONUS
+        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Ice)
+        {
+            durationSeconds *= 1.10f;   //increase duration by 10%
+            speedMultiplier *= 0.9f;    //decrease speed by another 10%
+        }
+        //--------
+
         agent.speed = Mathf.Max(0.05f, baseAgentSpeed * speedMultiplier);  //apply right away teh slowness
         iceSlowed = true;
         iceEndTime = Time.time + Mathf.Max(0f, durationSeconds);
+
+ 
 
         // Attach or refresh VFX
         if (onEnemyVFXPrefab != null)
@@ -364,6 +382,13 @@ public class EnemyHealthRagdoll : MonoBehaviour
         venomDotPctPerSec = Mathf.Max(0f, percentPerSec);
         venomDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);
         venomNextTickTime = Time.time + 1f; // tick every 1s
+
+        //set BONUS
+        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Venom)
+        {
+            venomDotPctPerSec *= 1.5f; // +50% stronger more damage over time  (more toxic over a longer time)
+        }
+        //--------
 
         if (onEnemyVFXPrefab != null)
         {
@@ -402,8 +427,18 @@ public class EnemyHealthRagdoll : MonoBehaviour
         if (rb != null)
         {
             bool wasKinematic = rb.isKinematic;  //true ignores physics
-            rb.isKinematic = false;             
-            rb.AddForce(dir * Mathf.Max(0f, force), ForceMode.Impulse);  //Apply an instant impulse force to the Rigidbody in the dir direction (away from bullet)   -- void AddForce(Vector3 force, ForceMode mode = ForceMode.Force) -- there are different mode you can searhc up implulse is an instant kick so we need that for wind
+            rb.isKinematic = false;
+
+            // --- Apply knockback force ---
+            float finalForce = force;
+
+            // Set bonus
+            if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Wind)
+            {
+                finalForce *= 1.15f;  // +15% pushback
+            }
+
+            rb.AddForce(dir * Mathf.Max(0f, finalForce), ForceMode.Impulse);  //Apply an instant impulse force to the Rigidbody in the dir direction (away from bullet)   -- void AddForce(Vector3 force, ForceMode mode = ForceMode.Force) -- there are different mode you can searhc up implulse is an instant kick so we need that for wind
             StartCoroutine(RestoreNavAfterWindInfusionBullet(duration, rb, wasKinematic));
         }
         //else
