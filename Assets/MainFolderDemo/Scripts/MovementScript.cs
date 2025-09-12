@@ -552,4 +552,11 @@ public class PlayerMovement : MonoBehaviour
         return isDashing;
     }
 
+    public float GetSlideTimer() => slideTimer; //getter for the small bar 
+    public float GetKJProgress01WhileSliding()  //getter for the small bar to showcase you can jump 
+    {
+        return Mathf.Clamp01(slideTimer / Mathf.Max(0.0001f, minSlideTimeForKineticJump)); //idk ?
+    }
+
+
 }

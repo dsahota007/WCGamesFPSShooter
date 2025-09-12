@@ -45,6 +45,8 @@ public class UI : MonoBehaviour
     public PlayerMovement playerMovement;
     public Text kineticJumpHintText;
     public Text slamHintText;
+    public Slider kineticJumpCooldownSlider;
+    private float kineticHintReadyTime = -999f; // when the hint is allowed to appear
 
     [Header("Player Health UI")]
     public Slider playerHealthSlider;  
@@ -282,6 +284,16 @@ public class UI : MonoBehaviour
                 chromaticAberration.active = true;         // keep it enabled, just zeroed
             }
         }
+
+        // KJ bar: init and hide
+        if (kineticJumpCooldownSlider != null)
+        {
+            kineticJumpCooldownSlider.minValue = 0f;
+            kineticJumpCooldownSlider.maxValue = 1f;
+            kineticJumpCooldownSlider.value = 0f;
+            kineticJumpCooldownSlider.gameObject.SetActive(false);
+        }
+
 
     }
 
@@ -924,24 +936,58 @@ public class UI : MonoBehaviour
         // --- Kinetic Jump HUD hint ---
         if (playerMovement != null && kineticJumpHintText != null)
         {
-            bool show = playerMovement.CanKineticJumpNow;  //get the getter in playerMovement and see if we can KINETIC jump
-            if (show)  //if true
-            {
-                if (!kineticJumpHintText.gameObject.activeSelf) 
-                { 
-                    kineticJumpHintText.gameObject.SetActive(true);  //acivate it 
-                }
-                kineticJumpHintText.text = "Press [SPACE] to Kinetic Jump";  //this is the text here 
+            bool canJump = playerMovement.CanKineticJumpNow;
 
-                //// force fully opaque (solid)
-                //var c = kineticJumpHintText.color;
-                //kineticJumpHintText.color = new Color(c.r, c.g, c.b, 1f);
-            }
-            else if (kineticJumpHintText.gameObject.activeSelf)
+            if (canJump)
             {
-                kineticJumpHintText.gameObject.SetActive(false);  //otherwise turn it off
+                // If we just became allowed, set the delay timer
+                if (kineticHintReadyTime < 0f)
+                {
+                    kineticHintReadyTime = Time.time + 0.05f; // wait 0.05s before showing (THIS IS ALL JUST BECAUSE OF THE FLICKER BUG THE TEXT KEEPS APPEARING WHEN U JUMP PREMAUTRALY)
+                }
+
+                // Show text only if delay has passed
+                if (Time.time >= kineticHintReadyTime)
+                {
+                    if (!kineticJumpHintText.gameObject.activeSelf)
+                    {
+                        kineticJumpHintText.gameObject.SetActive(true);
+                    }
+                    kineticJumpHintText.text = "Press [SPACE] to Kinetic Jump";
+                }
+            }
+            else
+            {
+                // Reset when not allowed anymore
+                kineticHintReadyTime = -999f;
+
+                if (kineticJumpHintText.gameObject.activeSelf)
+                    kineticJumpHintText.gameObject.SetActive(false);
             }
         }
+
+        // --- Kinetic Jump buildup while sliding (the slider) ---
+
+        if (playerMovement != null && kineticJumpCooldownSlider != null)
+        {
+            bool showSliderBar = playerMovement.IsSliding() && playerMovement.GetSlideTimer() < playerMovement.minSlideTimeForKineticJump;
+
+            // show/hide only when it changes (avoids SetActive spam)
+            if (kineticJumpCooldownSlider.gameObject.activeSelf != showSliderBar)
+            {
+                kineticJumpCooldownSlider.gameObject.SetActive(showSliderBar);
+            }
+            if (showSliderBar)
+            {
+                kineticJumpCooldownSlider.value = playerMovement.GetKJProgress01WhileSliding();
+            }
+            else
+            {
+                // reset when hidden so it starts empty next slide
+                kineticJumpCooldownSlider.value = 0f;
+            }
+        }
+
 
         // --- Airborne Slam HUD hint ---
         if (playerMovement != null && slamHintText != null)

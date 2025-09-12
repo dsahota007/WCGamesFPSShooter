@@ -257,7 +257,7 @@ public class Bullet : MonoBehaviour
                                                                                              // --- Set bonus: Meteor magic + Meteor infusion ---
                     if (WeaponManager.HasSetBonus() && sourceWeapon.infusion == InfusionType.Meteor)
                     {
-                        dmg *= 1.25f; // +25% AoE damage
+                        dmg *= 1.125f; // +12.5% AoE damage
                     }
 
                     Vector3 pushDir = (e.transform.position - center).normalized;  //for ragdoll we find direction and in take damage implment that 

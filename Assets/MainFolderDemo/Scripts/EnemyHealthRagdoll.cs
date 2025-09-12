@@ -386,7 +386,7 @@ public class EnemyHealthRagdoll : MonoBehaviour
         //set BONUS
         if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Venom)
         {
-            venomDotPctPerSec *= 1.5f; // +50% stronger more damage over time  (more toxic over a longer time)
+            venomDotPctPerSec *= 1.45f; // +45% stronger more damage over time  (more toxic over a longer time)
         }
         //--------
 
