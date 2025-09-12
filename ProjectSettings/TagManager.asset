@@ -25,6 +25,7 @@ TagManager:
   - Enemy
   - Asteroid
   - Bullets
+  - Head
   layers:
   - Default
   - TransparentFX

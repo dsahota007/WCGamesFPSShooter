@@ -49,7 +49,7 @@ public class EnemyHealthRagdoll : MonoBehaviour
     [Header("Health Bar Visibility")]
     public float showMaxDistance = 25f;           // only within this distance
     [Range(0f, 1f)] public float centerDotThreshold = 0.85f; // ~31° cone (cos θ)
-    public bool requireLineOfSight = true;        // raycast check
+    public bool requireLineOfSight = true;        // raycast check 
     public LayerMask occlusionMask = ~0;          // what can block view (walls, props)
     public float fadeSpeed = 10f;                 // canvas alpha lerp
     public Vector3 lookAtOffset = new Vector3(0, 1.6f, 0); // aim at head height
@@ -272,6 +272,12 @@ public class EnemyHealthRagdoll : MonoBehaviour
         fireDotPctPerSec = Mathf.Max(0f, percentPerSec);                //This stores how much damage per second
         fireDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
         fireNextTickTime = Time.time + 1f; // tick every 1s
+
+
+        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Fire)
+        {
+            fireDotPctPerSec *= 1.25f; // +25% stronger more damage over time  (more burn)
+        }
 
         // Attach/refresh VFX
         if (onEnemyVFXPrefab != null)
@@ -524,7 +530,7 @@ public class EnemyHealthRagdoll : MonoBehaviour
         }
     }
      
-    public void TakeDamage(float damage, Vector3 hitDirection)
+    public void TakeDamage(float damage, Vector3 hitDirection, Collider hitCollider = null)
     {
         var dm = FindFirstObjectByType<DropManager>();
         if (dm != null && dm.IsInstaKill)
@@ -535,6 +541,16 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
 
         if (isDead) return;   //exit func if dead
+        Debug.Log("TakeDamage called | HitCollider: " + (hitCollider ? hitCollider.name : "NULL"));
+
+
+        bool isHeadshot = (hitCollider != null && hitCollider.CompareTag("Head"));
+        if (isHeadshot)
+        {
+            damage *= 1.5f;
+            Debug.LogWarning("HEADSHOT DETECTED on " + hitCollider.name);
+        }
+
 
         currentHealth -= damage;    //decrement the damage from health
         var cam = FindObjectOfType<CameraScript>();  //get the cam script
@@ -544,6 +560,15 @@ public class EnemyHealthRagdoll : MonoBehaviour
         {
             if (cam) cam.ShowHitmarker(true); //showhitmarkker
             Die(hitDirection);
+            // If it was a headshot, show special UI
+            var ui = FindFirstObjectByType<UI>();
+            if (ui != null)
+            {
+                int basePoints = 50;
+                int points = isHeadshot ? Mathf.RoundToInt(basePoints * 1.5f) : basePoints;
+                string label = isHeadshot ? "Headshot Zombie" : "Zombie";
+                ui.ShowEliminationMessage(points, label);
+            }
             return;     //get outt the this part 
         }
         else
@@ -560,17 +585,17 @@ public class EnemyHealthRagdoll : MonoBehaviour
     {
         if (ragdollRoot == null)
         {
-            Debug.LogError("RagdollRoot is not assigned! Enemy will fall through map.");
+            //Debug.LogError("RagdollRoot is not assigned! Enemy will fall through map.");
             return;
         }
         isDead = true;
         PointManager.Instance.AddPoints(50);
 
-        var ui = FindFirstObjectByType<UI>();
-        if (ui != null)
-        {
-            ui.ShowEliminationMessage(50, "Zombie");
-        }
+        //var ui = FindFirstObjectByType<UI>();
+        //if (ui != null)
+        //{
+        //    ui.ShowEliminationMessage(50, "Zombie");
+        //}
 
         if (animator) animator.enabled = false;         //turn all that shit off animations, navmesh and the boxCollider so we dont run into it 
         if (agent) agent.enabled = false;

@@ -149,6 +149,7 @@ public class PlayerAttributes : MonoBehaviour
         var drop = FindFirstObjectByType<MoreDropsPerk>(); if (drop) drop.hasMoreDropsPerk = false;
         var adrenaline = FindFirstObjectByType<AdrenalinePerk>(); if (adrenaline) adrenaline.hasAdrenalinePerk = false;
         var dashSlam = FindFirstObjectByType<MoreDashSlamPerk>(); if (dashSlam) dashSlam.hasMoreDashSlamPerk = false;
+        var lessAmmo = FindFirstObjectByType<LessAmmoConsumePerk>(); if (lessAmmo) lessAmmo.hasLessAmmoPerk = false;
         var resurrect = FindFirstObjectByType<ResurrectPerk>(); if (resurrect) resurrect.hasResurrectPerk = false;
 
         // 5) remove perk icons from the bar
@@ -164,6 +165,7 @@ public class PlayerAttributes : MonoBehaviour
             ui.RemovePerkIcon(PerkType.MoreDrop);
             ui.RemovePerkIcon(PerkType.Adrenaline);
             ui.RemovePerkIcon(PerkType.MoreDashSlam);
+            ui.RemovePerkIcon(PerkType.LessAmmoConsume);
             ui.RemovePerkIcon(PerkType.Resurrect);
         }
     }

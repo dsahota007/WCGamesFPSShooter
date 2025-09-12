@@ -219,6 +219,20 @@ public class WeaponManager : MonoBehaviour
         EquipWeaponNow(slotToReplace);
     }
 
+    public static bool HasSetBonus()
+    {
+        var magicManager = FindFirstObjectByType<MagicManager>();  //fetch the magic manager script 
+        if (magicManager == null || ActiveWeapon == null) return false;  //if we dont have that script and no active weapon GTFO
+
+        MagicType CurrentMagic = magicManager.GetCurrentMagicType();  //get current magic
+        InfusionType CurrentInfusion = ActiveWeapon.infusion;          //current infusion
+
+        // Match if same element
+        return CurrentMagic != MagicType.None && (int)CurrentMagic == (int)CurrentInfusion;  //return TRUE if we if we have magi
+        // we have the enmuratiosn for the infusion and magic as the same list so I have lined up.    
+    }
+
+
     public GameObject GetWeaponObjectAtIndex(int index)
     {
         return (index >= 0 && index < weapons.Length) ? weapons[index] : null;

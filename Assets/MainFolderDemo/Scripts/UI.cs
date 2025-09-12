@@ -225,6 +225,9 @@ public class UI : MonoBehaviour
     [Header("Elimination UI")]
     public RectTransform eliminationStackRoot;
     public Text eliminationRowPrefab;
+    private readonly List<Text> _activeEliminationRows = new List<Text>();
+    public int maxEliminationRows = 10; // cap
+
 
 
     void Start()
@@ -1397,8 +1400,22 @@ public class UI : MonoBehaviour
 
         int UpdatedAwardedPoints = Mathf.RoundToInt(awardedPoints * PointManager.GlobalPointsMult);
 
+        if (_activeEliminationRows.Count >= maxEliminationRows) 
+        {
+            Text oldest = _activeEliminationRows[0];  //oldest one 
+            
+            if (oldest != null)
+            {
+                Destroy(oldest.gameObject);
+            }
+            
+            _activeEliminationRows.RemoveAt(0);
+        }
+
         var row = Instantiate(eliminationRowPrefab, eliminationStackRoot);  //spawn here and what to spawn 
         row.text = $"+{UpdatedAwardedPoints} {enemyName} Eliminated";                 // what the text says
+
+        _activeEliminationRows.Add(row);
         StartCoroutine(PopInAndFadeOut(row));
     }
 
@@ -1408,37 +1425,42 @@ public class UI : MonoBehaviour
 
         // Ensure CanvasGroup is present
         CanvasGroup cg = row.GetComponent<CanvasGroup>();
-        if (cg == null) cg = row.gameObject.AddComponent<CanvasGroup>();
+        if (cg == null)
+        {
+            cg = row.gameObject.AddComponent<CanvasGroup>();  //get canvasGROUP
+        }
 
         // Initial state
-        cg.alpha = 0f;
-        row.rectTransform.localScale = Vector3.one * 0.6f;
+        cg.alpha = 0f;  //set to 0 so you cant see 
+        row.rectTransform.localScale = Vector3.one * 0.6f; 
 
         // --- POP IN ---
-        float t = 0f; 
+        float timer = 0f; //start the timer at 0
         float popDuration = 0.25f;
 
-        while (t < 1f)
+        while (timer < 1f)
         {
-            t += Time.unscaledDeltaTime / popDuration;
-            cg.alpha = Mathf.Lerp(0f, 1f, t);
-            float s = Mathf.Lerp(0.6f, 1f, t);
+            timer += Time.unscaledDeltaTime / popDuration;
+            cg.alpha = Mathf.Lerp(0f, 1f, timer);          // transparency 
+            float s = Mathf.Lerp(0.6f, 1f, timer);
             row.rectTransform.localScale = new Vector3(s, s, 1f);
             yield return null;
         }
 
         // Hold for a moment
-        yield return new WaitForSecondsRealtime(0.7f);
+        yield return new WaitForSecondsRealtime(1.75f);
 
         // --- FADE OUT ---
-        t = 0f;
-        float fadeDuration = 0.5f;
-        while (t < 1f)
+        timer = 0f;
+        float fadeDuration = 0.15f;
+        while (timer < 1f)
         {
-            t += Time.unscaledDeltaTime / fadeDuration;
-            cg.alpha = Mathf.Lerp(1f, 0f, t);
+            timer += Time.unscaledDeltaTime / fadeDuration;
+            cg.alpha = Mathf.Lerp(1f, 0f, timer);
             yield return null;
         }
+
+        //yield return new WaitForSecondsRealtime(0.1f);
 
         Destroy(row.gameObject);
     }

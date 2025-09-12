@@ -74,7 +74,7 @@ public class Bullet : MonoBehaviour
             }
 
             Vector3 dir = transform.forward;
-            enemy.TakeDamage(damage, dir);
+            enemy.TakeDamage(damage, dir, other);
 
             //FIRE INDUSION (Rest in enemyHealthRagdoll)
             if (sourceWeapon != null && sourceWeapon.infusion == InfusionType.Fire)
