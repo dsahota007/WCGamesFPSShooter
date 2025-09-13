@@ -558,5 +558,4 @@ public class PlayerMovement : MonoBehaviour
         return Mathf.Clamp01(slideTimer / Mathf.Max(0.0001f, minSlideTimeForKineticJump)); //idk ?
     }
 
-
 }

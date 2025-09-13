@@ -221,6 +221,7 @@ public class UI : MonoBehaviour
     public Image dashFill;               
     public Color dashReadyColor = Color.white;
     //public Color dashRechargingColor = new Color(1f, 1f, 1f, 0.6f);
+    //public Text DashNotReadyText;   //when u try to dash but it cooling down  !!!!!!!!!!!!! We can come back to this 
 
     [Header("Post Processing")]
     public PostProcessVolume postProcessVolume;
@@ -1019,6 +1020,20 @@ public class UI : MonoBehaviour
                 chromaticAberration.intensity.Override(0f);
             }
         }
+
+        // --- Dash Cooldown Status ---  WE CAN COME BACK TO THIS 
+        //if (playerMovement != null && dashCooldownSlider != null && DashNotReadyText != null)
+        //{
+        //    float dashTimePassed = Time.time - playerMovement.LastDashTime;
+        //    float dashProgress = Mathf.Clamp01(dashTimePassed / playerMovement.dashCooldown);
+        //    dashCooldownSlider.value = dashProgress;
+
+        //    bool onCooldown = dashProgress < 1f;
+        //    DashNotReadyText.gameObject.SetActive(onCooldown);
+        //    DashNotReadyText.text = onCooldown ? "Dash on Cooldown" : "";
+        //}
+
+
     }
 
     //------------------------------------ round UI logic

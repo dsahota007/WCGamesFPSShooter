@@ -229,7 +229,7 @@ public class WeaponManager : MonoBehaviour
 
         // Match if same element
         return CurrentMagic != MagicType.None && (int)CurrentMagic == (int)CurrentInfusion;  //return TRUE if we if we have magi
-        // we have the enmuratiosn for the infusion and magic as the same list     
+        
     }
 
 
