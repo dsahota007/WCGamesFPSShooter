@@ -220,6 +220,7 @@ public class UI : MonoBehaviour
     public Slider dashCooldownSlider;    
     public Image dashFill;               
     public Color dashReadyColor = Color.white;
+    public Image dashVFXPicture;
     //public Color dashRechargingColor = new Color(1f, 1f, 1f, 0.6f);
     //public Text DashNotReadyText;   //when u try to dash but it cooling down  !!!!!!!!!!!!! We can come back to this 
 
@@ -274,6 +275,11 @@ public class UI : MonoBehaviour
         if (slamHintText)  //turn off slam text on start
         {
             slamHintText.gameObject.SetActive(false);
+        }
+
+        if (dashVFXPicture)
+        {
+            dashVFXPicture.gameObject.SetActive(false); 
         }
 
         if (postProcessVolume != null && postProcessVolume.profile != null)

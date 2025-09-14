@@ -3,6 +3,7 @@
 //using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using System.Collections;
+
 //using static UnityEditor.Experimental.GraphView.GraphView;
 //using static UnityEditorInternal.ReorderableList;
 
@@ -60,6 +61,7 @@ public class PlayerMovement : MonoBehaviour
 
     private CharacterController controller;
     private ArmMovementMegaScript armMover;
+    private UI ui;
     private Vector3 velocity;
     private bool isGrounded;
     private Vector3 lastMoveDirection;  //stores last movement direction
@@ -77,7 +79,7 @@ public class PlayerMovement : MonoBehaviour
     public float dashSpeed = 20f;
     public float dashDuration = 0.2f;
     public float dashCooldown = 2f;
-    public GameObject dashVFX;
+    //public GameObject dashVFX;
 
     private bool isDashing = false;
     private float dashTimer = 0f;
@@ -97,6 +99,8 @@ public class PlayerMovement : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         armMover = GetComponent<ArmMovementMegaScript>();
+        ui = GetComponent<UI>();
+        if (ui == null) ui = FindFirstObjectByType<UI>();
         if (armMover == null) armMover = FindFirstObjectByType<ArmMovementMegaScript>();  //For some reason this allows to nto slide when drinking. 
 
         // Store normal controller dimensions so we can like reset
@@ -277,6 +281,8 @@ public class PlayerMovement : MonoBehaviour
 
     void StartDash()
     {
+
+ 
         isDashing = true;
         dashTimer = 0f;
         lastDashTime = Time.time;
@@ -292,12 +298,28 @@ public class PlayerMovement : MonoBehaviour
         velocity.y = 0f;
 
         // Spawn VFX
-        if (dashVFX != null)
+        //if (dashVFX != null)
+        //{
+        //    GameObject vfx = Instantiate(dashVFX, transform.position, Quaternion.identity);
+        //    Destroy(vfx, 2f);
+        //}
+
+
+        if (ui.dashVFXPicture != null)
         {
-            GameObject vfx = Instantiate(dashVFX, transform.position, Quaternion.identity);
-            Destroy(vfx, 2f);
+            StartCoroutine(ShowDashVFXPicture());
         }
+
+
     }
+
+    private IEnumerator ShowDashVFXPicture()
+    {
+        ui.dashVFXPicture.gameObject.SetActive(true);
+        yield return new WaitForSeconds(1f); // show for 1 second
+        ui.dashVFXPicture.gameObject.SetActive(false);
+    }
+
 
     void EndDash()
     {
