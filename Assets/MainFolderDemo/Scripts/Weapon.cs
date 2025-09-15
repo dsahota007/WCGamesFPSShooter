@@ -336,7 +336,7 @@ public class Weapon : MonoBehaviour
         switch (fireType)
         {
             case FireType.Single:
-                if (Input.GetMouseButtonDown(0) && Time.time >= nextFireTime)
+                if (KeybindManager.Instance.GetKeyDown("FireWeapon") && Time.time >= nextFireTime)
                 {
                     Shoot();
                     nextFireTime = Time.time + ShotDelay; //fireRate;  // current time + next time u can shoot 
@@ -344,12 +344,12 @@ public class Weapon : MonoBehaviour
                 break;
 
             case FireType.Burst:
-                if (Input.GetMouseButtonDown(0) && fireRoutine == null)
+                if (KeybindManager.Instance.GetKeyDown("FireWeapon") && fireRoutine == null)
                     fireRoutine = StartCoroutine(BurstFire());   //we cant jus call we need startCorotine bc of IEnumerator
                 break;
 
             case FireType.Auto:
-                if (Input.GetMouseButton(0) && fireRoutine == null)
+                if (KeybindManager.Instance.GetKeyHeld("FireWeapon") && fireRoutine == null)
                     fireRoutine = StartCoroutine(AutoFire());
                 break;
         }
@@ -520,7 +520,7 @@ public class Weapon : MonoBehaviour
 
     IEnumerator AutoFire()
     {
-        while (Input.GetMouseButton(0) && CanShoot() && !IsSprinting())
+        while (KeybindManager.Instance.GetKeyHeld("FireWeapon") && CanShoot() && !IsSprinting())
         {
             Shoot();
             yield return new WaitForSeconds(ShotDelay);  //fireRate

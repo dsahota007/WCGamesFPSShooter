@@ -45,7 +45,7 @@ public class ArmMovementMegaScript : MonoBehaviour
     public float equipAnimationSpeed = 3f;
 
     private bool isEquipping = false;
-    private float equipTimer = 0f;
+    private float equipTimer = 0f; 
 
     [Header("Quick Grenade Grab")]
     public Transform leftArm; // Assign your left arm transform
@@ -321,7 +321,7 @@ public class ArmMovementMegaScript : MonoBehaviour
     bool CanThrowGrenade()      //make sure u cant run aim and all that when throwing gernade
     {
         // aiming?
-        if (Input.GetMouseButton(1)) return false;
+        if (KeybindManager.Instance.GetKeyHeld("AimDownSight")) return false;
         if (KeybindManager.Instance.GetKeyHeld("Sprint")) return false;
 
         if (isCastingSpell) return false;        // casting magic?

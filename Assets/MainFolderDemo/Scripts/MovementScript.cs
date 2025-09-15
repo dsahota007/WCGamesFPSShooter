@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
         bool canSlam = Time.time >= lastSlamTime + slamCooldown;   //for cooldown so u dont spam.
         if (isKineticJump && !isGrounded && !isSlamming && Time.time > lastSlamTime)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && !isGrounded && canSlam) // make sure ur not on ground and are ALOUD TO SLAM based off the bool above
+            if (KeybindManager.Instance.GetKeyDown("Jump&Slam") && !isGrounded && canSlam) // make sure ur not on ground and are ALOUD TO SLAM based off the bool above
             {
                 StartKineticSlam();
             }
@@ -212,7 +212,7 @@ public class PlayerMovement : MonoBehaviour
 
         controller.Move(inputDirection * currentSpeed * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (KeybindManager.Instance.GetKeyDown("Jump&Slam") && isGrounded)
         {
             if (isSliding)
             {
@@ -483,7 +483,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        bool canSlide = KeybindManager.Instance.GetKeyHeld("Sprint") && Input.GetKeyDown(KeyCode.C) && isGrounded && !isSliding;
+        bool canSlide = KeybindManager.Instance.GetKeyHeld("Sprint") && KeybindManager.Instance.GetKeyDown("Slide") && isGrounded && !isSliding;
 
         if (canSlide)
         {

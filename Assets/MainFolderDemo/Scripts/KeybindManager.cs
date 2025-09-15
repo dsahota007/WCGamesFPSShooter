@@ -20,8 +20,8 @@ public class KeybindManager : MonoBehaviour
         }
 
         // Load defaults (or saved ones)
-        LoadKey("Jump", KeyCode.Space);
-        LoadKey("Slam", KeyCode.Space);
+        LoadKey("Jump&Slam", KeyCode.Space);
+        //LoadKey("Slam", KeyCode.Space);
         LoadKey("Interact", KeyCode.F);
         LoadKey("Dash", KeyCode.E);
         LoadKey("Slide", KeyCode.C);

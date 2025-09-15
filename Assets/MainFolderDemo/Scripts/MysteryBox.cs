@@ -17,6 +17,9 @@ public class MysteryBox : MonoBehaviour
     public Transform player;                    
     public float minimumDistanceToOpen = 3f;
 
+    //fixing keybinds
+    private float pickupDelay = 0.75f;  // can't pick up until 0.75s after open
+    private float openTime = 0f;
 
     private ArmMovementMegaScript armMovementMegaScript;
  
@@ -31,7 +34,7 @@ public class MysteryBox : MonoBehaviour
 
     void Update()
     {
-        if (!isBoxOpen && Input.GetKeyDown(KeyCode.E))
+        if (!isBoxOpen && KeybindManager.Instance.GetKeyDown("Interact"))
         {
             float distanceToPlayer = Vector3.Distance(player.position, transform.position);   // write transform.position bc it is attached to the box the script so we know its the box
             if (distanceToPlayer <= minimumDistanceToOpen)
@@ -45,6 +48,7 @@ public class MysteryBox : MonoBehaviour
 
                 pm.SubtractPoints(BOX_COST);               // take points HERE (authoritative)
                 OpenBoxAndShowRandomWeapon();              // now spawn preview
+                openTime = Time.time;
             }
             //else
             //{
@@ -65,7 +69,7 @@ public class MysteryBox : MonoBehaviour
                 currentPreview.transform.position = WeaponfloatPosition;
                 currentPreview.transform.Rotate(Vector3.up, spinSpeed * Time.deltaTime, Space.World);     //.rotate(x,y,z)    and space.world helps stay at the box. 
 
-                if (Input.GetKeyDown(KeyCode.F) )        //take weapon
+                if (KeybindManager.Instance.GetKeyDown("Interact") && Time.time >= openTime + pickupDelay)        //take weapon
                 {
                     float distanceToPlayer = Vector3.Distance(player.position, transform.position);   // do this again so we cant pick up the gun from anywhere. 
                     if (distanceToPlayer <= minimumDistanceToOpen && armMovementMegaScript != null && !armMovementMegaScript.isReloading)

@@ -14,7 +14,7 @@ public class AmmoBox : MonoBehaviour
     void Update()
     {
         float distance = Vector3.Distance(transform.position, player.position);
-        if (distance <= interactDistance && Input.GetKeyDown(KeyCode.E))
+        if (distance <= interactDistance && KeybindManager.Instance.GetKeyDown("Interact"))
         {
             RefillCurrentWeaponAmmo();
         }
