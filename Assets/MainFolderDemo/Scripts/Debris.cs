@@ -14,20 +14,16 @@ public class Debris : MonoBehaviour
     public float destroyDelay = 2f;   // time it keeps moving up before destroy
 
     private bool isOpened = false;
-
-    // fetched from UI (do NOT assign here)
     private Text promptText;
 
     void Start()
     {
-        // find player if not set
         if (player == null)
         {
             var p = GameObject.FindGameObjectWithTag("Player");
             if (p) player = p.transform;
         }
-
-        // fetch the single shared DebrisText from your UI script
+         
         var ui = FindFirstObjectByType<UI>();
         if (ui != null) promptText = ui.DebrisText;
 
@@ -41,8 +37,7 @@ public class Debris : MonoBehaviour
 
         float dist = Vector3.Distance(player.position, transform.position);
         bool inRange = dist <= interactRange;
-
-        // show/hide prompt while not opened
+         
         if (!isOpened && promptText != null)
         {
             if (inRange)
