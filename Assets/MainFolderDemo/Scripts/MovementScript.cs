@@ -3,6 +3,7 @@
 //using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 //using static UnityEditor.Experimental.GraphView.GraphView;
 //using static UnityEditorInternal.ReorderableList;
@@ -313,11 +314,48 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    //private IEnumerator ShowDashVFXPicture()
+    //{
+    //    ui.dashVFXPicture.gameObject.SetActive(true);
+    //    yield return new WaitForSeconds(1f); // show for 1 second
+    //    ui.dashVFXPicture.gameObject.SetActive(false);
+    //}
+
     private IEnumerator ShowDashVFXPicture()
     {
-        ui.dashVFXPicture.gameObject.SetActive(true);
-        yield return new WaitForSeconds(1f); // show for 1 second
-        ui.dashVFXPicture.gameObject.SetActive(false);
+        if (ui == null || ui.dashVFXPicture == null)
+            yield break;
+
+        Image img = ui.dashVFXPicture;
+
+        // Make sure the object is active
+        img.gameObject.SetActive(true);
+
+        // Fade in
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / 0.1f; // 0.25 sec fade in
+            Color c = img.color;
+            img.color = new Color(c.r, c.g, c.b, Mathf.Lerp(0f, 0.4f, t));  //we dont do 1 bc we drop oppacity
+            yield return null;
+        }
+
+        // Hold for 0.5s
+        yield return new WaitForSeconds(0.1f);
+
+        // Fade out
+        t = 0f;
+        while (t < 1f)
+        {
+            t += Time.deltaTime / 0.3f; // 0.5 sec fade out
+            Color c = img.color;
+            img.color = new Color(c.r, c.g, c.b, Mathf.Lerp(0.4f, 0f, t));  //we dont do 1 bc we drop oppacity
+            yield return null;
+        }
+
+        // Optionally disable after fade out
+        img.gameObject.SetActive(false);
     }
 
 

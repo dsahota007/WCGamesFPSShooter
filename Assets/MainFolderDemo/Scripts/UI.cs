@@ -227,6 +227,7 @@ public class UI : MonoBehaviour
     [Header("Post Processing")]
     public PostProcessVolume postProcessVolume;
     private ChromaticAberration chromaticAberration;
+    private DepthOfField depthOfFeild;
 
     [Header("Elimination UI")]
     public RectTransform eliminationStackRoot;
@@ -289,6 +290,13 @@ public class UI : MonoBehaviour
             {
                 chromaticAberration.intensity.Override(0f); // start off
                 chromaticAberration.active = true;         // keep it enabled, just zeroed
+            }
+
+            postProcessVolume.profile.TryGetSettings(out depthOfFeild);
+            if (depthOfFeild != null)
+            {
+                depthOfFeild.focusDistance.Override(10f); // default “no blur”
+                depthOfFeild.active = true;              // keep enabled, just tweak distance
             }
         }
 
@@ -1014,16 +1022,24 @@ public class UI : MonoBehaviour
             }
         }
 
-        //dash VFX to enabel chromatic abbriation
-        if (playerMovement != null && chromaticAberration != null)
+        //dash VFX to enabel chromatic abbriation adn DepthOffeidl for blur 
+        if (playerMovement != null)
         {
             if (playerMovement.IsDashing())
             {
-                chromaticAberration.intensity.Override(1.0f);
+                if (chromaticAberration != null)
+                    chromaticAberration.active = true;
+
+                if (depthOfFeild != null)
+                    depthOfFeild.active = true;
             }
             else
             {
-                chromaticAberration.intensity.Override(0f);
+                if (chromaticAberration != null)
+                    chromaticAberration.active = false;
+
+                if (depthOfFeild != null)
+                    depthOfFeild.active = false;
             }
         }
 
