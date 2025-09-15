@@ -642,7 +642,7 @@ public class Weapon : MonoBehaviour
     {
         var movement = FindFirstObjectByType<PlayerMovement>();             //fetch script
         bool isSliding = movement != null && movement.IsSliding();     //find sliding 
-        return Input.GetKey(KeyCode.LeftShift) && !Input.GetMouseButton(1) && !isSliding;  //retrun true --- when ur trying to sprint and your not trying to aim and ur not sliding. 
+        return KeybindManager.Instance.GetKeyHeld("Sprint") && !KeybindManager.Instance.GetKeyHeld("AimDownSight") && !isSliding;  //retrun true --- when ur trying to sprint and your not trying to aim and ur not sliding. 
     }
 
     private bool CanShoot()  //check if have ammo

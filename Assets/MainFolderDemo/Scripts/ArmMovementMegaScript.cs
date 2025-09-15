@@ -121,13 +121,13 @@ public class ArmMovementMegaScript : MonoBehaviour
     {
 
         bool hasMovementInput = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-        bool isAiming = !isPerkAnimPlaying && Input.GetMouseButton(1);
+        bool isAiming = !isPerkAnimPlaying && KeybindManager.Instance.GetKeyHeld("AimDownSight");
 
         bool freezeForPerk = lockBobbingDuringPerk && isPerkAnimPlaying;
 
 
         bool isSliding = FindFirstObjectByType<PlayerMovement>().IsSliding();                                     //this is for slide hipFire offset. 
-        bool isSprinting = !isPerkAnimPlaying && Input.GetKey(KeyCode.LeftShift) && hasMovementInput && !isAiming && !isSliding && !isCastingSpell;        //we added hasMovementInput so i dont sprint in idle
+        bool isSprinting = !isPerkAnimPlaying && KeybindManager.Instance.GetKeyHeld("Sprint") && hasMovementInput && !isAiming && !isSliding && !isCastingSpell;        //we added hasMovementInput so i dont sprint in idle
 
         bool isGrounded = controller.isGrounded;    //we got ref to char controller so we know when grounded
         bool isWalking = !isSprinting && hasMovementInput && isGrounded;
@@ -273,7 +273,7 @@ public class ArmMovementMegaScript : MonoBehaviour
 
 
         //gernade throw logic
-        if (!isGrenadeGrabPlaying && Input.GetKeyDown(KeyCode.G) && leftArm != null)
+        if (!isGrenadeGrabPlaying && KeybindManager.Instance.GetKeyDown("Grenade") && leftArm != null)
         {
             if (CanThrowGrenade())
             {
@@ -322,7 +322,7 @@ public class ArmMovementMegaScript : MonoBehaviour
     {
         // aiming?
         if (Input.GetMouseButton(1)) return false;
-        if (Input.GetKeyDown(KeyCode.LeftShift)) return false;
+        if (KeybindManager.Instance.GetKeyHeld("Sprint")) return false;
 
         if (isCastingSpell) return false;        // casting magic?
         if (isPerkAnimPlaying) return false;
@@ -334,7 +334,7 @@ public class ArmMovementMegaScript : MonoBehaviour
 
         bool sprintingNow =
             (pm != null && pm.IsSprinting()) ||
-            (Input.GetKey(KeyCode.LeftShift) && controller != null && controller.velocity.magnitude > 0.1f);
+            (KeybindManager.Instance.GetKeyHeld("Sprint") && controller != null && controller.velocity.magnitude > 0.1f);
 
         if (sprintingNow) return false;
 

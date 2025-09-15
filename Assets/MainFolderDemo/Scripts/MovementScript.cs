@@ -160,10 +160,10 @@ public class PlayerMovement : MonoBehaviour
         //ApplyGravity();
 
         // Prevent sprint while firing
-        bool isAiming = Input.GetMouseButton(1);
+        bool isAiming = KeybindManager.Instance.GetKeyHeld("AimDownSight");
 
-        bool isFiring = Input.GetMouseButton(1) && Input.GetMouseButton(1);
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && !isFiring;
+        bool isFiring = KeybindManager.Instance.GetKeyHeld("AimDownSight");
+        bool isSprinting = KeybindManager.Instance.GetKeyHeld("Sprint") && !isFiring;
 
         float currentSpeed;
 
@@ -483,7 +483,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        bool canSlide = Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.C) && isGrounded && !isSliding;
+        bool canSlide = KeybindManager.Instance.GetKeyHeld("Sprint") && Input.GetKeyDown(KeyCode.C) && isGrounded && !isSliding;
 
         if (canSlide)
         {
@@ -604,7 +604,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool IsSprinting()
     {
-        return Input.GetKey(KeyCode.LeftShift) && controller.velocity.magnitude > 0.1f;
+        return KeybindManager.Instance.GetKeyHeld("Sprint") && controller.velocity.magnitude > 0.1f;
     }
 
     public bool IsDashing()

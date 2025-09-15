@@ -198,9 +198,9 @@ public class CameraScript : MonoBehaviour
         if (cameraLocked) return;  //for menu system when u open grenade menu or PAP
         if (playerCamera == null) return;       //if cam dont exist leave this code dont waste your time.
 
-        bool isAiming = Input.GetMouseButton(1);
+        bool isAiming = KeybindManager.Instance.GetKeyHeld("AimDownSight");
         bool hasMovementInput = Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0;  //we do this so we dont get this when idle
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && hasMovementInput && !isAiming;
+        bool isSprinting = KeybindManager.Instance.GetKeyHeld("Sprint") && hasMovementInput && !isAiming;
         bool isSliding = playerMovement != null && playerMovement.IsSliding();   //this is so u dont get ads FOv zoom when sliding
 
 
@@ -227,7 +227,7 @@ public class CameraScript : MonoBehaviour
     {
         if (!playerMovement.IsGrounded()) return;  //dont bob unless grounded
 
-        if (Input.GetKey(KeyCode.LeftShift) && Input.GetAxis("Vertical") != 0)  //sprinting + moving
+        if (KeybindManager.Instance.GetKeyHeld("Sprint") && Input.GetAxis("Vertical") != 0)  //sprinting + moving
         {
             bobTimer += Time.deltaTime * bobSpeed;
             float CamBobOffset = Mathf.Sin(bobTimer) * bobAmount;   //mathf.sin gives a wave (like up/down).
@@ -278,7 +278,7 @@ public class CameraScript : MonoBehaviour
             HandleSlideCamera();
             return;
         }
-        if (Input.GetKey(KeyCode.LeftShift) && (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0))   // this is for bobbing -- forward back left right -- we take away HeadBobWhenSprint in update()
+        if (KeybindManager.Instance.GetKeyHeld("Sprint") && (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0))   // this is for bobbing -- forward back left right -- we take away HeadBobWhenSprint in update()
         {
             HeadBobWhenSprint();
             return;

@@ -29,7 +29,9 @@ public class KeybindManager : MonoBehaviour
         LoadKey("SummonMagic", KeyCode.Q);
         LoadKey("FireWeapon", KeyCode.Mouse0);     // Left click
         LoadKey("AimDownSight", KeyCode.Mouse1);   // Right click
-        LoadKey("Grenade", KeyCode.G);   // Right click
+        LoadKey("Grenade", KeyCode.G);
+        LoadKey("Reload", KeyCode.R);
+        LoadKey("SwitchWeapons", KeyCode.Alpha1);
 
     }
 
