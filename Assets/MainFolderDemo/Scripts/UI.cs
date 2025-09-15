@@ -1860,8 +1860,20 @@ public class UI : MonoBehaviour
 
     public void InfuseWith(InfusionType type)
     {
+        const int INFUSE_COST = 2500;
+        var pm = PointManager.Instance;
+
+        if (pm.GetPoints() < INFUSE_COST)
+        {
+            // quick toast and keep panel open
+            ShowTemporaryPerkMessage($"Need {INFUSE_COST} pts to infuse");
+            return;
+        }
+
         if (currentWeapon != null)
         {
+            pm.AddPoints(-INFUSE_COST);
+
             // Set both the enum and string for consistency
             currentWeapon.SetInfusion(type);
             currentWeapon.SetInfusedElement(type.ToString());
