@@ -827,7 +827,7 @@ public class UI : MonoBehaviour
             var t = grenadeManager.currentType;
             int have = grenadeManager.GetCount(t);
             int cap = grenadeManager.GetCap(t);
-            grenadeAmountText.text = have.ToString();      //have + " / " + cap;   // e.g. "4 / 6"
+            grenadeAmountText.text = have.ToString();      //have + " / " + cap;   // e.g. "4 / 6"  we took this out 
         }
         // Example for 4 perks:
 
