@@ -60,7 +60,7 @@ public class AdrenalinePerk : MonoBehaviour
     {
         // purchase interaction
         bool inRange = player != null && Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasAdrenalinePerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasAdrenalinePerk)
         {
             UI uiSys = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))

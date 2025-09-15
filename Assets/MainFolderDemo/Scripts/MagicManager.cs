@@ -83,7 +83,7 @@ public class MagicManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (KeybindManager.Instance.GetKeyDown("SummonMagic"))
         {
             // If no magic is equipped, show UI message and exit
             if (currentMagicType == MagicType.None)
@@ -122,7 +122,7 @@ public class MagicManager : MonoBehaviour
         if (currentMagicType == MagicType.None) return false;     //no magic so return false
 
         if (armMagicSpell != null && armMagicSpell.IsCasting()) return false;    //if ur already casting thast bad  --  Prevents spam clicking Q (magic)
-        if (Input.GetKey(KeyCode.R)) return false;              //if your reloading thats also bad 
+        if (KeybindManager.Instance.GetKeyDown("Reload")) return false;              //if your reloading thats also bad 
 
         Weapon currentWeapon = WeaponManager.ActiveWeapon;
         if (currentWeapon != null && currentWeapon.IsReloading) return false;   //if your reloading ur gun

@@ -49,7 +49,7 @@ public class MoreSpeedPerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreSpeedPerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasMoreSpeedPerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))

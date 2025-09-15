@@ -46,7 +46,7 @@ public class MoreDashSlamPerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreDashSlamPerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasMoreDashSlamPerk) 
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))

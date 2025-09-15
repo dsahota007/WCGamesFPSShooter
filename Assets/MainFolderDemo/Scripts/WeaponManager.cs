@@ -48,14 +48,14 @@ public class WeaponManager : MonoBehaviour
 
     void Update()
     {
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift) && controller.velocity.magnitude > 0.1f;
+        bool isSprinting = KeybindManager.Instance.GetKeyDown("Sprint") && controller.velocity.magnitude > 0.1f;
 
-        if (Input.GetKeyDown(KeyCode.R) && !IsReloading)  //fix sprint when reloading ------------------ 
+        if (KeybindManager.Instance.GetKeyDown("Reload") && !IsReloading)  //fix sprint when reloading ------------------ 
         {
             ActiveWeapon.StartReload();
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1) && !isSwitching && !disableSwitching)
+        if (KeybindManager.Instance.GetKeyDown("SwitchWeapons") && !isSwitching && !disableSwitching)
         {
             int nextIndex = (currentWeaponIndex == 0) ? 1 : 0;
             StartCoroutine(SwitchWeaponWithDrop(nextIndex));

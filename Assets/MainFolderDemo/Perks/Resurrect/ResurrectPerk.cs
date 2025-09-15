@@ -47,7 +47,7 @@ public class ResurrectPerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasResurrectPerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasResurrectPerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))

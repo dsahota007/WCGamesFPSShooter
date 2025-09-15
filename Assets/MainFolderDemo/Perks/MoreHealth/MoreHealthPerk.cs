@@ -50,7 +50,7 @@ public class MoreHealthPerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreHealthPerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasMoreHealthPerk)
         {
             UI ui = FindFirstObjectByType<UI>();
 

@@ -48,7 +48,7 @@ public class LessAmmoConsumePerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasLessAmmoPerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasLessAmmoPerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))

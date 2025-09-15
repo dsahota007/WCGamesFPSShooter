@@ -47,7 +47,7 @@ public class PackAPunch : MonoBehaviour
         Transform player = weaponManager.transform;
         float dist = Vector3.Distance(player.position, transform.position);
 
-        if (dist <= interactRange && Input.GetKeyDown(KeyCode.E))
+        if (dist <= interactRange && KeybindManager.Instance.GetKeyDown("Interact"))
         {
             if (!isCooking && !isReady)
             {

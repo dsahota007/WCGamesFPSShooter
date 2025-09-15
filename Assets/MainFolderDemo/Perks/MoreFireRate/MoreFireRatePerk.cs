@@ -47,7 +47,7 @@ public class MoreFireRatePerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreFireRatePerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasMoreFireRatePerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))

@@ -50,7 +50,7 @@ public class MoreRevivePerk : MonoBehaviour
     void Update()
     {
         bool inRange = Vector3.Distance(player.position, transform.position) <= interactDistance;
-        if (inRange && Input.GetKeyDown(KeyCode.E) && !hasMoreRevivePerk)
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact") && !hasMoreRevivePerk)
         {
             UI ui = FindFirstObjectByType<UI>();
             if (!points.TrySpend(cost))
