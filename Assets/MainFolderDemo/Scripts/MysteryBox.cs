@@ -28,8 +28,6 @@ public class MysteryBox : MonoBehaviour
     {
         weaponManager = FindObjectOfType<WeaponManager>();
         armMovementMegaScript = FindFirstObjectByType<ArmMovementMegaScript>();
- 
-
     }
 
     void Update()
