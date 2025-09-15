@@ -235,6 +235,9 @@ public class UI : MonoBehaviour
     private readonly List<Text> _activeEliminationRows = new List<Text>();
     public int maxEliminationRows = 10; // cap
 
+    [Header("Debris")]
+    public Text DebrisText;
+
 
     void Start()
     {
