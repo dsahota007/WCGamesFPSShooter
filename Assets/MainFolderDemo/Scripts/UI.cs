@@ -474,9 +474,11 @@ public class UI : MonoBehaviour
                     else
                     {
                         string interactKey = KeybindManager.Instance.GetKeyName("Interact");
-                        ammoBoxText.text = $"Press [{interactKey}] to Refill Ammo";
-
+                        int cost = GetAmmoCostFor(currentWeapon);
+                        ammoBoxText.text = $"Press [{interactKey}] to Refill Ammo ({cost} pts)";
                     }
+
+
 
                     ammoBoxText.gameObject.SetActive(true);
                 }
@@ -1069,6 +1071,22 @@ public class UI : MonoBehaviour
         //}
 
 
+    }
+
+    // --- Ammo cost mirror of AmmoBox.GetAmmoCost ---
+    int GetAmmoCostFor(Weapon w)
+    {
+        // base (unpacked) = 750
+        // tier 1 = 2500
+        // tier 2 = 3500
+        // tier 5+ = 5000
+        // tiers 3–4 fallback = 4500
+        int lvl = Mathf.Max(0, w.upgradeLevel);
+        if (lvl == 0) return 750;
+        if (lvl == 1) return 2500;
+        if (lvl == 2) return 3500;
+        if (lvl >= 3) return 5000;
+        return 4500; // tiers 3–4
     }
 
     //------------------------------------ round UI logic
