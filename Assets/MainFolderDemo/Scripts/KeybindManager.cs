@@ -23,6 +23,7 @@ public class KeybindManager : MonoBehaviour
         LoadKey("Jump&Slam", KeyCode.Space);
         //LoadKey("Slam", KeyCode.Space);
         LoadKey("Interact", KeyCode.F);
+        LoadKey("BackOutInteract", KeyCode.Escape);
         LoadKey("Dash", KeyCode.E);
         LoadKey("Slide", KeyCode.C);
         LoadKey("Sprint", KeyCode.LeftShift);
@@ -58,4 +59,11 @@ public class KeybindManager : MonoBehaviour
 
     public bool GetKeyDown(string action) => Input.GetKeyDown(GetKey(action));
     public bool GetKeyHeld(string action) => Input.GetKey(GetKey(action));
+
+    public string GetKeyName(string action)
+    {
+        if (!keybinds.ContainsKey(action)) return "";
+        return keybinds[action].ToString();  // e.g. "E", "Mouse0", "LeftShift"
+    }
+
 }

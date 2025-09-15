@@ -263,36 +263,41 @@ public class PackAPunch : MonoBehaviour
         Transform player = weaponManager.transform;
         float dist = Vector3.Distance(player.position, transform.position);
 
-        if (dist > interactRange) return "";
+        if (dist > interactRange)
+            return "";
+
+        // Grab the actual interact key name from KeybindManager
+        string interactKey = KeybindManager.Instance.GetKeyName("Interact");
 
         if (isCooking)
         {
             return "Upgrading weapon...";
         }
-        else if (isReady)
-        {
-            return "Press [E] to retrieve upgraded weapon";
-        }
-        else
-        {
-            if (WeaponManager.ActiveWeapon == null) return "";
 
-            Weapon currentWeapon = WeaponManager.ActiveWeapon;
-            int currentPoints = (PointManager.Instance != null) ? PointManager.Instance.GetPoints() : 0;
-            int upgradeCost = GetUpgradeCost(currentWeapon.upgradeLevel);
-
-            if (currentWeapon.upgradeLevel >= currentWeapon.maxUpgradeLevel)
-            {
-                return "Weapon is already fully upgraded";
-            }
-            else if (currentPoints < upgradeCost)
-            {
-                return $"Need {upgradeCost} points to upgrade weapon";
-            }
-            else
-            {
-                return $"Press [E] to upgrade {currentWeapon.weaponName} ({upgradeCost} points)";
-            }
+        if (isReady)
+        {
+            return $"Press [{interactKey}] to retrieve upgraded weapon";
         }
+
+        // if not cooking or ready → check upgrade
+        if (WeaponManager.ActiveWeapon == null)
+            return "";
+
+        Weapon currentWeapon = WeaponManager.ActiveWeapon;
+        int currentPoints = (PointManager.Instance != null) ? PointManager.Instance.GetPoints() : 0;
+        int upgradeCost = GetUpgradeCost(currentWeapon.upgradeLevel);
+
+        if (currentWeapon.upgradeLevel >= currentWeapon.maxUpgradeLevel)
+        {
+            return "Weapon is already fully upgraded";
+        }
+
+        if (currentPoints < upgradeCost)
+        {
+            return $"Need {upgradeCost} points to upgrade weapon";
+        }
+
+        return $"Press [{interactKey}] to upgrade {currentWeapon.weaponName} ({upgradeCost} points)";
     }
+
 }

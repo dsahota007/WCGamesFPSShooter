@@ -48,7 +48,7 @@ public class ArmMagicSpell : MonoBehaviour
         if (isCasting) return false;                //if your already casting magic than get outt this code
         if (armMover.IsPerkAnimating) return false;
 
-        if (Input.GetKey(KeyCode.R)) return false;              //if your already reloading than get out of this code
+        if (KeybindManager.Instance.GetKeyDown("Reload")) return false;              //if your already reloading than get out of this code
         if (currentWeapon != null && currentWeapon.IsReloading) return false;
         return true;
     }

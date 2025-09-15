@@ -261,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // === DASH ===
-        if (!isDashing && Input.GetKeyDown(KeyCode.E) && Time.time >= lastDashTime + dashCooldown)
+        if (!isDashing && KeybindManager.Instance.GetKeyDown("Dash") && Time.time >= lastDashTime + dashCooldown)
         {
             StartDash();
         }

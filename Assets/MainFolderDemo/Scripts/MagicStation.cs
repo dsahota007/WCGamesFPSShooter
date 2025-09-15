@@ -27,7 +27,7 @@ public class MagicStation : MonoBehaviour
         CheckPlayerDistance();
         CheckIfSelected();
 
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && KeybindManager.Instance.GetKeyDown("Interact"))
         {
             SelectMagic();
         }

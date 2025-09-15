@@ -236,7 +236,6 @@ public class UI : MonoBehaviour
     public int maxEliminationRows = 10; // cap
 
 
-
     void Start()
     {
         magicManager = FindFirstObjectByType<MagicManager>();  // Find it once at start
@@ -422,21 +421,26 @@ public class UI : MonoBehaviour
                 MysteryBoxText.text = "Not enough points";
                 MysteryBoxText.gameObject.SetActive(true);
 
-                if (Input.GetKeyDown(KeyCode.E))
+                if (KeybindManager.Instance.GetKeyDown("Interact"))
                     ShowTemporaryPerkMessage("Not enough points");
             }
             else
             {
                 // enough → just show buy prompt; DO NOT subtract here
-                MysteryBoxText.text = "Press [E] to Open Weapon Box 950 Points";
+                string interactKey = KeybindManager.Instance.GetKeyName("Interact");
+                MysteryBoxText.text = $"Press [{interactKey}] to Open Weapon Box 950 Points";
                 MysteryBoxText.gameObject.SetActive(true);
             }
         }
         else if (PlayerIsCloseCanGrabWeapon && mysteryBox.GetCurrentPreview() != null)
         {
             Weapon weapon = mysteryBox.GetCurrentPreview().GetComponent<Weapon>();   //so we get the weapon adn than grab the Weapon.cs script 
+            
             string weaponName = (weapon != null) ? weapon.weaponName : "Unknown";    //if we find weapon script use that name if we cant use unkown
-            MysteryBoxText.text = "Press [F] to pick up: " + weaponName;
+            
+            string interactKey = KeybindManager.Instance.GetKeyName("Interact"); // or whatever you called it
+            MysteryBoxText.text = $"Press [{interactKey}] to pick up: {weaponName}";
+
             MysteryBoxText.gameObject.SetActive(true);
         }
         else
@@ -466,7 +470,9 @@ public class UI : MonoBehaviour
                     }
                     else
                     {
-                        ammoBoxText.text = "Press [E] to Refill Ammo";
+                        string interactKey = KeybindManager.Instance.GetKeyName("Interact");
+                        ammoBoxText.text = $"Press [{interactKey}] to Refill Ammo";
+
                     }
 
                     ammoBoxText.gameObject.SetActive(true);
@@ -968,7 +974,8 @@ public class UI : MonoBehaviour
                     {
                         kineticJumpHintText.gameObject.SetActive(true);
                     }
-                    kineticJumpHintText.text = "Press [SPACE] to Kinetic Jump";
+                    string jumpKey = KeybindManager.Instance.GetKeyName("Jump&Slam");
+                    kineticJumpHintText.text = $"Press [{jumpKey}] to Kinetic Jump";
                 }
             }
             else
@@ -1010,9 +1017,12 @@ public class UI : MonoBehaviour
             if (playerMovement.CanSlamNow)
             {
                 if (!slamHintText.gameObject.activeSelf)
+                {
                     slamHintText.gameObject.SetActive(true);
+                }
 
-                slamHintText.text = "Press [SPACE] to SLAM";
+                string slamKey = KeybindManager.Instance.GetKeyName("Jump&Slam");
+                slamHintText.text = $"Press [{slamKey}] to SLAM";
                 // ensure fully opaque if you’ve got any fades elsewhere
                 // var c = slamHintText.color; slamHintText.color = new Color(c.r, c.g, c.b, 1f);
             }
@@ -1099,7 +1109,7 @@ public class UI : MonoBehaviour
             //if (grenadePrompt.gameObject.activeSelf)  
             //    grenadePrompt.gameObject.SetActive(false);
 
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
+            if (KeybindManager.Instance.GetKeyDown("BackOutInteract") || KeybindManager.Instance.GetKeyDown("Interact"))
                 CloseGrenadePanel();
             return;
         }
@@ -1107,9 +1117,16 @@ public class UI : MonoBehaviour
         bool inRange = Vector3.Distance(player.position, grenadeChest.transform.position) <= grenadeChest.interactDistance;        //return true if we are in distance
 
         grenadePrompt.gameObject.SetActive(inRange);  //set active based on teh range so it wil be true if were in range bc its a bool
-
-        if (inRange && Input.GetKeyDown(KeyCode.E))
-            OpenGrenadePanel();  
+        string interactKey = KeybindManager.Instance.GetKeyName("Interact");
+        if (inRange)
+        {
+            // Update this line to match your scene text:
+            grenadePrompt.text = $"Press [{interactKey}] to Open Grenade Chest and Swap Lethals";
+        }
+        if (inRange && KeybindManager.Instance.GetKeyDown("Interact"))
+        {
+            OpenGrenadePanel();
+        }
     }
 
     void OpenGrenadePanel()
@@ -1277,9 +1294,16 @@ public class UI : MonoBehaviour
             else
             {
                 int cost = e.station.cost;          //if statement to see if you can afford
-                e.text.text = (points < cost)
-                    ? $"Need {cost} Points for {e.label} Magic"
-                    : $"Press [E] to buy {e.label} Magic ({cost} Points)";
+                if (points < cost)
+                {
+                    e.text.text = $"Need {cost} Points for {e.label} Magic";
+                }
+                else
+                {
+                    string interactKey = KeybindManager.Instance.GetKeyName("Interact");
+                    e.text.text = $"Press [{interactKey}] to buy {e.label} Magic ({cost} Points)";
+                }
+
             }
         }
     }
@@ -1520,11 +1544,15 @@ public class UI : MonoBehaviour
         PointManager pm = FindFirstObjectByType<PointManager>();
         int points = (pm != null) ? pm.GetPoints() : 0;   //get the points if you dont have a script assume its 0 
 
-        if (points < cost)          
+        if (points < cost)
+        {
             uiText.text = $"Need {cost} pts for {perkName} Perk";
+        }
         else
-            uiText.text = $"Press [E] to buy {perkName} Perk ({cost} pts)";
-
+        {
+            string interactKey = KeybindManager.Instance.GetKeyName("Interact");
+            uiText.text = $"Press [{interactKey}] to buy {perkName} Perk ({cost} pts)";
+        }
     }
 
 
@@ -1686,7 +1714,7 @@ public class UI : MonoBehaviour
     {
         if (infusePanelOpen)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.E))
+            if (KeybindManager.Instance.GetKeyDown("BackOutInteract") || KeybindManager.Instance.GetKeyDown("Interact"))
                 CloseInfusePanel();
             return;
         }
@@ -1698,10 +1726,11 @@ public class UI : MonoBehaviour
             if (dist <= station.interactDistance)
             {
                 currentInfuseStation = station;
-                infusePromptText.text = $"Press [E] to OPEN Infuse Station";
+                string interactKey = KeybindManager.Instance.GetKeyName("Interact");
+                infusePromptText.text = $"Press [{interactKey}] to OPEN Infuse Station";
                 infusePromptText.gameObject.SetActive(true);
 
-                if (Input.GetKeyDown(KeyCode.E))
+                if (KeybindManager.Instance.GetKeyDown("Interact"))
                     OpenInfusePanel();
                 return;
             }
@@ -1863,6 +1892,7 @@ public class UI : MonoBehaviour
             case InfusionType.Crimson: infusionSlotIcon.sprite = infusionCrimsonIcon; break;
         }
     }
+
 }
 
 
