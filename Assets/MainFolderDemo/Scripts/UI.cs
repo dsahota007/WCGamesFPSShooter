@@ -238,6 +238,12 @@ public class UI : MonoBehaviour
     [Header("Debris")]
     public Text DebrisText;
 
+    [Header("Control Hint Texts")]
+    public Text dashControlText;
+    public Text kineticSlamControlText;   // this is your Jump&Slam key
+    public Text grenadeControlText;
+    public Text summonMagicControlText;
+ 
 
     void Start()
     {
@@ -311,6 +317,11 @@ public class UI : MonoBehaviour
             kineticJumpCooldownSlider.gameObject.SetActive(false);
         }
 
+        RefreshControlHints();
+        if (KeybindManager.Instance != null)
+        {
+            KeybindManager.Instance.OnKeyChanged += HandleKeyChanged;
+        }
 
     }
 
@@ -1939,6 +1950,25 @@ public class UI : MonoBehaviour
             case InfusionType.Crimson: infusionSlotIcon.sprite = infusionCrimsonIcon; break;
         }
     }
+
+    //-- on screen controls 
+
+    void HandleKeyChanged(string action, KeyCode key)
+    {
+        RefreshControlHints(); // just refresh all 4; it's cheap
+    }
+
+    void RefreshControlHints()  //fethhing current keyname
+    {
+        var km = KeybindManager.Instance;
+        if (km == null) return;
+
+        if (dashControlText) dashControlText.text = km.GetKeyName("Dash");
+        if (kineticSlamControlText) kineticSlamControlText.text = km.GetKeyName("Jump&Slam");
+        if (grenadeControlText) grenadeControlText.text = km.GetKeyName("Grenade");
+        if (summonMagicControlText) summonMagicControlText.text = km.GetKeyName("SummonMagic");
+    }
+
 
 }
 

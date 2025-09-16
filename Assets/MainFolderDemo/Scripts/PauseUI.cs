@@ -17,7 +17,7 @@ public class PauseUI : MonoBehaviour
     [Header("PostProcess (optional)")]
     public PostProcessVolume postProcessVolume;
     public Toggle motionBlurToggle, vignetteToggle, ambientOcclusionToggle, grainToggle;
-
+ 
     [Header("Frames (optional)")]
     public Toggle vsyncToggle;
     public Slider fpsSlider;
@@ -38,6 +38,17 @@ public class PauseUI : MonoBehaviour
     [Header("Enemy Health Bars (optional)")]
     public Toggle enemyHealthBarToggle;
     public static bool showEnemyHealthBars = true;
+
+
+    [Header("Mythical Border")]
+    public Toggle mythicalBorderToggle;   // drag your Toggle here
+    public GameObject mythicalBorder;     // drag the border root (Image’s GameObject) here
+
+    [Header("Control Toggle")]
+    public Toggle ControlToggle;         
+    public GameObject ControlObject;     
+
+
 
     // ---------------- SIMPLE KEYBIND SECTION ----------------
     [Header("Keybind Buttons + Labels (all Text)")]
@@ -98,6 +109,38 @@ public class PauseUI : MonoBehaviour
             enemyHealthBarToggle.isOn = showEnemyHealthBars;
             enemyHealthBarToggle.onValueChanged.AddListener(ToggleEnemyHealthBars);
         }
+        //-- border
+
+        // --- Mythical Border toggle ---
+        if (mythicalBorderToggle != null && mythicalBorder != null)
+        {
+            // load saved state (default: ON = 1)
+            int saved = PlayerPrefs.GetInt("MythicalBorderOn", 1);
+            bool isOn = saved == 1;
+            mythicalBorderToggle.isOn = isOn;
+            mythicalBorder.SetActive(isOn);
+
+            mythicalBorderToggle.onValueChanged.AddListener(SetMythicalBorder);
+        }
+
+        //-- on screen controls
+        if (ControlToggle != null)
+        {
+            // optional: remember last choice (defaults to ON = 1)
+            bool isOn = PlayerPrefs.GetInt("SimpleToggleOn", 1) == 1;
+
+            ControlToggle.isOn = isOn;
+            if (ControlObject) ControlObject.SetActive(isOn);
+
+            ControlToggle.onValueChanged.AddListener(on =>
+            {
+                if (ControlObject) ControlObject.SetActive(on);
+                PlayerPrefs.SetInt("SimpleToggleOn", on ? 1 : 0); // remove if you don't want persistence
+            });
+        }
+
+
+        //------ Keybinds
 
         // hook up keybind buttons (one line per control)
         Wire("Jump&Slam", jumpBtn, jumpKeyText);
@@ -169,9 +212,9 @@ public class PauseUI : MonoBehaviour
     // ---------- Simple wiring ----------
     private void Wire(string action, Button btn, Text label)
     {
-        if (!btn || !label || KeybindManager.Instance == null) return;
+        if (!btn || !label || KeybindManager.Instance == null) return; //gtfo if have nothing
 
-        label.text = KeybindManager.Instance.GetKeyName(action);
+        label.text = KeybindManager.Instance.GetKeyName(action);  //shows the current key (“E”, “Mouse0”, etc.) next to the button
         btn.onClick.RemoveAllListeners();
         btn.onClick.AddListener(() =>
         {
@@ -280,4 +323,13 @@ public class PauseUI : MonoBehaviour
         var all = FindObjectsOfType<EnemyHealthBar>(true);
         foreach (var bar in all) bar.ApplyGlobalVisibility();
     }
+
+    public void SetMythicalBorder(bool on)
+    {
+        if (mythicalBorder != null)
+            mythicalBorder.SetActive(on);
+
+        PlayerPrefs.SetInt("MythicalBorderOn", on ? 1 : 0);
+    }
+
 }

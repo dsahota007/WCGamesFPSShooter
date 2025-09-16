@@ -6,6 +6,7 @@ public class KeybindManager : MonoBehaviour
     public static KeybindManager Instance;   //make it globally accessible
 
     private Dictionary<string, KeyCode> keybinds = new Dictionary<string, KeyCode>();  //stores key value pairs so "jump" string wil be SPACE or smthn whatevr the keycode variabel will be 
+    public System.Action<string, KeyCode> OnKeyChanged;  //this is fo on screen controls 
 
     void Awake()
     {
@@ -49,6 +50,7 @@ public class KeybindManager : MonoBehaviour
     {
         keybinds[action] = newKey;
         PlayerPrefs.SetString(action, newKey.ToString()); // save so it stays for the next time.
+        OnKeyChanged?.Invoke(action, newKey);  //this is for on screen controls
     }
 
     public bool GetKeyDown(string action) => Input.GetKeyDown(GetKey(action)); //True only on the frame the key is pressed.
@@ -59,7 +61,7 @@ public class KeybindManager : MonoBehaviour
         if (!keybinds.ContainsKey(action)) return "";   //if we dont know action return empty
         return keybinds[action].ToString();   // e.g., "E", "Mouse0", "LeftShift"
     }
-    
+
     //------------- dup checker
     public bool IsKeyTaken(KeyCode key, string exceptAction = null)
     {
