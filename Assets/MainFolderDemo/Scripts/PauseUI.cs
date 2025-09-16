@@ -1,294 +1,283 @@
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class PauseUI : MonoBehaviour
 {
-    [Header("Chaos Mode")]
-    public Button chaosButton;        // assign your UI button here
-    public GameObject chaosObject;    // assign the hidden object here
-
-
-    //--------------------------------------------
-
-
-
     [Header("UI - Pause Menu")]
-    public GameObject pausePanel;       // assign PausePanel here
-    public Button resumeButton;         // assign ResumeButton here
-    bool isPaused;
-    public static bool IsPaused { get; private set; }  //we check 
+    public GameObject pausePanel;
+    public Button resumeButton;
+    public KeyCode toggleKey = KeyCode.P;
+    public bool lockCursorWhenPlaying = true;
 
+    [Header("HUD Roots To Hide When Paused")]
+    public GameObject[] hudRoots;
 
-    [Header("UI")]
-    public KeyCode toggleKey = KeyCode.P; // ESC to toggle
-    public bool lockCursorWhenPlaying = true;  // optional nicety
+    [Header("PostProcess (optional)")]
+    public PostProcessVolume postProcessVolume;
+    public Toggle motionBlurToggle, vignetteToggle, ambientOcclusionToggle, grainToggle;
 
-    [Header("Frames")]
-    public Toggle vsyncToggle;          // assign Toggle for VSync here
-    public Slider fpsSlider;            // assign Slider for FPS cap here
-    public Text fpsValueText;           // optional Text to display FPS
-    public int minFPS = 30;
-    public int maxFPS = 240;
-    public int defaultFPS = 60;
+    [Header("Frames (optional)")]
+    public Toggle vsyncToggle;
+    public Slider fpsSlider;
+    public Text fpsValueText;
+    public int minFPS = 30, maxFPS = 240, defaultFPS = 60;
 
- 
-    [Header("UI - Sensitivity")]
-    public Slider sensitivitySlider;   // drag your UI slider here
-    public Text sensitivityValueText;  // optional text to display current sens
-    public float defaultSensitivity = 100f;
-    public float minSensitivity = 10f;
-    public float maxSensitivity = 400f;
+    [Header("Sensitivity (optional)")]
+    public Slider sensitivitySlider;
+    public Text sensitivityValueText;
+    public float defaultSensitivity = 100f, minSensitivity = 10f, maxSensitivity = 400f;
     private CameraScript cameraScript;
 
-    [Header("UI - FOV")]
-    public Slider fovSlider;           // NEW: drag in FOV slider
-    public Text fovValueText;          // optional, shows FOV number
-    public float defaultFOV = 90f;
-    public float minFOV = 60f;
-    public float maxFOV = 120f;
+    [Header("FOV (optional)")]
+    public Slider fovSlider;
+    public Text fovValueText;
+    public float defaultFOV = 90f, minFOV = 60f, maxFOV = 120f;
 
-    [Header("PostProcess")]
-    public Toggle motionBlurToggle;
-    public Toggle vignetteToggle;
-    public Toggle ambientOcclusionToggle;
-    public Toggle grainToggle;
-    public PostProcessVolume postProcessVolume;
-
-    private MotionBlur motionBlur;
-    private Vignette vignette;
-    private AmbientOcclusion ambientOcclusion;
-    private Grain grain;
-
-    [Header("UI - Enemy Health Bars")]
-    public Toggle enemyHealthBarToggle; // assign in inspector
+    [Header("Enemy Health Bars (optional)")]
+    public Toggle enemyHealthBarToggle;
     public static bool showEnemyHealthBars = true;
 
+    // ---------------- SIMPLE KEYBIND SECTION ----------------
+    [Header("Keybind Buttons + Labels (all Text)")]
+    public Text hintText; // one shared hint label (optional)
 
-    //--------------------------------------------
-    public void EnableChaos()
-    {
-        if (chaosObject != null)
-        {
-            chaosObject.SetActive(true);
-            Debug.Log("[PauseUI] CHAOS ENABLED!");
-        }
-    }
+    public Button jumpBtn; public Text jumpKeyText;
+    public Button interactBtn; public Text interactKeyText;
+    //public Button backOutBtn; public Text backOutKeyText;
+    public Button dashBtn; public Text dashKeyText;
+    public Button slideBtn; public Text slideKeyText;
+    public Button sprintBtn; public Text sprintKeyText;
+    public Button summonBtn; public Text summonKeyText;
+    public Button fireBtn; public Text fireKeyText;
+    public Button adsBtn; public Text adsKeyText;
+    public Button grenadeBtn; public Text grenadeKeyText;
+    public Button reloadBtn; public Text reloadKeyText;
+    public Button switchBtn; public Text switchKeyText;
 
-    //--------------------------------------------
-    void Awake()
+    public bool preventDuplicates = true;
+
+    // internal
+    private bool isPaused;
+    public static bool IsPaused { get; private set; }
+
+    private void Awake()
     {
-        // Pause setup
-        if (pausePanel != null) pausePanel.SetActive(false);
-        if (resumeButton != null) resumeButton.onClick.AddListener(Resume);
+        // basic pause setup
+        if (pausePanel) pausePanel.SetActive(false);
+        if (resumeButton) resumeButton.onClick.AddListener(Resume);
         ApplyCursorState(false);
 
-        // Settings setup
-        if (vsyncToggle != null)
-        {
-            vsyncToggle.isOn = (QualitySettings.vSyncCount > 0);
-            vsyncToggle.onValueChanged.AddListener(SetVSync);
-        }
-
-        if (fpsSlider != null)
-        {
-            fpsSlider.minValue = minFPS;
-            fpsSlider.maxValue = maxFPS;
-            fpsSlider.wholeNumbers = true;
-            fpsSlider.value = defaultFPS;
-            fpsSlider.onValueChanged.AddListener(SetFPS);
-        }
-
-        // Apply defaults
-        SetVSync(vsyncToggle != null && vsyncToggle.isOn);
+        // optional systems you already had
+        cameraScript = FindObjectOfType<CameraScript>();
+        if (vsyncToggle) { vsyncToggle.isOn = (QualitySettings.vSyncCount > 0); vsyncToggle.onValueChanged.AddListener(SetVSync); }
+        if (fpsSlider) { fpsSlider.minValue = minFPS; fpsSlider.maxValue = maxFPS; fpsSlider.wholeNumbers = true; fpsSlider.value = defaultFPS; fpsSlider.onValueChanged.AddListener(SetFPS); }
+        SetVSync(vsyncToggle ? vsyncToggle.isOn : false);
         SetFPS(defaultFPS);
 
-        cameraScript = FindObjectOfType<CameraScript>();
-
-        if (sensitivitySlider != null)
+        if (sensitivitySlider)
         {
             sensitivitySlider.minValue = minSensitivity;
             sensitivitySlider.maxValue = maxSensitivity;
             sensitivitySlider.wholeNumbers = true;
             sensitivitySlider.value = defaultSensitivity;
             sensitivitySlider.onValueChanged.AddListener(SetSensitivity);
+            SetSensitivity(defaultSensitivity);
         }
 
-        SetSensitivity(defaultSensitivity);
-
-        // FOV
-        if (fovSlider != null)
+        if (fovSlider)
         {
-            fovSlider.minValue = minFOV;
-            fovSlider.maxValue = maxFOV;
-            fovSlider.wholeNumbers = true;
-            fovSlider.value = defaultFOV;
+            fovSlider.minValue = minFOV; fovSlider.maxValue = maxFOV; fovSlider.wholeNumbers = true; fovSlider.value = defaultFOV;
             fovSlider.onValueChanged.AddListener(SetFOV);
-        }
-        SetFOV(defaultFOV);
-
-        // Grab all post-processing overrides from the profile -------------------
-        if (postProcessVolume != null && postProcessVolume.profile != null)
-        {
-            postProcessVolume.profile.TryGetSettings(out motionBlur);
-            postProcessVolume.profile.TryGetSettings(out vignette);
-            postProcessVolume.profile.TryGetSettings(out ambientOcclusion);
-            postProcessVolume.profile.TryGetSettings(out grain);
+            SetFOV(defaultFOV);
         }
 
-        // --- Hook UI Toggles ---
-        if (motionBlurToggle != null && motionBlur != null)
-        {
-            motionBlurToggle.isOn = motionBlur.active;
-            motionBlurToggle.onValueChanged.AddListener(val => motionBlur.active = val);
-        }
-
-        if (vignetteToggle != null && vignette != null)
-        {
-            vignetteToggle.isOn = vignette.active;
-            vignetteToggle.onValueChanged.AddListener(val => vignette.active = val);
-        }
-
-        if (ambientOcclusionToggle != null && ambientOcclusion != null)
-        {
-            ambientOcclusionToggle.isOn = ambientOcclusion.active;
-            ambientOcclusionToggle.onValueChanged.AddListener(val => ambientOcclusion.active = val);
-        }
-
-        if (grainToggle != null && grain != null)
-        {
-            grainToggle.isOn = grain.active;
-            grainToggle.onValueChanged.AddListener(val => grain.active = val);
-        }
-
-        //-----------------------------------------
-
-        if (enemyHealthBarToggle != null)
+        if (enemyHealthBarToggle)
         {
             enemyHealthBarToggle.isOn = showEnemyHealthBars;
             enemyHealthBarToggle.onValueChanged.AddListener(ToggleEnemyHealthBars);
         }
+
+        // hook up keybind buttons (one line per control)
+        Wire("Jump&Slam", jumpBtn, jumpKeyText);
+        Wire("Interact", interactBtn, interactKeyText);
+        //Wire("BackOutInteract", backOutBtn, backOutKeyText);
+        Wire("Dash", dashBtn, dashKeyText);
+        Wire("Slide", slideBtn, slideKeyText);
+        Wire("Sprint", sprintBtn, sprintKeyText);
+        Wire("SummonMagic", summonBtn, summonKeyText);
+        Wire("FireWeapon", fireBtn, fireKeyText);
+        Wire("AimDownSight", adsBtn, adsKeyText);
+        Wire("Grenade", grenadeBtn, grenadeKeyText);
+        Wire("Reload", reloadBtn, reloadKeyText);
+        Wire("SwitchWeapons", switchBtn, switchKeyText);
+
+        HideHint();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(toggleKey))
         {
-            if (isPaused)
-            {
-                Resume();
-            }
-            else
-            {
-                Pause();
-            }
+            if (isPaused) Resume(); else Pause();
         }
     }
 
+    // ---------- Pause ----------
     public void Pause()
     {
         if (isPaused) return;
-        isPaused = true;
-        IsPaused = true; //this is the 2ndary getter i think ----!!!
+        isPaused = true; IsPaused = true;
 
         Time.timeScale = 0f;
-        if (pausePanel != null) pausePanel.SetActive(true);
+        if (pausePanel) pausePanel.SetActive(true);
         ApplyCursorState(true);
-        //AudioListener.pause = true;
+        SetHUDVisible(false);
 
-        CameraScript cam = FindObjectOfType<CameraScript>();
-        if (cam != null) cam.cameraLocked = true;
+        var cam = FindObjectOfType<CameraScript>();
+        if (cam) cam.cameraLocked = true;
     }
 
     public void Resume()
     {
         if (!isPaused) return;
-        isPaused = false;
-        IsPaused = false;
+        isPaused = false; IsPaused = false;
 
         Time.timeScale = 1f;
-        if (pausePanel != null) pausePanel.SetActive(false);
+        if (pausePanel) pausePanel.SetActive(false);
         ApplyCursorState(false);
-        //AudioListener.pause = false;
+        SetHUDVisible(true);
 
-        CameraScript cam = FindObjectOfType<CameraScript>();
-        if (cam != null) cam.cameraLocked = false;
+        var cam = FindObjectOfType<CameraScript>();
+        if (cam) cam.cameraLocked = false;
+        HideHint();
     }
 
-    void ApplyCursorState(bool paused)
+    private void ApplyCursorState(bool paused)
     {
-        if (paused)
+        if (paused) { Cursor.visible = true; Cursor.lockState = CursorLockMode.None; }
+        else if (lockCursorWhenPlaying) { Cursor.visible = false; Cursor.lockState = CursorLockMode.Locked; }
+    }
+
+    private void SetHUDVisible(bool visible)
+    {
+        if (hudRoots == null) return;
+        foreach (var go in hudRoots) if (go) go.SetActive(visible);
+    }
+
+    // ---------- Simple wiring ----------
+    private void Wire(string action, Button btn, Text label)
+    {
+        if (!btn || !label || KeybindManager.Instance == null) return;
+
+        label.text = KeybindManager.Instance.GetKeyName(action);
+        btn.onClick.RemoveAllListeners();
+        btn.onClick.AddListener(() =>
         {
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else if (lockCursorWhenPlaying)
+            StartCoroutine(CaptureAndBind(action, label));
+        });
+    }
+
+    private IEnumerator CaptureAndBind(string action, Text label)
+    {
+        if (label) label.text = "Press any key...";
+        ShowHint("Press any key, or ESC to cancel");
+
+        // wait one frame so button click doesn't count
+        yield return null;
+
+        while (true)
         {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            // cancel
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                label.text = KeybindManager.Instance.GetKeyName(action);
+                HideHint();
+                yield break;
+            }
+
+            // detect any KeyCode down
+            foreach (KeyCode kc in System.Enum.GetValues(typeof(KeyCode)))
+            {
+                if (Input.GetKeyDown(kc))
+                {
+                    // keep pause toggle reserved
+                    if (kc == toggleKey)
+                    {
+                        ShowHint("That key is reserved for Pause. Pick another.");
+                        yield return null; // keep listening
+                        goto ContinueListening;
+                    }
+
+                    // duplicate rule
+                    if (preventDuplicates && KeybindManager.Instance.IsKeyTaken(kc, action))
+                    {
+                        ShowHint(kc + " already in use. Pick another.");
+                        yield return null;
+                        goto ContinueListening;
+                    }
+
+                    KeybindManager.Instance.SetKey(action, kc);
+                    label.text = kc.ToString();
+                    HideHint();
+                    yield break;
+                }
+            }
+
+        ContinueListening:
+            yield return null;
         }
     }
 
-    // === Settings Methods ===
+    private void ShowHint(string s)
+    {
+        if (!hintText) return;
+        hintText.gameObject.SetActive(true);
+        hintText.text = s;
+    }
+
+    private void HideHint()
+    {
+        if (!hintText) return;
+        hintText.gameObject.SetActive(false);
+    }
+
+    // ---------- Optional settings ----------
     public void SetVSync(bool enabled)
     {
         QualitySettings.vSyncCount = enabled ? 1 : 0;
-
-        if (enabled)
-        {
-            Application.targetFrameRate = -1; // let VSync control framerate
-        }
-        else
-        {
-            Application.targetFrameRate = Mathf.RoundToInt(
-                fpsSlider != null ? fpsSlider.value : defaultFPS
-            );
-        }
+        if (enabled) Application.targetFrameRate = -1;
+        else SetFPS(fpsSlider ? fpsSlider.value : defaultFPS);
     }
-
-
 
     public void SetFPS(float fps)
     {
-        if (QualitySettings.vSyncCount == 0) // only apply when VSync is off
-        {
+        if (QualitySettings.vSyncCount == 0)
             Application.targetFrameRate = Mathf.RoundToInt(fps);
-        }
-
-        if (fpsValueText != null)
-        {
-            fpsValueText.text = $"{Mathf.RoundToInt(fps)} FPS";
-        }
+        if (fpsValueText) fpsValueText.text = Mathf.RoundToInt(fps) + " FPS";
     }
+
     public void SetSensitivity(float value)
     {
-        if (cameraScript != null)
-            cameraScript.mouseSensitivity = value;
-
-        if (sensitivityValueText != null)
-            sensitivityValueText.text = value.ToString("F0");
+        if (cameraScript) cameraScript.mouseSensitivity = value;
+        if (sensitivityValueText) sensitivityValueText.text = value.ToString("F0");
     }
 
     public void SetFOV(float value)
     {
-        if (cameraScript != null)
+        if (cameraScript)
         {
-            cameraScript.SetBaseFOV(value);  // updates default + sprint FOV
-            if (cameraScript.playerCamera != null)
-                cameraScript.playerCamera.fieldOfView = value; // update instantly
+            cameraScript.SetBaseFOV(value);
+            if (cameraScript.playerCamera) cameraScript.playerCamera.fieldOfView = value;
         }
-
-        if (fovValueText != null)
-            fovValueText.text = (value + 30f).ToString("F0");  //bc 120 is high so it gives the player the feel
+        if (fovValueText) fovValueText.text = (value + 30f).ToString("F0");
     }
 
     public void ToggleEnemyHealthBars(bool enabled)
     {
         showEnemyHealthBars = enabled;
-
-        // Update all active health bars
-        var allBars = FindObjectsOfType<EnemyHealthBar>(true); // true = include inactive
-        foreach (var bar in allBars)
-            bar.ApplyGlobalVisibility();
+        var all = FindObjectsOfType<EnemyHealthBar>(true);
+        foreach (var bar in all) bar.ApplyGlobalVisibility();
     }
 }
