@@ -1142,12 +1142,18 @@ public class UI : MonoBehaviour
         if (inRange)
         {
             // Update this line to match your scene text:
-            grenadePrompt.text = $"Press [{interactKey}] to Open Grenade Chest and Swap Lethals";
+            grenadePrompt.text = $"Press [{interactKey}] to Open Grenade Chest and Swap Lethals (500 Points)";
         }
         if (inRange && KeybindManager.Instance.GetKeyDown("Interact"))
         {
-            OpenGrenadePanel();
+            const int COST_TO_OPEN = 500;
+            var pm = PointManager.Instance;
+            if (pm != null && pm.GetPoints() >= COST_TO_OPEN)
+            {
+                OpenGrenadePanel(); // only opens if you have >= 500
+            } 
         }
+
     }
 
     void OpenGrenadePanel()
@@ -1748,11 +1754,19 @@ public class UI : MonoBehaviour
             {
                 currentInfuseStation = station;
                 string interactKey = KeybindManager.Instance.GetKeyName("Interact");
-                infusePromptText.text = $"Press [{interactKey}] to OPEN Infuse Station";
+                infusePromptText.text = $"Press [{interactKey}] to OPEN Infuse Station for 2500 Points";
                 infusePromptText.gameObject.SetActive(true);
 
                 if (KeybindManager.Instance.GetKeyDown("Interact"))
-                    OpenInfusePanel();
+                {
+                    const int INFUSE_COST = 2500;
+                    var pm = PointManager.Instance;
+                    if (pm != null && pm.GetPoints() >= INFUSE_COST)
+                    {
+                        OpenInfusePanel(); // only opens if you have >= 2500
+                    }
+                    // else: do nothing
+                }
                 return;
             }
         }

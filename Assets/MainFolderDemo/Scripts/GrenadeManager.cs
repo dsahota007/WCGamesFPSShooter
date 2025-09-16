@@ -78,6 +78,17 @@ public class GrenadeManager : MonoBehaviour
 
     public void SetType(GrenadeType type)
     {
+        // no-op if same type
+        if (currentType == type) return;
+
+        var pm = PointManager.Instance;
+        if (pm == null) return;
+
+        const int COST = 500;
+        if (pm.GetPoints() < COST) return; // not enough points, don’t swap or charge
+
+        pm.AddPoints(-COST);                // pay
+
         currentType = type; //weWhen the player selects a grenade type in your UI panel, you call this. It simply records “the current grenade type” you’re using.
         FindFirstObjectByType<UI>()?.GetGrenadeSpriteForSlots(type);  // this is to set the image in UI
 
