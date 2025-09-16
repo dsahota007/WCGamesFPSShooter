@@ -17,6 +17,8 @@ public class PauseUI : MonoBehaviour
     public GameObject pausePanel;       // assign PausePanel here
     public Button resumeButton;         // assign ResumeButton here
     bool isPaused;
+    public static bool IsPaused { get; private set; }  //we check 
+
 
     [Header("UI")]
     public KeyCode toggleKey = KeyCode.P; // ESC to toggle
@@ -172,8 +174,14 @@ public class PauseUI : MonoBehaviour
     {
         if (Input.GetKeyDown(toggleKey))
         {
-            if (isPaused) Resume();
-            else Pause();
+            if (isPaused)
+            {
+                Resume();
+            }
+            else
+            {
+                Pause();
+            }
         }
     }
 
@@ -181,6 +189,7 @@ public class PauseUI : MonoBehaviour
     {
         if (isPaused) return;
         isPaused = true;
+        IsPaused = true; //this is the 2ndary getter i think ----!!!
 
         Time.timeScale = 0f;
         if (pausePanel != null) pausePanel.SetActive(true);
@@ -195,6 +204,7 @@ public class PauseUI : MonoBehaviour
     {
         if (!isPaused) return;
         isPaused = false;
+        IsPaused = false;
 
         Time.timeScale = 1f;
         if (pausePanel != null) pausePanel.SetActive(false);

@@ -448,6 +448,7 @@ public class Weapon : MonoBehaviour
 
     public void Shoot()
     {
+        if (PauseUI.IsPaused) return;
         if (armMover.DrinkingPerk) return;
         if (ui.IsGrenadePanelOpen) return;      //we cant shoot if ur selecting your grenade.
         if (ui.IsInfusePanelOpen) return;

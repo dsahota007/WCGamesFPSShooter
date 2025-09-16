@@ -273,10 +273,11 @@ public class ArmMovementMegaScript : MonoBehaviour
 
 
         //gernade throw logic
-        if (!isGrenadeGrabPlaying && KeybindManager.Instance.GetKeyDown("Grenade") && leftArm != null)
+        if (!isGrenadeGrabPlaying && KeybindManager.Instance.GetKeyDown("Grenade") && leftArm != null &&!PauseUI.IsPaused)
         {
             if (CanThrowGrenade())
             {
+
                 var gm = FindFirstObjectByType<GrenadeManager>();
                 if (gm && gm.CanThrowCurrent())         //checks if we also have a grenade to throw
                 {

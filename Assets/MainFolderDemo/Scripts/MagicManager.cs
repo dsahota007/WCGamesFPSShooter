@@ -83,7 +83,7 @@ public class MagicManager : MonoBehaviour
 
     void Update()
     {
-        if (KeybindManager.Instance.GetKeyDown("SummonMagic"))
+        if (KeybindManager.Instance.GetKeyDown("SummonMagic") && !PauseUI.IsPaused)
         {
             // If no magic is equipped, show UI message and exit
             if (currentMagicType == MagicType.None)

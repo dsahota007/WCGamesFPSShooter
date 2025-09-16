@@ -203,7 +203,7 @@ public class PlayerMovement : MonoBehaviour
         bool canSlam = Time.time >= lastSlamTime + slamCooldown;   //for cooldown so u dont spam.
         if (isKineticJump && !isGrounded && !isSlamming && Time.time > lastSlamTime)
         {
-            if (KeybindManager.Instance.GetKeyDown("Jump&Slam") && !isGrounded && canSlam) // make sure ur not on ground and are ALOUD TO SLAM based off the bool above
+            if (KeybindManager.Instance.GetKeyDown("Jump&Slam") && !isGrounded && canSlam && !PauseUI.IsPaused) // make sure ur not on ground and are ALOUD TO SLAM based off the bool above
             {
                 StartKineticSlam();
             }
@@ -261,7 +261,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // === DASH ===
-        if (!isDashing && KeybindManager.Instance.GetKeyDown("Dash") && Time.time >= lastDashTime + dashCooldown)
+        if (!isDashing && KeybindManager.Instance.GetKeyDown("Dash") && Time.time >= lastDashTime + dashCooldown && !PauseUI.IsPaused)
         {
             StartDash();
         }
