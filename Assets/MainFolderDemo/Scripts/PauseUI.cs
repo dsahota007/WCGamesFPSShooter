@@ -114,30 +114,47 @@ public class PauseUI : MonoBehaviour
         // --- Mythical Border toggle ---
         if (mythicalBorderToggle != null && mythicalBorder != null)
         {
-            // load saved state (default: ON = 1)
-            int saved = PlayerPrefs.GetInt("MythicalBorderOn", 1);
+            // default OFF (0)
+            int saved = PlayerPrefs.GetInt("MythicalBorderOn", 0);
             bool isOn = saved == 1;
+
             mythicalBorderToggle.isOn = isOn;
             mythicalBorder.SetActive(isOn);
 
-            mythicalBorderToggle.onValueChanged.AddListener(SetMythicalBorder);
+            mythicalBorderToggle.onValueChanged.AddListener(on =>
+            {
+                if (mythicalBorder) mythicalBorder.SetActive(on);
+                PlayerPrefs.SetInt("MythicalBorderOn", on ? 1 : 0);
+            });
+        }
+        else
+        {
+            // even if there’s no toggle assigned, start OFF
+            if (mythicalBorder) mythicalBorder.SetActive(false);
         }
 
-        //-- on screen controls
-        if (ControlToggle != null)
+
+        // --- On-screen Controls toggle ---
+        if (ControlToggle != null && ControlObject != null)
         {
-            // optional: remember last choice (defaults to ON = 1)
-            bool isOn = PlayerPrefs.GetInt("SimpleToggleOn", 1) == 1;
+            // default OFF (0)
+            bool isOn = PlayerPrefs.GetInt("SimpleToggleOn", 0) == 1;
 
             ControlToggle.isOn = isOn;
-            if (ControlObject) ControlObject.SetActive(isOn);
+            ControlObject.SetActive(isOn);
 
             ControlToggle.onValueChanged.AddListener(on =>
             {
-                if (ControlObject) ControlObject.SetActive(on);
-                PlayerPrefs.SetInt("SimpleToggleOn", on ? 1 : 0); // remove if you don't want persistence
+                ControlObject.SetActive(on);
+                PlayerPrefs.SetInt("SimpleToggleOn", on ? 1 : 0);
             });
         }
+        else
+        {
+            // start OFF if no toggle wired
+            if (ControlObject) ControlObject.SetActive(false);
+        }
+
 
 
         //------ Keybinds

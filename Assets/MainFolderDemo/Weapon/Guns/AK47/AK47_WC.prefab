@@ -6274,6 +6274,12 @@ MonoBehaviour:
   crimsonOnEnemyVFXScale: {x: 1, y: 1, z: 1}
   crimsonOnEnemyVFXLifetime: 4
   crimsonHealPercentPerHit: 0.0015
+  camoUSpeed: 1.36
+  camoVSpeed: 3.34
+  camoPulseSpeed: 1.95
+  camoPulseMin: 1.3
+  camoPulseMax: 1.8
+  camoEmissionBase: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &8027666018750598299
 GameObject:
   m_ObjectHideFlags: 0
