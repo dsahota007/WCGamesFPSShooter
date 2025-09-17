@@ -90,11 +90,13 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
     //-- No crimson variable
 
-
-
     [Header("Elemental Immunity")]
     public ElementType immuneTo = ElementType.None;  // set in Inspector
 
+    [Header("Zombie and Miniboss Entity")]
+    public bool isMiniboss = false;                 // check this on miniboss prefabs
+    public ElementType minibossElement = ElementType.None; // dropdown in Inspector
+    public int minibossPoints = 250;                // points for killing a miniboss
 
 
 
@@ -599,9 +601,10 @@ public class EnemyHealthRagdoll : MonoBehaviour
             var ui = FindFirstObjectByType<UI>();
             if (ui != null)
             {
-                int basePoints = 50;
-                int points = isHeadshot ? Mathf.RoundToInt(basePoints * 1.5f) : basePoints;
-                string label = isHeadshot ? "Headshot Zombie" : "Zombie";
+                int basePts = isMiniboss ? minibossPoints : 50;
+                int points = (!isMiniboss && isHeadshot) ? Mathf.RoundToInt(basePts * 1.5f) : basePts;
+
+                string label = GetEliminationLabel(isHeadshot); // e.g., "Fire Miniboss" or "Zombie"
                 ui.ShowEliminationMessage(points, label);
             }
             return;     //get outt the this part 
@@ -700,6 +703,18 @@ public class EnemyHealthRagdoll : MonoBehaviour
     {
         return isDead;
     }
+
+    public string GetEliminationLabel(bool headshot)
+    {
+        if (isMiniboss)
+        {
+            string prefix = minibossElement != ElementType.None ? minibossElement.ToString() + " " : "";
+            return $"{prefix}Miniboss";
+        }
+        // normal enemies
+        return headshot ? "Headshot Zombie" : "Zombie";
+    }
+
 
 
     //    void SetLayerRecursively(GameObject obj, int layer)

@@ -2874,6 +2874,9 @@ MonoBehaviour:
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
   immuneTo: 2
+  isMiniboss: 1
+  minibossElement: 2
+  minibossPoints: 250
 --- !u!114 &1504840243560364002
 MonoBehaviour:
   m_ObjectHideFlags: 0
