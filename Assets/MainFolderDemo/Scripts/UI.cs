@@ -53,6 +53,12 @@ public class UI : MonoBehaviour
 
     [Header("Points UI")]
     public Text pointsText;
+    public RectTransform pointsToastRoot;   // empty rect near your pointsText
+    public Text pointsToastPrefab;
+    public float toastYJitter = 18f;   // random vertical offset (±this)
+    public float toastXJitter = 6f;    // tiny horizontal offset (±this)
+    public Vector2 toastStartBias = new Vector2(-10f, 0f); // small left pop offset
+    public float toastSlidePixels = 80f; // how far to slide right
 
     [Header("Ammo Box UI")]
     public Text ammoBoxText;
@@ -306,6 +312,11 @@ public class UI : MonoBehaviour
                 depthOfFeild.focusDistance.Override(10f); // default “no blur”
                 depthOfFeild.active = true;              // keep enabled, just tweak distance
             }
+        }
+
+        if (PointManager.Instance != null)
+        {
+            PointManager.Instance.OnPointsChanged += HandlePointsChanged;
         }
 
         // KJ bar: init and hide
@@ -1083,6 +1094,88 @@ public class UI : MonoBehaviour
 
 
     }
+    // ------------------- point animaiton 
+
+    void HandlePointsChanged(int delta, int newTotal)
+    {
+        if (pointsToastRoot == null || pointsToastPrefab == null)
+        {
+            return;
+        }
+
+        Text row = Instantiate(pointsToastPrefab, pointsToastRoot);
+        row.text = (delta >= 0) ? $"+{delta}" : delta.ToString();
+
+        //// color like CoD
+        //if (delta > 0)
+        //{
+        //    row.color = new Color(0.35f, 1f, 0.35f);
+        //}
+        //else if (delta < 0)
+        //{
+        //    row.color = new Color(1f, 0.35f, 0.35f);
+        //}
+        //else
+        //{
+        //    row.color = Color.white;
+        //}
+
+        // --- randomize Y (and a tiny X) around root’s origin ---
+        float randY = Random.Range(-toastYJitter, toastYJitter);
+        float randX = Random.Range(-toastXJitter, toastXJitter);
+        Vector2 spawnOffset = new Vector2(randX, randY);
+
+        // pass the randomized offset through to the animation
+        StartCoroutine(SlideRightAndFade(row, spawnOffset));
+    }
+
+    IEnumerator SlideRightAndFade(Text row, Vector2 spawnOffset)
+    {
+        if (row == null) yield break;
+
+        RectTransform rt = row.rectTransform;
+
+        // starting pos = jittered + a tiny left bias for the “pop” feel
+        Vector2 start = spawnOffset + toastStartBias;
+        Vector2 end = start + new Vector2(toastSlidePixels, 0f);
+
+        // fade component
+        CanvasGroup cg = row.GetComponent<CanvasGroup>();
+        if (cg == null)
+        {
+            cg = row.gameObject.AddComponent<CanvasGroup>();
+        }
+
+        // POP IN
+        float t = 0f, popDur = 0.12f;
+        cg.alpha = 0f;
+        rt.anchoredPosition = start;
+        rt.localScale = Vector3.one * 0.8f;
+
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / popDur;
+            cg.alpha = Mathf.Lerp(0f, 1f, t);
+            rt.localScale = Vector3.one * Mathf.Lerp(0.8f, 1f, t);
+            yield return null;
+        }
+
+        // SLIDE + FADE
+        t = 0f;
+        float slideDur = 0.8f;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / slideDur;
+            rt.anchoredPosition = Vector2.Lerp(start, end, t);
+            cg.alpha = Mathf.Lerp(1f, 0f, t);
+            yield return null;
+        }
+
+        if (row != null) Destroy(row.gameObject);
+    }
+
+
+
 
     // --- Ammo cost mirror of AmmoBox.GetAmmoCost ---
     int GetAmmoCostFor(Weapon w)
@@ -1346,11 +1439,18 @@ public class UI : MonoBehaviour
         }
     }
 
+    // add this field at the top of UI class (with the other fields) ///--- this somehow fixed the sliding - text for points 
+    private Coroutine _magicMsgCo;
+
     public void ShowTemporaryMagicMessage(string message)
     {
-        StopAllCoroutines(); // cancel any old message timers
-        StartCoroutine(ShowMagicMessageRoutine(message));
+        if (_magicMsgCo != null)
+        {
+            StopCoroutine(_magicMsgCo); // only cancel the previous magic message
+        }
+        _magicMsgCo = StartCoroutine(ShowMagicMessageRoutine(message));
     }
+
 
     private IEnumerator ShowMagicMessageRoutine(string message)
     {

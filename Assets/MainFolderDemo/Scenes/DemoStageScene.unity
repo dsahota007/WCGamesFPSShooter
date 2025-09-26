@@ -1710,7 +1710,7 @@ RectTransform:
   m_Father: {fileID: 199234115}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2498,6 +2498,7 @@ RectTransform:
   - {fileID: 1094611291}
   - {fileID: 1034987947}
   - {fileID: 1939826364}
+  - {fileID: 117394634}
   - {fileID: 27395956}
   - {fileID: 1830015432}
   - {fileID: 1987330017}
@@ -2573,6 +2574,13 @@ MonoBehaviour:
   kineticJumpCooldownSlider: {fileID: 1861411429}
   playerHealthSlider: {fileID: 1935008570}
   pointsText: {fileID: 1939826365}
+  pointsToastRoot: {fileID: 117394634}
+  pointsToastPrefab: {fileID: 8889593039343942484, guid: 448f9881ddb35ff4e84ba354fa9b58bb,
+    type: 3}
+  toastYJitter: 10
+  toastXJitter: 6
+  toastStartBias: {x: -10, y: 0}
+  toastSlidePixels: 80
   ammoBoxText: {fileID: 1293110349}
   ammoBox: {fileID: 1302736054}
   magicStations:
@@ -2923,8 +2931,6 @@ MonoBehaviour:
   launchSpeed: 45
   launchDuration: 0.1
   playerTag: Player
-  wallLayerName: Wall
-  wallProbePadding: 0.02
 --- !u!1 &95563920
 GameObject:
   m_ObjectHideFlags: 0
@@ -3760,6 +3766,41 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698164548}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &117394633
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 117394634}
+  m_Layer: 5
+  m_Name: PointsRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &117394634
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117394633}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 89101273}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -232.6, y: -107.6}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &122548116
 GameObject:
   m_ObjectHideFlags: 0
@@ -26848,8 +26889,6 @@ MonoBehaviour:
   launchSpeed: 65
   launchDuration: 0.25
   playerTag: Player
-  wallLayerName: Wall
-  wallProbePadding: 0.02
 --- !u!65 &606034673
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -27249,7 +27288,7 @@ RectTransform:
   m_Father: {fileID: 1997391840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -40895,7 +40934,7 @@ RectTransform:
   m_Father: {fileID: 1871936851}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -41866,7 +41905,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1022961016
 Transform:
   m_ObjectHideFlags: 0
@@ -55065,7 +55104,7 @@ RectTransform:
   m_Father: {fileID: 1981624219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -65637,7 +65676,7 @@ RectTransform:
   m_Father: {fileID: 1115472128}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -66148,8 +66187,6 @@ MonoBehaviour:
   launchSpeed: 65
   launchDuration: 0.25
   playerTag: Player
-  wallLayerName: Wall
-  wallProbePadding: 0.02
 --- !u!65 &1657014394
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -80087,7 +80124,7 @@ RectTransform:
   m_Father: {fileID: 1731497549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -81206,7 +81243,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1939826363}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
