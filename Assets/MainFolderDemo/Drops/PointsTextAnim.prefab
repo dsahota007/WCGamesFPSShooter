@@ -79,7 +79,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +10
+  m_Text: "50 \xD7 4 = 200"
 --- !u!114 &2248112815735658663
 MonoBehaviour:
   m_ObjectHideFlags: 0

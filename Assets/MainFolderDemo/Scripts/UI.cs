@@ -1106,7 +1106,7 @@ public class UI : MonoBehaviour
         Text row = Instantiate(pointsToastPrefab, pointsToastRoot);
         row.text = (delta >= 0) ? $"+{delta}" : delta.ToString();
 
-        //// color like CoD
+        // color like CoD
         //if (delta > 0)
         //{
         //    row.color = new Color(0.35f, 1f, 0.35f);
