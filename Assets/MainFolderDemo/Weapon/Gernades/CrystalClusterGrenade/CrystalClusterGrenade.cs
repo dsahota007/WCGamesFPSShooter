@@ -84,6 +84,8 @@ public class CrystalClusterGrenade : MonoBehaviour
         }
         SpawnChildren(pos);
         Destroy(gameObject); // remove the original grenade
+
+        CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);   // we write false so we dont have VFX on for this
     }
 
 
