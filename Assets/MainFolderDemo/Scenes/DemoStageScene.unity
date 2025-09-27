@@ -20233,6 +20233,10 @@ MonoBehaviour:
   hitmarkerScaleLerp: 12
   hitmarkerDefaultScale: {x: 0, y: 0, z: 0}
   hitmarkerTargetScale: {x: 0, y: 0, z: 0}
+  airTimeThreshold: 1
+  groundShakeDuration: 0.5
+  groundShakeAmplitude: 2.5
+  groundShakeFrequency: 55
   cameraLocked: 0
 --- !u!114 &561119876
 MonoBehaviour:
@@ -64452,7 +64456,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1595701417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64476,7 +64480,7 @@ MonoBehaviour:
   - {fileID: 1632199129}
   - {fileID: 2098151089}
   - {fileID: 515911958}
-  startZombies: 555
+  startZombies: 4
   zombiesPerRound: 3
   timeBetweenRounds: 10
 --- !u!4 &1595701418

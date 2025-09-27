@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
- 
+using System.Collections;  
+
 public class CameraScript : MonoBehaviour
 {
 
@@ -73,7 +74,18 @@ public class CameraScript : MonoBehaviour
     public float hitmarkerScaleLerp = 12f; // how fast it returns to normal
     public Vector3 hitmarkerDefaultScale;
     public Vector3 hitmarkerTargetScale;
- 
+
+
+    [Header("Ground Impact Shake")]
+    public float airTimeThreshold = 1.0f;   // need to be airborne this long to trigger
+    public float groundShakeDuration = 0.3f;        
+    public float groundShakeAmplitude = 0.08f;  //how far the camera “jitters”
+    public float groundShakeFrequency = 26f;   //how fast the jitter wiggles
+
+    private float airborneTimer = 0f;   //counts how long i Have not been continuously not grounded
+    private bool wasGrounded = true;
+    private Coroutine groundShakeCo;  //handle to the running shake coroutine so you can stop/restart it cleanly.
+
 
     // We’ll add this so our hit effects stack after your normal camera effects
     private Vector3 externalPosOffset = Vector3.zero;
@@ -89,7 +101,8 @@ public class CameraScript : MonoBehaviour
         {
             playerCamera.fieldOfView = defaultFOV;
         }
-
+        
+        controller = GetComponent<CharacterController>();  //this is for ground shake
         playerMovement = FindObjectOfType<PlayerMovement>(); //ref to script for turning off bobbing midair 
         armMover = FindFirstObjectByType<ArmMovementMegaScript>();  
 
@@ -177,6 +190,40 @@ public class CameraScript : MonoBehaviour
 
             if (c.a <= 0.02f) hitmarkerImage.enabled = false;   //Once it’s basically invisible (alpha ~0), disable the Image to stop drawing it until the next hit.
         }
+
+
+        // --- Airborne tracking + landing trigger shake trigger ---
+
+        //bool isGroundedNow = playerMovement != null ? playerMovement.IsGrounded(): (controller != null ? controller.isGrounded : true);
+        bool isGroundedNow = playerMovement.IsGrounded();
+
+        if (!isGroundedNow)
+        {
+            airborneTimer += Time.deltaTime;  //calc the timer when not touching the ground -- accumulate time spent airborne
+        }
+        else
+        {
+            // just landed this frame?
+            if (!wasGrounded)
+            {
+                if (airborneTimer >= airTimeThreshold)  //longer than ur suppose to be in the air for
+                {
+                    // scale impact a bit with extra airtime
+                    float extra = Mathf.Clamp01((airborneTimer - airTimeThreshold) / 1.5f);
+                    float amp = groundShakeAmplitude * (0.75f + 0.75f * extra); // 0.75x..1.5x
+                    if (groundShakeCo != null)
+                    {
+                        StopCoroutine(groundShakeCo);
+                    }
+                    groundShakeCo = StartCoroutine(GroundImpactShake(groundShakeDuration, amp, groundShakeFrequency));
+                }
+                airborneTimer = 0f;
+            }
+        }
+
+        // remember for next frame
+        wasGrounded = isGroundedNow;
+
 
     }
 
@@ -333,6 +380,26 @@ public class CameraScript : MonoBehaviour
             bloodCurrentAlpha = bloodTargetAlpha;
         }
     }
+
+    //ground slam shake
+    private IEnumerator GroundImpactShake(float duration, float amplitude, float frequency)
+    {
+        float timer = 0f;       //how long couritne has been running for
+        while (timer < duration)   
+        {
+            timer += Time.deltaTime;
+            float k = 1f - (timer / duration); // fade out 1→0        a fade factor that starts at 1 and smoothly goes down to 0 by the end. We multiply by it so the shake dies out instead of ending abruptly
+                                           // smooth 2D perlin noise offset
+            float nx = Mathf.PerlinNoise(0f, Time.time * frequency) - 0.5f;     //PerlinNoise returns value from 0 to 1 
+            float ny = Mathf.PerlinNoise(1f, Time.time * frequency) - 0.5f;
+
+            externalPosOffset = new Vector3(nx, ny, 0f) * amplitude * k;
+
+            yield return null;
+        }
+        externalPosOffset = Vector3.zero; // clean up
+    }
+
 
     public void ShowHitmarker(bool isKill)
     {
