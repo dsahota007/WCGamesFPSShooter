@@ -20233,10 +20233,17 @@ MonoBehaviour:
   hitmarkerScaleLerp: 12
   hitmarkerDefaultScale: {x: 0, y: 0, z: 0}
   hitmarkerTargetScale: {x: 0, y: 0, z: 0}
-  airTimeThreshold: 1
+  airTimeThreshold: 2
   groundShakeDuration: 0.5
   groundShakeAmplitude: 2.5
   groundShakeFrequency: 55
+  slamVFXPrefab: {fileID: 5034656251238326012, guid: 9de2fa19f0390d44491264d9cab8cec5,
+    type: 3}
+  slamVFXOffset: {x: 0, y: 0, z: 0}
+  slamVFXEuler: {x: 0, y: 0, z: 0}
+  slamVFXScale: {x: 2, y: 2, z: 2}
+  slamVFXLifetime: 2
+  placeVFXOnGround: 1
   cameraLocked: 0
 --- !u!114 &561119876
 MonoBehaviour:

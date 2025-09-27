@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;  
+using System.Collections;
+using Unity.VisualScripting;
 
 public class CameraScript : MonoBehaviour
 {
@@ -85,12 +86,35 @@ public class CameraScript : MonoBehaviour
     private float airborneTimer = 0f;   //counts how long i Have not been continuously not grounded
     private bool wasGrounded = true;
     private Coroutine groundShakeCo;  //handle to the running shake coroutine so you can stop/restart it cleanly.
+    public static CameraScript Main;   //------- this is to put SHAKE FUNCTION IN OTHER SCIPTS LIKE MAGIC SLAM AND GRENADES.. ---------
+
+    public GameObject slamVFXPrefab;     // assign your prefab in Inspector
+    public Vector3 slamVFXOffset = new Vector3(0, 0, 0);
+    public Vector3 slamVFXEuler = new Vector3(0, 0, 0);
+    public Vector3 slamVFXScale = Vector3.one;
+    public float slamVFXLifetime = 2f;
+    public bool placeVFXOnGround = true; // raycast down to place on floor
 
 
     // We’ll add this so our hit effects stack after your normal camera effects
     private Vector3 externalPosOffset = Vector3.zero;
 
     public bool cameraLocked = false;   //this is for when you open Grenade Menu
+
+    // -------------- this is so i can call func
+
+    void Awake() => Main = this;
+
+    // call this from anywhere
+    public void Shake(float duration, float amplitude, float frequency, bool spawnVFX = false)
+    {
+        if (groundShakeCo != null) StopCoroutine(groundShakeCo);
+        groundShakeCo = StartCoroutine(GroundImpactShake(duration, amplitude, frequency, spawnVFX));
+    }
+
+
+    // --------------
+
 
     void Start()
     {
@@ -215,7 +239,7 @@ public class CameraScript : MonoBehaviour
                     {
                         StopCoroutine(groundShakeCo);
                     }
-                    groundShakeCo = StartCoroutine(GroundImpactShake(groundShakeDuration, amp, groundShakeFrequency));
+                    groundShakeCo = StartCoroutine(GroundImpactShake(groundShakeDuration, amp, groundShakeFrequency, true));   //true is for the VFX we want that for normal landings
                 }
                 airborneTimer = 0f;
             }
@@ -382,8 +406,33 @@ public class CameraScript : MonoBehaviour
     }
 
     //ground slam shake
-    private IEnumerator GroundImpactShake(float duration, float amplitude, float frequency)
+    private IEnumerator GroundImpactShake(float duration, float amplitude, float frequency, bool spawnVFX)
     {
+        // --- spawn ONCE at impact if requested ---
+        if (spawnVFX && slamVFXPrefab != null)
+        {
+            Vector3 pos = transform.position + slamVFXOffset;
+            Quaternion rot = Quaternion.Euler(slamVFXEuler);
+
+            if (placeVFXOnGround)
+            {
+                // try to drop to ground (nicer placement)
+                Vector3 origin = transform.position + Vector3.up * 0.5f;
+                if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 5f))
+                {
+                    pos = hit.point + slamVFXOffset;
+                    // align to ground normal — optional:
+                    // rot = Quaternion.FromToRotation(Vector3.up, hit.normal) * rot;
+                }
+            }
+
+            var vfx = Instantiate(slamVFXPrefab, pos, rot);
+            vfx.transform.localScale = slamVFXScale;
+            if (slamVFXLifetime > 0f) Destroy(vfx, slamVFXLifetime);
+        }
+
+        //----
+
         float timer = 0f;       //how long couritne has been running for
         while (timer < duration)   
         {
