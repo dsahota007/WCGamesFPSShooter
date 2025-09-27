@@ -60,6 +60,7 @@ public class MeteorAsteroidMagic : MonoBehaviour   // THIS IS FIREBALL COPIED
 
         // Backup collision detection in case trigger doesn't work
         ApplyFireballSlamDamage();
+        CameraScript.Main?.Shake(1f, 4.5f, 85f, false);
         SpawnGroundEffects();
         Destroy(gameObject);
     }

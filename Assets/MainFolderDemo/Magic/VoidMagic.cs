@@ -74,6 +74,8 @@ public class VoidMagic : MonoBehaviour
 
         hasImpacted = true;
         impactPoint = transform.position;   //get position of where it landed we store that 
+        
+        CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
 
         //CancelInvoke("DestroyIfStillFlying");
 
@@ -226,5 +228,7 @@ public class VoidMagic : MonoBehaviour
         }
 
         Destroy(gameObject);
+
+        CameraScript.Main?.Shake(0.5f, 3.5f, 65f, false);
     }
 }

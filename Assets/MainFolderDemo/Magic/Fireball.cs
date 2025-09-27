@@ -58,7 +58,8 @@ public class Fireball : MonoBehaviour
     { 
 
         // Backup collision detection in case trigger doesn't work
-        ApplyFireballSlamDamage();   
+        ApplyFireballSlamDamage();
+        CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
         SpawnGroundEffects();
         Destroy(gameObject);
     }

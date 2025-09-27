@@ -180,6 +180,8 @@ public class IceMagic : MonoBehaviour
         }
 
         Destroy(gameObject);
+
+        CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
     }
 
 }
