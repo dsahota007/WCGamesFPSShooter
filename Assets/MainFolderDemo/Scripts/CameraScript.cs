@@ -112,6 +112,17 @@ public class CameraScript : MonoBehaviour
         groundShakeCo = StartCoroutine(GroundImpactShake(duration, amplitude, frequency, spawnVFX));
     }
 
+    public void ShakeAfter(float delay, float dur, float amp, float freq, bool spawnVFX = false)
+    {
+        StartCoroutine(_ShakeAfter(delay, dur, amp, freq, spawnVFX));
+    }
+
+    private IEnumerator _ShakeAfter(float delay, float dur, float amp, float freq, bool spawnVFX)
+    {
+        yield return new WaitForSeconds(delay);   // wait 1 second, scaled by timeScale
+        Shake(dur, amp, freq, spawnVFX);
+    }
+
 
     // --------------
 

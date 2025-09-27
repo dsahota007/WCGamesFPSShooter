@@ -95,7 +95,11 @@ public class CrimsonMagic : MonoBehaviour
         }
 
         Destroy(gameObject);
+
+        CameraScript.Main?.ShakeAfter(1f, 0.5f, 2.5f, 55f, false);
+
     }
+
 
     IEnumerator DecHealFxAfter(float delay)
     {
