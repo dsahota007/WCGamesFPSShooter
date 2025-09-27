@@ -271,20 +271,30 @@ public class CameraScript : MonoBehaviour
         if (!playerMovement.IsGrounded()) //not on ground than reset and GTFO
         {
             ReturnCameraToDefault();
-            return;
+            //return;
         }
-        if (playerMovement.IsSliding())  //if they are sliding than handleSlideCamera() and than GTFO
-        {
+        else if (playerMovement.IsSliding())  //if they are sliding than handleSlideCamera() and than GTFO                              
+        {                                                                                                                       //Use else if so sliding doesn’t fall through to sprint head-bob ( we had just use if for most of these)
             HandleSlideCamera();
-            return;
+            //return;
         }
-        if (KeybindManager.Instance.GetKeyHeld("Sprint") && (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0))   // this is for bobbing -- forward back left right -- we take away HeadBobWhenSprint in update()
+        else if (KeybindManager.Instance.GetKeyHeld("Sprint") && (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Horizontal") != 0))   // this is for bobbing -- forward back left right -- we take away HeadBobWhenSprint in update()
         {
             HeadBobWhenSprint();
-            return;
+            //return;
         }
-        ReturnCameraToDefault();   //when you do exit this you still have to reset the camera. 
-                                   // ... your existing logic decides cam.localPosition and cam.localRotation
+        else
+        {
+            ReturnCameraToDefault();   //when you do exit this you still have to reset the camera. 
+        }                    // ... your existing logic decides cam.localPosition and cam.localRotation
+
+
+        //  make slide tilt relax even while sprinting -- hard reset because were having reset issues.
+        if (!playerMovement.IsSliding())
+        {
+            currentTilt = Mathf.Lerp(currentTilt, 0f, Time.deltaTime * slideTiltSpeed);
+        }
+
 
         // Apply position shake
         cam.localPosition += externalPosOffset;
@@ -319,7 +329,9 @@ public class CameraScript : MonoBehaviour
 
         // If new target alpha is higher than current, snap it up
         if (bloodTargetAlpha > bloodCurrentAlpha)
+        {
             bloodCurrentAlpha = bloodTargetAlpha;
+        }
     }
 
     public void ShowHitmarker(bool isKill)
