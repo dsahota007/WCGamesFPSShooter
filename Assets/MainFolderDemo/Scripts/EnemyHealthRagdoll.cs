@@ -100,8 +100,8 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
     [Header("Death Orbs")]
     public GameObject orbPrefab;        // assign your orb prefab (with SimpleOrbHoming)
-    public int orbsMin = 5;
-    public int orbsMax = 10;
+    //public int orbsMin = 5;   we dont need this no more
+    //public int orbsMax = 10;
     public float orbSpawnRadius = 0.6f; // how far from the body they appear
     public float orbLaunchSpeed = 6f;   // initial burst speed
     public float orbHomingDelay = 0.25f;// wait before homing starts
@@ -748,24 +748,26 @@ public class EnemyHealthRagdoll : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             // random direction (biased upward)
-            Vector3 dir = Random.onUnitSphere;
-            dir.y = Mathf.Abs(dir.y);
+            Vector3 dir = Random.onUnitSphere;   //random shootout
+            dir.y = Mathf.Abs(dir.y);  //makke sure its positive so we always wanting it go upwards
 
             // spawn position around the enemy
-            Vector3 spawnPos = transform.position + orbSpawnOffset + dir * orbSpawnRadius;
+            Vector3 spawnPos = transform.position + orbSpawnOffset + dir * orbSpawnRadius; 
 
             var orb = Instantiate(orbPrefab, spawnPos, Quaternion.identity);
 
             // burst if it has a Rigidbody (optional)
-            var rb = orb.GetComponent<Rigidbody>();
+            var rb = orb.GetComponent<Rigidbody>();   //this actually makes it go outward bc we can use orbLaunchSpeed
             if (rb != null)
+            {
                 rb.linearVelocity = dir * orbLaunchSpeed; // (use rb.velocity if you're on standard Unity)
+            }
 
             // start homing after a short random delay
-            var homing = orb.GetComponent<SimpleOrbHoming>();
+            var homing = orb.GetComponent<Orb>();
             if (homing != null)
             {
-                homing.startDelay = orbHomingDelay + Random.Range(1f, 1.4f);
+                homing.startDelay = orbHomingDelay + Random.Range(1f, 1.4f);  //we delay 
             }
         }
     }
