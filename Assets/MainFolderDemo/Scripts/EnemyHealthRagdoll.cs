@@ -743,31 +743,32 @@ public class EnemyHealthRagdoll : MonoBehaviour
     {
         if (orbPrefab == null) return;
 
-        int count = Mathf.Clamp(Random.Range(orbsMin, orbsMax + 1), 0, 50);
+        const int count = 5;
 
         for (int i = 0; i < count; i++)
         {
-            // random direction (bias a bit upward so they pop nicely)
+            // random direction (biased upward)
             Vector3 dir = Random.onUnitSphere;
-            dir.y = Mathf.Abs(dir.y); // keep upward-ish
+            dir.y = Mathf.Abs(dir.y);
 
             // spawn position around the enemy
             Vector3 spawnPos = transform.position + orbSpawnOffset + dir * orbSpawnRadius;
 
             var orb = Instantiate(orbPrefab, spawnPos, Quaternion.identity);
 
-            // give a little burst if it has a Rigidbody (optional)
+            // burst if it has a Rigidbody (optional)
             var rb = orb.GetComponent<Rigidbody>();
             if (rb != null)
-                rb.linearVelocity = dir * orbLaunchSpeed;
+                rb.linearVelocity = dir * orbLaunchSpeed; // (use rb.velocity if you're on standard Unity)
 
             // start homing after a short random delay
             var homing = orb.GetComponent<SimpleOrbHoming>();
             if (homing != null)
             {
-                homing.startDelay = orbHomingDelay + Random.Range(0f, 0.2f);
+                homing.startDelay = orbHomingDelay + Random.Range(1f, 1.4f);
             }
         }
     }
+
 
 }

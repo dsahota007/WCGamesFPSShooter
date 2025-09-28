@@ -4291,9 +4291,9 @@ MonoBehaviour:
   orbsMin: 5
   orbsMax: 10
   orbSpawnRadius: 0.6
-  orbLaunchSpeed: 6
+  orbLaunchSpeed: 10
   orbHomingDelay: 0.25
-  orbSpawnOffset: {x: 0, y: 1.2, z: 0}
+  orbSpawnOffset: {x: 0, y: 1.5, z: 0}
 --- !u!1 &7371327647034432116
 GameObject:
   m_ObjectHideFlags: 0

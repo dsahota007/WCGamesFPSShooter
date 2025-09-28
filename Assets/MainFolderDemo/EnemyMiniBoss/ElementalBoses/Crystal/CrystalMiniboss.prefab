@@ -2772,6 +2772,14 @@ MonoBehaviour:
   isMiniboss: 1
   minibossElement: 4
   minibossPoints: 250
+  orbPrefab: {fileID: 5997126227783589084, guid: c4a7a29051556334dad8af43e6d43024,
+    type: 3}
+  orbsMin: 5
+  orbsMax: 10
+  orbSpawnRadius: 0.6
+  orbLaunchSpeed: 10
+  orbHomingDelay: 0.25
+  orbSpawnOffset: {x: 0, y: 1.5, z: 0}
 --- !u!114 &1622243841089407528
 MonoBehaviour:
   m_ObjectHideFlags: 0

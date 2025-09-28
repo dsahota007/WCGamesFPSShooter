@@ -26,6 +26,11 @@ public class SimpleOrbHoming : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        Destroy(gameObject, 10f);
+    }
+
     void Update()
     {
         // wait before starting to home
