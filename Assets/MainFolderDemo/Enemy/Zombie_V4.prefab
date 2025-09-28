@@ -4398,7 +4398,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 608ce190d6a4f7944a19a4574e4a1bab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 100
+  Health: 50
   ragdollRoot: {fileID: 7745089473691752464}
   ragdollForce: 80
   BoxRootCollider: {fileID: 6726544386175273662}
@@ -4420,8 +4420,6 @@ MonoBehaviour:
   minibossPoints: 250
   orbPrefab: {fileID: 5997126227783589084, guid: c4a7a29051556334dad8af43e6d43024,
     type: 3}
-  orbsMin: 5
-  orbsMax: 10
   orbSpawnRadius: 0.6
   orbLaunchSpeed: 10
   orbHomingDelay: 0.25

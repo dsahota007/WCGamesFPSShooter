@@ -620,4 +620,10 @@ public class PlayerMovement : MonoBehaviour
         return Mathf.Clamp01(slideTimer / Mathf.Max(0.0001f, minSlideTimeForKineticJump)); //idk ?
     }
 
+    public void EnableKineticJumpNow()   //getter for the booster Jump Pad. u can kinetic slam off that 
+    {
+        isKineticJump = true;   // you'll auto-reset to false on landing (you already do that)
+    }
+    public bool IsSlamming() => isSlamming;  //getter for the booster Jump Pad. u can kinetic slam off that 
+
 }
