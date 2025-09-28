@@ -4326,7 +4326,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.25
-  m_Speed: 15
+  m_Speed: 13
   m_Acceleration: 60
   avoidancePriority: 5
   m_AngularSpeed: 10000
@@ -4418,6 +4418,14 @@ MonoBehaviour:
   isMiniboss: 0
   minibossElement: 0
   minibossPoints: 250
+  orbPrefab: {fileID: 5997126227783589084, guid: c4a7a29051556334dad8af43e6d43024,
+    type: 3}
+  orbsMin: 5
+  orbsMax: 10
+  orbSpawnRadius: 0.6
+  orbLaunchSpeed: 6
+  orbHomingDelay: 0.25
+  orbSpawnOffset: {x: 0, y: 1.2, z: 0}
 --- !u!1 &7265646384794218712
 GameObject:
   m_ObjectHideFlags: 0

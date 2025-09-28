@@ -47,6 +47,7 @@ public class DropManager : MonoBehaviour
             case DropType.Nuke:
                 DoNuke();
                 FindFirstObjectByType<UI>()?.ShowToast("NUKE!", 1.5f);
+                //CameraScript.Main?.Shake(0.5f, 4.5f, 95f, false);   // we write false so we dont have VFX on for this
                 break;
 
             case DropType.MaxAmmo:
@@ -70,7 +71,9 @@ public class DropManager : MonoBehaviour
                 FindFirstObjectByType<UI>()?.ShowTimedPowerup("infinite", "INFINITE AMMO", infiniteAmmoDuration);
                 break;
 
-
+                //ideas----------------------------------------------------------
+                //half price
+                //safegaurd
         }
 
         void DoMaxAmmo()

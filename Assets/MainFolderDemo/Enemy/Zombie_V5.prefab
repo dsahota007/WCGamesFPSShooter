@@ -1832,6 +1832,30 @@ MonoBehaviour:
   ragdollRoot: {fileID: 3426308658194365771}
   ragdollForce: 80
   BoxRootCollider: {fileID: 5303872758022752553}
+  healthCanvas: {fileID: 0}
+  healthBar: {fileID: 0}
+  nameTagGO: {fileID: 0}
+  healthBarOffset: {x: 0, y: 2, z: 0}
+  showMaxDistance: 25
+  centerDotThreshold: 0.85
+  requireLineOfSight: 1
+  occlusionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  fadeSpeed: 10
+  lookAtOffset: {x: 0, y: 1.6, z: 0}
+  immuneTo: 0
+  isMiniboss: 0
+  minibossElement: 0
+  minibossPoints: 250
+  orbPrefab: {fileID: 5997126227783589084, guid: c4a7a29051556334dad8af43e6d43024,
+    type: 3}
+  orbsMin: 5
+  orbsMax: 10
+  orbSpawnRadius: 0.6
+  orbLaunchSpeed: 6
+  orbHomingDelay: 0.25
+  orbSpawnOffset: {x: 0, y: 1.2, z: 0}
 --- !u!1 &4978084662351558527
 GameObject:
   m_ObjectHideFlags: 0

@@ -64,7 +64,9 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             if (PointManager.Instance != null)
-                PointManager.Instance.AddPoints(5);
+            {
+                PointManager.Instance.AddPoints(10);
+            }
 
             if (bloodEffects != null && bloodEffects.Length > 0)
             {

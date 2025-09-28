@@ -98,6 +98,15 @@ public class EnemyHealthRagdoll : MonoBehaviour
     public ElementType minibossElement = ElementType.None; // dropdown in Inspector
     public int minibossPoints = 250;                // points for killing a miniboss
 
+    [Header("Death Orbs")]
+    public GameObject orbPrefab;        // assign your orb prefab (with SimpleOrbHoming)
+    public int orbsMin = 5;
+    public int orbsMax = 10;
+    public float orbSpawnRadius = 0.6f; // how far from the body they appear
+    public float orbLaunchSpeed = 6f;   // initial burst speed
+    public float orbHomingDelay = 0.25f;// wait before homing starts
+    public Vector3 orbSpawnOffset = new Vector3(0, 1.2f, 0); // lift off chest/head
+
 
 
     void Start()
@@ -640,8 +649,10 @@ public class EnemyHealthRagdoll : MonoBehaviour
         if (BoxRootCollider) BoxRootCollider.enabled = false;
 
         var ds = FindFirstObjectByType<DropSpawner>();
-        if (ds) ds.TrySpawnDrop(transform.position + Vector3.up * 0.5f);
-
+        if (ds)
+        {
+            ds.TrySpawnDrop(transform.position + Vector3.up * 0.5f);
+        }
         // Disable other attack/AI scripts if any----------------------------- idk waht this block does 
         //MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
         //foreach (var script in scripts)
@@ -673,6 +684,7 @@ public class EnemyHealthRagdoll : MonoBehaviour
         Destroy(gameObject, 30f);    //make bodies dissapear. 
 
         SetHealthUIVisible(false);
+        SpawnDeathOrbs();  //spawinng the orbs DOOM style
 
 
     }
@@ -725,4 +737,37 @@ public class EnemyHealthRagdoll : MonoBehaviour
     //        foreach (Transform child in obj.transform)
     //            SetLayerRecursively(child.gameObject, layer);
     //    }
+
+
+    void SpawnDeathOrbs()
+    {
+        if (orbPrefab == null) return;
+
+        int count = Mathf.Clamp(Random.Range(orbsMin, orbsMax + 1), 0, 50);
+
+        for (int i = 0; i < count; i++)
+        {
+            // random direction (bias a bit upward so they pop nicely)
+            Vector3 dir = Random.onUnitSphere;
+            dir.y = Mathf.Abs(dir.y); // keep upward-ish
+
+            // spawn position around the enemy
+            Vector3 spawnPos = transform.position + orbSpawnOffset + dir * orbSpawnRadius;
+
+            var orb = Instantiate(orbPrefab, spawnPos, Quaternion.identity);
+
+            // give a little burst if it has a Rigidbody (optional)
+            var rb = orb.GetComponent<Rigidbody>();
+            if (rb != null)
+                rb.linearVelocity = dir * orbLaunchSpeed;
+
+            // start homing after a short random delay
+            var homing = orb.GetComponent<SimpleOrbHoming>();
+            if (homing != null)
+            {
+                homing.startDelay = orbHomingDelay + Random.Range(0f, 0.2f);
+            }
+        }
+    }
+
 }
