@@ -14670,8 +14670,8 @@ MonoBehaviour:
   playerMask:
     serializedVersion: 2
     m_Bits: 128
-  slowMultiplier: 0.5
-  slowDuration: 3
+  slowMultiplier: 0.85
+  slowDuration: 1.5
   PlayerImpactVFX: {fileID: 0}
   PlayerImpactVFX2: {fileID: 0}
   GroundEntitySlamVFX: {fileID: 8974203713140315807, guid: fb2fb187f7a5aeb45891a5a604346faa,

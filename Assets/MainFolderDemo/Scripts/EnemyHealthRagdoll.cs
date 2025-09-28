@@ -587,14 +587,14 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
 
         if (isDead) return;   //exit func if dead
-        Debug.Log("TakeDamage called | HitCollider: " + (hitCollider ? hitCollider.name : "NULL"));
+        //Debug.Log("TakeDamage called | HitCollider: " + (hitCollider ? hitCollider.name : "NULL"));
 
 
         bool isHeadshot = (hitCollider != null && hitCollider.CompareTag("Head"));
         if (isHeadshot)
         {
             damage *= 1.5f;
-            Debug.LogWarning("HEADSHOT DETECTED on " + hitCollider.name);
+            //Debug.LogWarning("HEADSHOT DETECTED on " + hitCollider.name);
         }
 
 
