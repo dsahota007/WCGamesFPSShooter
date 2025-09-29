@@ -1472,14 +1472,25 @@ MonoBehaviour:
   player: {fileID: 561119877}
   WeaponAmmoText: {fileID: 1094611293}
   WeaponNameText: {fileID: 27395957}
+  setBonusText: {fileID: 0}
   MysteryBoxText: {fileID: 1987330018}
   mysteryBox: {fileID: 1967998863}
   roundText: {fileID: 678398245}
+  roundCountdownText: {fileID: 0}
   zombieSpawner: {fileID: 1595701417}
   slamCooldownSlider: {fileID: 629420579}
   playerMovement: {fileID: 561119873}
+  kineticJumpHintText: {fileID: 0}
+  slamHintText: {fileID: 0}
+  kineticJumpCooldownSlider: {fileID: 0}
   playerHealthSlider: {fileID: 1935008570}
   pointsText: {fileID: 1939826365}
+  pointsToastRoot: {fileID: 0}
+  pointsToastPrefab: {fileID: 0}
+  toastYJitter: 18
+  toastXJitter: 6
+  toastStartBias: {x: -10, y: 0}
+  toastSlidePixels: 80
   ammoBoxText: {fileID: 1293110349}
   ammoBox: {fileID: 1302736054}
   magicStations:
@@ -1522,11 +1533,43 @@ MonoBehaviour:
   NoMoneyStatusText: {fileID: 0}
   magicCooldownSlider: {fileID: 1711087072}
   magicStatusText: {fileID: 913009173}
+  magicCooldownFill: {fileID: 0}
+  normalColor: {r: 1, g: 0.35, b: 0.2, a: 1}
+  crystalColor: {r: 0.35, g: 0.85, b: 1, a: 1}
+  voidColor: {r: 0.6, g: 0.3, b: 1, a: 1}
+  iceColor: {r: 0.6, g: 0.9, b: 1, a: 1}
+  venomColor: {r: 0.5, g: 1, b: 0.4, a: 1}
+  lightningColor: {r: 1, g: 1, b: 0.4, a: 1}
+  windColor: {r: 0.8, g: 1, b: 0.9, a: 1}
+  meteorColor: {r: 1, g: 0.5, b: 0.1, a: 1}
+  crimsonColor: {r: 1, g: 0.2, b: 0.35, a: 1}
+  magicSlotIcon: {fileID: 0}
+  noneIcon: {fileID: 0}
+  normalIcon: {fileID: 0}
+  crystalIcon: {fileID: 0}
+  voidIcon: {fileID: 0}
+  iceIcon: {fileID: 0}
+  venomIcon: {fileID: 0}
+  lightningIcon: {fileID: 0}
+  windIcon: {fileID: 0}
+  meteorIcon: {fileID: 0}
+  crimsonIcon: {fileID: 0}
   grenadeChest: {fileID: 1649048623}
   grenadePrompt: {fileID: 429056151}
   grenadePanel: {fileID: 1156089615}
   grenadeAmountText: {fileID: 486131191}
   grenadeStatusText: {fileID: 584999889}
+  grenadeSlotIcon: {fileID: 0}
+  fragIcon: {fileID: 0}
+  impactIcon: {fileID: 0}
+  semtexIcon: {fileID: 0}
+  bioIcon: {fileID: 0}
+  sulfuricNapalmIcon: {fileID: 0}
+  crystalClusterIcon: {fileID: 0}
+  bastionIcon: {fileID: 0}
+  ragnarokIcon: {fileID: 0}
+  spiderIcon: {fileID: 0}
+  noneGrenadeIcon: {fileID: 0}
   perkBar: {fileID: 1429916975}
   perkIconPrefab: {fileID: 1830997629482401065, guid: dd4089848153a2b4380c05ec95742021,
     type: 3}
@@ -1536,12 +1579,22 @@ MonoBehaviour:
   fireRateIcon: {fileID: 21300000, guid: 62f77d4a88a1fc24db6c61e04e9f66e7, type: 3}
   fastHandsIcon: {fileID: 21300000, guid: bf2f2dcc88d686f4fa8e55d6e7010982, type: 3}
   magicCooldownIcon: {fileID: 21300000, guid: de90f26365e6c1a44ba901254a3dee4e, type: 3}
+  moreDropsIcon: {fileID: 0}
+  adrenalineIcon: {fileID: 0}
+  lessAmmoConsumeIcon: {fileID: 0}
+  moreDashSlamIcon: {fileID: 0}
+  resurrectIcon: {fileID: 0}
   fireRatePerkText: {fileID: 244930446}
   speedPerkText: {fileID: 114269988}
   healthPerkText: {fileID: 1310030576}
   revivePerkText: {fileID: 1996360911}
   fastHandsPerkText: {fileID: 667099774}
   magicCooldownPerkText: {fileID: 1657502405}
+  moreDropsPerkText: {fileID: 0}
+  adrenalinePerkText: {fileID: 0}
+  lessAmmoConsumePerkText: {fileID: 0}
+  moreDashSlamPerkText: {fileID: 0}
+  resurrectPerkText: {fileID: 0}
   packAPunchText: {fileID: 907004784}
   packAPunchMachine: {fileID: 510396133}
   statusStackRoot: {fileID: 2142661633}
@@ -1551,6 +1604,39 @@ MonoBehaviour:
   infusePromptText: {fileID: 1628958704}
   currentInfuseStation: {fileID: 224186768}
   infuseStatusText: {fileID: 1830015433}
+  infusionSlotIcon: {fileID: 0}
+  infusionNoneIcon: {fileID: 0}
+  infusionFireIcon: {fileID: 0}
+  infusionCrystalIcon: {fileID: 0}
+  infusionVoidIcon: {fileID: 0}
+  infusionIceIcon: {fileID: 0}
+  infusionVenomIcon: {fileID: 0}
+  infusionLightningIcon: {fileID: 0}
+  infusionWindIcon: {fileID: 0}
+  infusionMeteorIcon: {fileID: 0}
+  infusionCrimsonIcon: {fileID: 0}
+  fireMagicVFX: {fileID: 0}
+  crystalMagicVFX: {fileID: 0}
+  voidMagicVFX: {fileID: 0}
+  iceMagicVFX: {fileID: 0}
+  venomMagicVFX: {fileID: 0}
+  lightningMagicVFX: {fileID: 0}
+  windMagicVFX: {fileID: 0}
+  meteorMagicVFX: {fileID: 0}
+  crimsonMagicVFX: {fileID: 0}
+  dashCooldownSlider: {fileID: 0}
+  dashFill: {fileID: 0}
+  dashReadyColor: {r: 1, g: 1, b: 1, a: 1}
+  dashVFXPicture: {fileID: 0}
+  postProcessVolume: {fileID: 0}
+  eliminationStackRoot: {fileID: 0}
+  eliminationRowPrefab: {fileID: 0}
+  maxEliminationRows: 10
+  DebrisText: {fileID: 0}
+  dashControlText: {fileID: 0}
+  kineticSlamControlText: {fileID: 0}
+  grenadeControlText: {fileID: 0}
+  summonMagicControlText: {fileID: 0}
 --- !u!1 &97643583
 GameObject:
   m_ObjectHideFlags: 0
@@ -9177,6 +9263,8 @@ MonoBehaviour:
   KineticJumpForce: 12
   slamDownForce: -50
   slamCooldown: 2
+  minSlideTimeForKineticJump: 0.5
+  kineticJumpWindow: 0.35
   slamRadius: 25
   slamDamage: 999999
   enemyMask:
@@ -9197,7 +9285,7 @@ MonoBehaviour:
   dashSpeed: 40
   dashDuration: 0.1
   dashCooldown: 0.2
-  dashVFX: {fileID: 0}
+  ExternalSpeedMult: 1
 --- !u!143 &561119874
 CharacterController:
   m_ObjectHideFlags: 0
@@ -9266,6 +9354,16 @@ MonoBehaviour:
   hitmarkerScaleLerp: 12
   hitmarkerDefaultScale: {x: 0, y: 0, z: 0}
   hitmarkerTargetScale: {x: 0, y: 0, z: 0}
+  airTimeThreshold: 1
+  groundShakeDuration: 0.3
+  groundShakeAmplitude: 0.08
+  groundShakeFrequency: 26
+  slamVFXPrefab: {fileID: 0}
+  slamVFXOffset: {x: 0, y: 0, z: 0}
+  slamVFXEuler: {x: 0, y: 0, z: 0}
+  slamVFXScale: {x: 1, y: 1, z: 1}
+  slamVFXLifetime: 2
+  placeVFXOnGround: 1
   cameraLocked: 0
 --- !u!114 &561119876
 MonoBehaviour:
@@ -13747,7 +13845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 1796156602}
+  mat: {fileID: 0}
   flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
   bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
   ColorBleed: 0.25
@@ -17686,12 +17784,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59a1e1fcf4eb9a4ea910968b2ceb0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaosButton: {fileID: 586893242}
-  chaosObject: {fileID: 1324466618}
   pausePanel: {fileID: 1052795442}
   resumeButton: {fileID: 809714395}
   toggleKey: 112
   lockCursorWhenPlaying: 1
+  hudRoots: []
+  postProcessVolume: {fileID: 2107597908}
+  motionBlurToggle: {fileID: 2012345088}
+  vignetteToggle: {fileID: 455681351}
+  ambientOcclusionToggle: {fileID: 1776742769}
+  grainToggle: {fileID: 1672518159}
   vsyncToggle: {fileID: 1420315413}
   fpsSlider: {fileID: 1835817505}
   fpsValueText: {fileID: 1990123707}
@@ -17708,12 +17810,35 @@ MonoBehaviour:
   defaultFOV: 90
   minFOV: 60
   maxFOV: 90
-  motionBlurToggle: {fileID: 2012345088}
-  vignetteToggle: {fileID: 455681351}
-  ambientOcclusionToggle: {fileID: 1776742769}
-  grainToggle: {fileID: 1672518159}
-  postProcessVolume: {fileID: 2107597908}
   enemyHealthBarToggle: {fileID: 892723702}
+  mythicalBorderToggle: {fileID: 0}
+  mythicalBorder: {fileID: 0}
+  ControlToggle: {fileID: 0}
+  ControlObject: {fileID: 0}
+  hintText: {fileID: 0}
+  jumpBtn: {fileID: 0}
+  jumpKeyText: {fileID: 0}
+  interactBtn: {fileID: 0}
+  interactKeyText: {fileID: 0}
+  dashBtn: {fileID: 0}
+  dashKeyText: {fileID: 0}
+  slideBtn: {fileID: 0}
+  slideKeyText: {fileID: 0}
+  sprintBtn: {fileID: 0}
+  sprintKeyText: {fileID: 0}
+  summonBtn: {fileID: 0}
+  summonKeyText: {fileID: 0}
+  fireBtn: {fileID: 0}
+  fireKeyText: {fileID: 0}
+  adsBtn: {fileID: 0}
+  adsKeyText: {fileID: 0}
+  grenadeBtn: {fileID: 0}
+  grenadeKeyText: {fileID: 0}
+  reloadBtn: {fileID: 0}
+  reloadKeyText: {fileID: 0}
+  switchBtn: {fileID: 0}
+  switchKeyText: {fileID: 0}
+  preventDuplicates: 1
 --- !u!1 &1040950952
 GameObject:
   m_ObjectHideFlags: 0
@@ -25552,6 +25677,7 @@ MonoBehaviour:
   - {fileID: 515911958}
   startZombies: 48
   zombiesPerRound: 3
+  timeBetweenRounds: 10
 --- !u!4 &1595701418
 Transform:
   m_ObjectHideFlags: 0
@@ -27769,6 +27895,7 @@ MonoBehaviour:
     type: 3}
   RagnarokPrefab: {fileID: 8177116219481987225, guid: a16d7230bd7e82342aeea0e7b0b132b1,
     type: 3}
+  SpiderPrefab: {fileID: 0}
   fragCap: 7
   impactCap: 6
   semtexCap: 6
@@ -27777,6 +27904,7 @@ MonoBehaviour:
   crystalClusterCap: 3
   bastionCap: 3
   ragnarokCap: 3
+  spiderCap: 8
   currentType: 1
 --- !u!1 &1731497548
 GameObject:
@@ -28323,46 +28451,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 4348820345356682818}
   m_PrefabAsset: {fileID: 0}
---- !u!21 &1796156602
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/DarkBringerRefined_1_2
-  m_Shader: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _BayerTex:
-        m_Texture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Lut2D:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
-  m_AllowLocking: 1
 --- !u!1 &1797531456
 GameObject:
   m_ObjectHideFlags: 0
