@@ -19,6 +19,8 @@ public class WindMagic : MonoBehaviour
     private Vector3 impactPoint;
     private bool hasImpacted = false;
 
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Wind;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -73,6 +75,7 @@ public class WindMagic : MonoBehaviour
             EnemyHealthRagdoll enemy = col.GetComponentInParent<EnemyHealthRagdoll>();     //get all enemy script so we can interact with health / ragdoll.
             if (enemy != null && !enemy.IsDead())      //if enemy exist and they aint dead
             {
+                if (enemy.immuneTo == element) continue;
                 Vector3 dir = (enemy.transform.position - impactPoint).normalized;   //Figure out which direction to push the enemy (away from explosion). with .normalzied
                 if (enemy.ragdollRoot != null)
                 {

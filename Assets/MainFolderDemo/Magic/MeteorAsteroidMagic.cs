@@ -18,6 +18,9 @@ public class MeteorAsteroidMagic : MonoBehaviour   // THIS IS FIREBALL COPIED
     public GameObject GroundEntitySlamVFX2;
     private Rigidbody rb;
 
+    public ElementType element = ElementType.Meteor;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -92,6 +95,7 @@ public class MeteorAsteroidMagic : MonoBehaviour   // THIS IS FIREBALL COPIED
             EnemyHealthRagdoll health = enemy.GetComponent<EnemyHealthRagdoll>();  //fetch script
             if (health != null)
             {
+                if (health.immuneTo == element) continue;
                 Vector3 direction = (enemy.transform.position - transform.position).normalized; //we find direction from us teh player to enemy 
                 health.TakeDamage(slamDamage, direction);  //in enemyHealthRagdoll script 
 

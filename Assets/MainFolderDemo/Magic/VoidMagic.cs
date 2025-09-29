@@ -28,6 +28,10 @@ public class VoidMagic : MonoBehaviour
     private bool hasImpacted = false;           //prevents the orb from activating multiple times.
     private bool deathZoneActive = false;      //true when the orb is sucking things in.
     private Vector3 impactPoint;            //where the orb landed.
+
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Void;
+
     private List<EnemyHealthRagdoll> killedEnemies = new List<EnemyHealthRagdoll>();            //track which enemies have already died.!!!!!!!!!!!!!!!!
     private List<Rigidbody> deadBodies = new List<Rigidbody>();             //list of body parts to pull and explode later!!!!!!!!!!!!!!!!
 
@@ -117,6 +121,8 @@ public class VoidMagic : MonoBehaviour
             EnemyHealthRagdoll enemy = col.GetComponentInParent<EnemyHealthRagdoll>();   //Checks for colliders inside it
             if (enemy != null && !killedEnemies.Contains(enemy))    //Make sure the enemy is valid -- Avoid killing the same enemy multiple times
             {
+                if (enemy.immuneTo == element) continue;
+
                 float distance = Vector3.Distance(enemy.transform.position, impactPoint);   //checks enemny to the center of the orb
                 if (distance <= deathRadius)    
                 {
@@ -139,6 +145,7 @@ public class VoidMagic : MonoBehaviour
                 EnemyHealthRagdoll enemy = col.GetComponentInParent<EnemyHealthRagdoll>();  //Checks for colliders inside it
                 if (enemy != null && !killedEnemies.Contains(enemy))         //Make sure the enemy is valid -- Avoid killing the same enemy multiple times
                 {
+                    if (enemy.immuneTo == element) continue; //immuntiy to void enemies 
                     float distance = Vector3.Distance(enemy.transform.position, impactPoint);//checks enemny to the center of the orb
                     if (distance <= deathRadius)
                     {
