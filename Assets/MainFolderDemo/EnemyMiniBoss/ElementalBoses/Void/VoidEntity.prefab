@@ -43880,7 +43880,7 @@ MonoBehaviour:
     m_Bits: 128
   PlayerImpactVFX: {fileID: 0}
   PlayerImpactVFX2: {fileID: 0}
-  GroundEntitySlamVFX: {fileID: 1121192042590650, guid: d857aeb5ce0cbcf40a999f1b8b4673eb,
+  GroundEntitySlamVFX: {fileID: 1121192042590650, guid: a505977050242674d9ef49664c76b288,
     type: 3}
   GroundVFXOffset: {x: 0, y: 0, z: 0}
   GroundVFXEuler: {x: 0, y: 0, z: 0}

@@ -59,6 +59,15 @@ public class Bullet : MonoBehaviour
             return;
         }
 
+        var norag = other.GetComponentInParent<EnemyHealthNoRagdoll>();
+        if (norag != null)
+        {
+            norag.TakeDamage(damage, transform.forward, other);
+            Destroy(gameObject);
+            return;
+        }
+
+
         // Only do blood + damage if we actually hit an enemy
         var enemy = other.GetComponentInParent<EnemyHealthRagdoll>();  // safer than tag
         if (enemy != null)
@@ -310,37 +319,6 @@ public class Bullet : MonoBehaviour
         }
 
         Destroy(gameObject);
-
-        // Try both enemy types
-        var rag = other.GetComponentInParent<EnemyHealthRagdoll>();
-        var norag = other.GetComponentInParent<EnemyHealthNoRagdoll>();
-
-        if (rag != null || norag != null)
-        {
-            // points (optional)
-            if (PointManager.Instance != null)
-                PointManager.Instance.AddPoints(10);
-
-            // choose a valid transform to attach blood to
-            Transform host = rag != null ? rag.transform : norag.transform;
-
-            // blood VFX (optional)
-            if (bloodEffects != null && bloodEffects.Length > 0)
-            {
-                int i = Random.Range(0, bloodEffects.Length);
-                var blood = Instantiate(bloodEffects[i], transform.position, Quaternion.identity);
-                blood.transform.SetParent(host, true);
-            }
-
-            // apply damage to whichever exists
-            Vector3 dir = transform.forward;
-            if (rag != null) rag.TakeDamage(damage, dir, other);
-            if (norag != null) norag.TakeDamage(damage, dir, other);
-
-            Destroy(gameObject);
-            return;
-        }
-
     }
 
     private ElementType ConvertInfusionToElement(InfusionType infusion)

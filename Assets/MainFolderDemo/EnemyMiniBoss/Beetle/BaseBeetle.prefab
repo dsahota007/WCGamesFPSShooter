@@ -13947,7 +13947,7 @@ GameObject:
   - component: {fileID: -869783618101632752}
   - component: {fileID: -5089099691020498638}
   m_Layer: 0
-  m_Name: Beetle
+  m_Name: BaseBeetle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -58,37 +58,37 @@ public class EnemyHealthNoRagdoll : MonoBehaviour
     private CanvasGroup _cg; //alpha fade
     private Renderer _nameTagRenderer;   // <— add
 
-    // ---- FIRE INFUSION DOT (damage over time) -------------------------------------
+    //// ---- FIRE INFUSION DOT (damage over time) -------------------------------------
 
-    private bool fireDotActive = false;
-    private float fireDotEndTime = 0f;
-    private float fireNextTickTime = 0f;
-    private float fireDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
-    private GameObject activeFireVFX;
+    //private bool fireDotActive = false;
+    //private float fireDotEndTime = 0f;
+    //private float fireNextTickTime = 0f;
+    //private float fireDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
+    //private GameObject activeFireVFX;
 
-    // ---- VOID INFUSION DOT (damage over time) -------------------------------------
-    private bool VoidDotActive = false;
-    private float VoidDotEndTime = 0f;
-    private float VoidNextTickTime = 0f;
-    private float VoidDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
-    private GameObject activeVoidVFX;
+    //// ---- VOID INFUSION DOT (damage over time) -------------------------------------
+    //private bool VoidDotActive = false;
+    //private float VoidDotEndTime = 0f;
+    //private float VoidNextTickTime = 0f;
+    //private float VoidDotPctPerSec = 0f;          // e.g., 0.03f == 3%/sec
+    //private GameObject activeVoidVFX;
 
-    // --- ICE slow state ---
-    private bool iceSlowed = false;
-    private float iceEndTime = 0f;
-    private float baseAgentSpeed = -1f;   // cached original
-    private GameObject activeIceVFX = null;
+    //// --- ICE slow state ---
+    //private bool iceSlowed = false;
+    //private float iceEndTime = 0f;
+    //private float baseAgentSpeed = -1f;   // cached original
+    //private GameObject activeIceVFX = null;
 
-    //-- No crystal variable
+    ////-- No crystal variable
 
-    // --- VENOM INFUSION state -------------------------------------
-    private bool venomDotActive = false;
-    private float venomDotPctPerSec = 0f;
-    private float venomDotEndTime = 0f;
-    private float venomNextTickTime = 0f;
-    private GameObject activeVenomVFX = null;
+    //// --- VENOM INFUSION state -------------------------------------
+    //private bool venomDotActive = false;
+    //private float venomDotPctPerSec = 0f;
+    //private float venomDotEndTime = 0f;
+    //private float venomNextTickTime = 0f;
+    //private GameObject activeVenomVFX = null;
 
-    //-- No crimson variable
+    ////-- No crimson variable
 
     [Header("Elemental Immunity")]
     public ElementType immuneTo = ElementType.None;  // set in Inspector
@@ -156,9 +156,9 @@ public class EnemyHealthNoRagdoll : MonoBehaviour
         // IMPORTANT: remove the force-show
         // SetHealthUIVisible(true);  <-- delete this line
 
-        agent = GetComponent<NavMeshAgent>();  //fetch agent script for ice and wind to slwo speed down
-        if (agent != null && baseAgentSpeed < 0f)
-            baseAgentSpeed = agent.speed;  // get current speed in baseAgentSpeed
+        //agent = GetComponent<NavMeshAgent>();  //fetch agent script for ice and wind to slwo speed down
+        //if (agent != null && baseAgentSpeed < 0f)
+        //    baseAgentSpeed = agent.speed;  // get current speed in baseAgentSpeed
     }
 
     void Update()
@@ -195,288 +195,288 @@ public class EnemyHealthNoRagdoll : MonoBehaviour
                 _nameTagRenderer.enabled = visibleNow;
         }
 
-        // ---- FIRE infusion DOT tick ----
-        if (fireDotActive)
-        {
-            if (Time.time >= fireDotEndTime || isDead)  //Check if the burn effect should stop
-            {
-                fireDotActive = false;
-                if (activeFireVFX != null)
-                {
-                    Destroy(activeFireVFX); //disable it all 
-                    activeFireVFX = null;
-                }
-            }
-            else if (Time.time >= fireNextTickTime)  //Otherwise, if it’s time to deal the next tick of damage.
-            {
-                fireNextTickTime += 1f; // next second
-                float tickDamage = Mathf.Max(1f, Health * fireDotPctPerSec);    //Example: Enemy has 100 HP, fireDotPctPerSec = 0.03f (3%) → 3 dmg/sec    ---->   Ensures at least 1 damage per tick. Without it, a tiny - health enemy(like 10 HP) with 3 % DOT → 0.3 dmg / sec, which Unity would round down to 0 → no damage.
-                TakeDamage(tickDamage, Vector3.zero); // direction not important for DOT
-            }
-        }
+        //// ---- FIRE infusion DOT tick ----
+        //if (fireDotActive)
+        //{
+        //    if (Time.time >= fireDotEndTime || isDead)  //Check if the burn effect should stop
+        //    {
+        //        fireDotActive = false;
+        //        if (activeFireVFX != null)
+        //        {
+        //            Destroy(activeFireVFX); //disable it all 
+        //            activeFireVFX = null;
+        //        }
+        //    }
+        //    else if (Time.time >= fireNextTickTime)  //Otherwise, if it’s time to deal the next tick of damage.
+        //    {
+        //        fireNextTickTime += 1f; // next second
+        //        float tickDamage = Mathf.Max(1f, Health * fireDotPctPerSec);    //Example: Enemy has 100 HP, fireDotPctPerSec = 0.03f (3%) → 3 dmg/sec    ---->   Ensures at least 1 damage per tick. Without it, a tiny - health enemy(like 10 HP) with 3 % DOT → 0.3 dmg / sec, which Unity would round down to 0 → no damage.
+        //        TakeDamage(tickDamage, Vector3.zero); // direction not important for DOT
+        //    }
+        //}
 
-        // ---- VOID infusion DOT tick ----
-        if (VoidDotActive)
-        {
-            if (Time.time >= VoidDotEndTime || isDead)  //Check if the burn effect should stop
-            {
-                VoidDotActive = false;
-                if (activeVoidVFX != null)
-                {
-                    Destroy(activeVoidVFX); //disable it all 
-                    activeVoidVFX = null;
-                }
-            }
-            else if (Time.time >= VoidNextTickTime)  //Otherwise, if it’s time to deal the next tick of damage.
-            {
-                VoidNextTickTime += 1f; // next second
-                float tickDamage = Mathf.Max(1f, Health * VoidDotPctPerSec);    //Example: Enemy has 100 HP, fireDotPctPerSec = 0.03f (3%) → 3 dmg/sec    ---->   Ensures at least 1 damage per tick. Without it, a tiny - health enemy(like 10 HP) with 3 % DOT → 0.3 dmg / sec, which Unity would round down to 0 → no damage.
-                TakeDamage(tickDamage, Vector3.zero); // direction not important for DOT
-            }
-        }
+        //// ---- VOID infusion DOT tick ----
+        //if (VoidDotActive)
+        //{
+        //    if (Time.time >= VoidDotEndTime || isDead)  //Check if the burn effect should stop
+        //    {
+        //        VoidDotActive = false;
+        //        if (activeVoidVFX != null)
+        //        {
+        //            Destroy(activeVoidVFX); //disable it all 
+        //            activeVoidVFX = null;
+        //        }
+        //    }
+        //    else if (Time.time >= VoidNextTickTime)  //Otherwise, if it’s time to deal the next tick of damage.
+        //    {
+        //        VoidNextTickTime += 1f; // next second
+        //        float tickDamage = Mathf.Max(1f, Health * VoidDotPctPerSec);    //Example: Enemy has 100 HP, fireDotPctPerSec = 0.03f (3%) → 3 dmg/sec    ---->   Ensures at least 1 damage per tick. Without it, a tiny - health enemy(like 10 HP) with 3 % DOT → 0.3 dmg / sec, which Unity would round down to 0 → no damage.
+        //        TakeDamage(tickDamage, Vector3.zero); // direction not important for DOT
+        //    }
+        //}
 
-        // --- ICE infusion  ---
-        if (iceSlowed)  //if currentyl frozen 
-        {
-            if (Time.time >= iceEndTime || isDead)  //if duration over or dead
-            {
-                iceSlowed = false;  //than false
+        //// --- ICE infusion  ---
+        //if (iceSlowed)  //if currentyl frozen 
+        //{
+        //    if (Time.time >= iceEndTime || isDead)  //if duration over or dead
+        //    {
+        //        iceSlowed = false;  //than false
 
-                // restore original speed safely
-                if (agent != null && baseAgentSpeed >= 0f)
-                    agent.speed = baseAgentSpeed;
+        //        // restore original speed safely
+        //        if (agent != null && baseAgentSpeed >= 0f)
+        //            agent.speed = baseAgentSpeed;
 
-                if (activeIceVFX != null || isDead)  //turn off VFX and destory it
-                {
-                    Destroy(activeIceVFX);
-                    activeIceVFX = null;
-                }
-            }
-        }
+        //        if (activeIceVFX != null || isDead)  //turn off VFX and destory it
+        //        {
+        //            Destroy(activeIceVFX);
+        //            activeIceVFX = null;
+        //        }
+        //    }
+        //}
 
-        // --- VENOM infusion DOT tick ---
-        if (venomDotActive)
-        {
-            if (Time.time >= venomDotEndTime || isDead)
-            {
-                venomDotActive = false;
-                if (activeVenomVFX != null) { Destroy(activeVenomVFX); activeVenomVFX = null; }
-            }
-            else if (Time.time >= venomNextTickTime)
-            {
-                venomNextTickTime += 1f; // next second
+        //// --- VENOM infusion DOT tick ---
+        //if (venomDotActive)
+        //{
+        //    if (Time.time >= venomDotEndTime || isDead)
+        //    {
+        //        venomDotActive = false;
+        //        if (activeVenomVFX != null) { Destroy(activeVenomVFX); activeVenomVFX = null; }
+        //    }
+        //    else if (Time.time >= venomNextTickTime)
+        //    {
+        //        venomNextTickTime += 1f; // next second
 
-                // % of MAX health per second (minimum 1 damage so it always hurts)
-                float tickDamage = Mathf.Max(1f, Health * venomDotPctPerSec);
-                TakeDamage(tickDamage, Vector3.zero);
-            }
-        }
+        //        // % of MAX health per second (minimum 1 damage so it always hurts)
+        //        float tickDamage = Mathf.Max(1f, Health * venomDotPctPerSec);
+        //        TakeDamage(tickDamage, Vector3.zero);
+        //    }
+        //}
 
     }
 
     //-------------------------------INFUSION ATTACK BULLET ------------
 
-    public void ApplyFireInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
+    //public void ApplyFireInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
 
-    {
-        // Start/refresh DOT
-        fireDotActive = true;
-        fireDotPctPerSec = Mathf.Max(0f, percentPerSec);                //This stores how much damage per second
-        fireDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
-        fireNextTickTime = Time.time + 1f; // tick every 1s
+    //{
+    //    // Start/refresh DOT
+    //    fireDotActive = true;
+    //    fireDotPctPerSec = Mathf.Max(0f, percentPerSec);                //This stores how much damage per second
+    //    fireDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
+    //    fireNextTickTime = Time.time + 1f; // tick every 1s
 
-        //---- Set Bonus
-        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Fire)
-        {
-            fireDotPctPerSec *= 1.25f; // +25% stronger more damage over time  (more burn)
-        }
-        //---------
+    //    //---- Set Bonus
+    //    if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Fire)
+    //    {
+    //        fireDotPctPerSec *= 1.25f; // +25% stronger more damage over time  (more burn)
+    //    }
+    //    //---------
 
-        // Attach/refresh VFX
-        if (onEnemyVFXPrefab != null)
-        {
-            if (activeFireVFX == null)
-            {
-                activeFireVFX = Instantiate(onEnemyVFXPrefab, transform);
-            }
-            // enforce uniform transform every time we apply/refresh
-            activeFireVFX.transform.localPosition = vfxLocalPos;
-            activeFireVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
-            activeFireVFX.transform.localScale = vfxLocalScale;
-            //else
-            //{
-            //    // if already exists, you can refresh lifetime or leave it
-            //}
-        }
-    }
+    //    // Attach/refresh VFX
+    //    if (onEnemyVFXPrefab != null)
+    //    {
+    //        if (activeFireVFX == null)
+    //        {
+    //            activeFireVFX = Instantiate(onEnemyVFXPrefab, transform);
+    //        }
+    //        // enforce uniform transform every time we apply/refresh
+    //        activeFireVFX.transform.localPosition = vfxLocalPos;
+    //        activeFireVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+    //        activeFireVFX.transform.localScale = vfxLocalScale;
+    //        //else
+    //        //{
+    //        //    // if already exists, you can refresh lifetime or leave it
+    //        //}
+    //    }
+    //}
 
-    public void ApplyVoidInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
+    //public void ApplyVoidInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
 
-    {
-        // Start/refresh DOT
-        VoidDotActive = true;
-        VoidDotPctPerSec = Mathf.Max(0f, percentPerSec);                //This stores how much damage per second
-        VoidDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
-        VoidNextTickTime = Time.time + 1f; // tick every 1s
+    //{
+    //    // Start/refresh DOT
+    //    VoidDotActive = true;
+    //    VoidDotPctPerSec = Mathf.Max(0f, percentPerSec);                //This stores how much damage per second
+    //    VoidDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);    //calculates when the burning effect should stop
+    //    VoidNextTickTime = Time.time + 1f; // tick every 1s
 
-        //set BONUS
-        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Ice)
-        {
-            VoidDotPctPerSec *= 1.35f;  //increase damage for 35%
-        }
-        //--------
+    //    //set BONUS
+    //    if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Ice)
+    //    {
+    //        VoidDotPctPerSec *= 1.35f;  //increase damage for 35%
+    //    }
+    //    //--------
 
-        // Attach/refresh VFX
-        if (onEnemyVFXPrefab != null)
-        {
-            if (activeVoidVFX == null)
-            {
-                activeVoidVFX = Instantiate(onEnemyVFXPrefab, transform);
-            }
-            // enforce uniform transform every time we apply/refresh
-            activeVoidVFX.transform.localPosition = vfxLocalPos;
-            activeVoidVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
-            activeVoidVFX.transform.localScale = vfxLocalScale;
-            //else
-            //{
-            //    // if already exists, you can refresh lifetime or leave it
-            //}
-        }
-    }
+    //    // Attach/refresh VFX
+    //    if (onEnemyVFXPrefab != null)
+    //    {
+    //        if (activeVoidVFX == null)
+    //        {
+    //            activeVoidVFX = Instantiate(onEnemyVFXPrefab, transform);
+    //        }
+    //        // enforce uniform transform every time we apply/refresh
+    //        activeVoidVFX.transform.localPosition = vfxLocalPos;
+    //        activeVoidVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+    //        activeVoidVFX.transform.localScale = vfxLocalScale;
+    //        //else
+    //        //{
+    //        //    // if already exists, you can refresh lifetime or leave it
+    //        //}
+    //    }
+    //}
 
-    public void ApplyIceSlow(float durationSeconds, float speedMultiplier, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
-    {
-        if (isDead || agent == null) return;
+    //public void ApplyIceSlow(float durationSeconds, float speedMultiplier, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
+    //{
+    //    if (isDead || agent == null) return;
 
-        if (baseAgentSpeed < 0f) baseAgentSpeed = agent.speed;
+    //    if (baseAgentSpeed < 0f) baseAgentSpeed = agent.speed;
 
-        // Clamp multiplier (0 = frozen, 1 = no slow)
-        speedMultiplier = Mathf.Clamp01(speedMultiplier);
+    //    // Clamp multiplier (0 = frozen, 1 = no slow)
+    //    speedMultiplier = Mathf.Clamp01(speedMultiplier);
 
-        //set BONUS
-        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Ice)
-        {
-            durationSeconds *= 1.10f;   //increase duration by 10%
-            speedMultiplier *= 0.9f;    //decrease speed by another 10%
-        }
-        //--------
+    //    //set BONUS
+    //    if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Ice)
+    //    {
+    //        durationSeconds *= 1.10f;   //increase duration by 10%
+    //        speedMultiplier *= 0.9f;    //decrease speed by another 10%
+    //    }
+    //    //--------
 
-        agent.speed = Mathf.Max(0.05f, baseAgentSpeed * speedMultiplier);  //apply right away teh slowness
-        iceSlowed = true;
-        iceEndTime = Time.time + Mathf.Max(0f, durationSeconds);
+    //    agent.speed = Mathf.Max(0.05f, baseAgentSpeed * speedMultiplier);  //apply right away teh slowness
+    //    iceSlowed = true;
+    //    iceEndTime = Time.time + Mathf.Max(0f, durationSeconds);
 
 
 
-        // Attach or refresh VFX
-        if (onEnemyVFXPrefab != null)
-        {
-            if (activeIceVFX == null)
-            {
-                activeIceVFX = Instantiate(onEnemyVFXPrefab, transform);
-            }
+    //    // Attach or refresh VFX
+    //    if (onEnemyVFXPrefab != null)
+    //    {
+    //        if (activeIceVFX == null)
+    //        {
+    //            activeIceVFX = Instantiate(onEnemyVFXPrefab, transform);
+    //        }
 
-            activeIceVFX.transform.localPosition = vfxLocalPos;
-            activeIceVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
-            activeIceVFX.transform.localScale = vfxLocalScale;
+    //        activeIceVFX.transform.localPosition = vfxLocalPos;
+    //        activeIceVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+    //        activeIceVFX.transform.localScale = vfxLocalScale;
 
-            if (vfxLifetime > 0f)
-            {
-                // If you want the VFX to always last the whole slow, you can skip this
-                Destroy(activeIceVFX, vfxLifetime);
-                activeIceVFX = null; // so we don't try to destroy twice on expiry
-            }
-        }
-    }
+    //        if (vfxLifetime > 0f)
+    //        {
+    //            // If you want the VFX to always last the whole slow, you can skip this
+    //            Destroy(activeIceVFX, vfxLifetime);
+    //            activeIceVFX = null; // so we don't try to destroy twice on expiry
+    //        }
+    //    }
+    //}
 
-    public void ApplyVenomInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
-    {
-        venomDotActive = true;
-        venomDotPctPerSec = Mathf.Max(0f, percentPerSec);
-        venomDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);
-        venomNextTickTime = Time.time + 1f; // tick every 1s
+    //public void ApplyVenomInfusionEffect(float durationSeconds, float percentPerSec, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale)
+    //{
+    //    venomDotActive = true;
+    //    venomDotPctPerSec = Mathf.Max(0f, percentPerSec);
+    //    venomDotEndTime = Time.time + Mathf.Max(0f, durationSeconds);
+    //    venomNextTickTime = Time.time + 1f; // tick every 1s
 
-        //set BONUS
-        if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Venom)
-        {
-            venomDotPctPerSec *= 1.45f; // +45% stronger more damage over time  (more toxic over a longer time)
-        }
-        //--------
+    //    //set BONUS
+    //    if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Venom)
+    //    {
+    //        venomDotPctPerSec *= 1.45f; // +45% stronger more damage over time  (more toxic over a longer time)
+    //    }
+    //    //--------
 
-        if (onEnemyVFXPrefab != null)
-        {
-            if (activeVenomVFX == null)
-            {
-                activeVenomVFX = Instantiate(onEnemyVFXPrefab, transform);
-            }
-            // enforce a uniform transform every (re)apply
-            activeVenomVFX.transform.localPosition = vfxLocalPos;
-            activeVenomVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
-            activeVenomVFX.transform.localScale = vfxLocalScale;
-        }
-    }
+    //    if (onEnemyVFXPrefab != null)
+    //    {
+    //        if (activeVenomVFX == null)
+    //        {
+    //            activeVenomVFX = Instantiate(onEnemyVFXPrefab, transform);
+    //        }
+    //        // enforce a uniform transform every (re)apply
+    //        activeVenomVFX.transform.localPosition = vfxLocalPos;
+    //        activeVenomVFX.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+    //        activeVenomVFX.transform.localScale = vfxLocalScale;
+    //    }
+    //}
 
-    public void ApplyWindKnockback(Vector3 fromPos, float force, float duration, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
-    {
-        if (isDead) return;  // if enemy is dead -- gtfo this code 
+    //public void ApplyWindKnockback(Vector3 fromPos, float force, float duration, GameObject onEnemyVFXPrefab, Vector3 vfxLocalPos, Vector3 vfxLocalEuler, Vector3 vfxLocalScale, float vfxLifetime = 0f)
+    //{
+    //    if (isDead) return;  // if enemy is dead -- gtfo this code 
 
-        Vector3 dir = (transform.position - fromPos).normalized;  //from origin of bullet adn enemy hitting - direciton 
-        if (dir.sqrMagnitude < 0.01f)
-        {
-            dir = transform.forward; //we push in that direction
-        }
+    //    Vector3 dir = (transform.position - fromPos).normalized;  //from origin of bullet adn enemy hitting - direciton 
+    //    if (dir.sqrMagnitude < 0.01f)
+    //    {
+    //        dir = transform.forward; //we push in that direction
+    //    }
 
-        // Rigidbody rb = GetComponent<Rigidbody>();            // << RAGDOLL/PHYSICS PUSH: optional for living enemy only
-        // if (rb == null && ragdollRoot != null) rb = ragdollRoot.GetComponent<Rigidbody>();
+    //    // Rigidbody rb = GetComponent<Rigidbody>();            // << RAGDOLL/PHYSICS PUSH: optional for living enemy only
+    //    // if (rb == null && ragdollRoot != null) rb = ragdollRoot.GetComponent<Rigidbody>();
 
-        if (agent != null)  //turn off agent so we can push back on navmesh
-        {
-            agent.enabled = false;
-        }
+    //    if (agent != null)  //turn off agent so we can push back on navmesh
+    //    {
+    //        agent.enabled = false;
+    //    }
 
-        // if (rb != null)
-        // {
-        //     bool wasKinematic = rb.isKinematic;  //true ignores physics
-        //     rb.isKinematic = false;
-        //
-        //     float finalForce = force;
-        //     if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Wind)
-        //         finalForce *= 1.15f;  // +15% pushback
-        //
-        //     rb.AddForce(dir * Mathf.Max(0f, finalForce), ForceMode.Impulse);
-        //     StartCoroutine(RestoreNavAfterWindInfusionBullet(duration, rb, wasKinematic));
-        // }
+    //    // if (rb != null)
+    //    // {
+    //    //     bool wasKinematic = rb.isKinematic;  //true ignores physics
+    //    //     rb.isKinematic = false;
+    //    //
+    //    //     float finalForce = force;
+    //    //     if (WeaponManager.HasSetBonus() && WeaponManager.ActiveWeapon.infusion == InfusionType.Wind)
+    //    //         finalForce *= 1.15f;  // +15% pushback
+    //    //
+    //    //     rb.AddForce(dir * Mathf.Max(0f, finalForce), ForceMode.Impulse);
+    //    //     StartCoroutine(RestoreNavAfterWindInfusionBullet(duration, rb, wasKinematic));
+    //    // }
 
-        if (onEnemyVFXPrefab != null)
-        {
-            var fx = Instantiate(onEnemyVFXPrefab, transform);
-            fx.transform.localPosition = vfxLocalPos;
-            fx.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
-            fx.transform.localScale = vfxLocalScale;
+    //    if (onEnemyVFXPrefab != null)
+    //    {
+    //        var fx = Instantiate(onEnemyVFXPrefab, transform);
+    //        fx.transform.localPosition = vfxLocalPos;
+    //        fx.transform.localRotation = Quaternion.Euler(vfxLocalEuler);
+    //        fx.transform.localScale = vfxLocalScale;
 
-            if (vfxLifetime > 0f)
-            {
-                Destroy(fx, vfxLifetime);
-            }
-        }
+    //        if (vfxLifetime > 0f)
+    //        {
+    //            Destroy(fx, vfxLifetime);
+    //        }
+    //    }
 
-        // simple re-enable after delay if we didn't use rigidbody
-        StartCoroutine(RestoreNavAfterWindInfusionBullet(duration, null, false));
-    }
+    //    // simple re-enable after delay if we didn't use rigidbody
+    //    StartCoroutine(RestoreNavAfterWindInfusionBullet(duration, null, false));
+    //}
 
-    private IEnumerator RestoreNavAfterWindInfusionBullet(float delay, Rigidbody rb, bool restoreKinematic)
-    {
-        yield return new WaitForSeconds(delay);
+    //private IEnumerator RestoreNavAfterWindInfusionBullet(float delay, Rigidbody rb, bool restoreKinematic)
+    //{
+    //    yield return new WaitForSeconds(delay);
 
-        if (rb != null)
-        {
-            rb.isKinematic = restoreKinematic;
-        }
+    //    if (rb != null)
+    //    {
+    //        rb.isKinematic = restoreKinematic;
+    //    }
 
-        if (!isDead && agent != null)
-        {
-            agent.enabled = true;
-        }
-    }
+    //    if (!isDead && agent != null)
+    //    {
+    //        agent.enabled = true;
+    //    }
+    //}
 
     // ---------------------------- HEALTH BAR ----------------------
 
@@ -681,7 +681,8 @@ public class EnemyHealthNoRagdoll : MonoBehaviour
         if (isMiniboss)
         {
             string prefix = minibossElement != ElementType.None ? minibossElement.ToString() + " " : "";
-            return $"{prefix}Miniboss";
+            //return $"{prefix}Miniboss";
+            return "Emberstone Scarab";
         }
         // normal enemies
         return headshot ? "Headshot Zombie" : "Zombie";

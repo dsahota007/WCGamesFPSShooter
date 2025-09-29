@@ -20,6 +20,9 @@ public class CrimsonMagic : MonoBehaviour
     private bool hasImpacted = false;
     private PlayerAttributes player;
 
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Crimson;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -67,6 +70,7 @@ public class CrimsonMagic : MonoBehaviour
         {
             var enemy = col.GetComponentInParent<EnemyHealthRagdoll>();
             if (enemy == null || enemy.IsDead()) continue;
+            if (enemy.immuneTo == element) return;  //this is for immunity to crimson enemies
 
             Vector3 dir = (enemy.transform.position - impactPoint).normalized;
             enemy.TakeDamage(999999f, dir);

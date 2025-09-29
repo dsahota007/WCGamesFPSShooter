@@ -29,7 +29,8 @@ public class CrystalMagic : MonoBehaviour
     public float inheritVelocityFactor = 0.35f;// inherit some of parent speed
     public GameObject grenadePrefab;           // assign this same Grenade prefab in Inspector
 
-
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Crystal;
     void Awake()       //Awake(): A Unity lifecycle method that runs before Start(),
     {
         rb = GetComponent<Rigidbody>();
@@ -62,16 +63,22 @@ public class CrystalMagic : MonoBehaviour
 
         Vector3 pos = transform.position;       //we get the positoinf of explosion for vfx
 
-        if (explosionVFX != null)          // Spawn explosion VFX
+        if (explosionVFX != null)
+        {       // Spawn explosion VFX
             Destroy(Instantiate(explosionVFX, pos, Quaternion.identity), 5f);
+        }
+
+        const ElementType myElement = ElementType.Crystal;   //FOR IMMUNTIY TO CRYSTAL -------------------
 
 
         Collider[] hits = Physics.OverlapSphere(pos, explosionRadius, enemyMask);    //get the point of explosion, teh radius of whoever needs to be in enemyMask
         foreach (var hit in hits)
         {
             var health = hit.GetComponentInParent<EnemyHealthRagdoll>();
-            if (health != null)
+            if (health != null) 
             {
+                if (health.immuneTo == myElement) continue;   //FOR IMMUNTIY TO CRYSTAL -------------------
+
                 Vector3 dir = (hit.transform.position - pos).normalized;    //find direction of impact  
                 health.TakeDamage(explosionDamage, dir);                //damage in that direction
 

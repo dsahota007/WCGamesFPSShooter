@@ -24,7 +24,10 @@ public class LightningMagic : MonoBehaviour
     private bool hasImpacted = false;
 
     private List<EnemyHealthRagdoll> frozenEnemies = new List<EnemyHealthRagdoll>();   
-    private List<Rigidbody> frozenBodies = new List<Rigidbody>();     
+    private List<Rigidbody> frozenBodies = new List<Rigidbody>();
+
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Lightning; // <- add this
 
     void Start()
     {
@@ -110,7 +113,10 @@ public class LightningMagic : MonoBehaviour
     {
         if (frozenEnemies.Count >= maxChainTargets) return;   //if we have too many people being chained than leave this chunk of code -- Don’t freeze more
 
+
+
         EnemyHealthRagdoll enemy = col.GetComponentInParent<EnemyHealthRagdoll>();     //grab enemy script 
+        if (enemy.immuneTo == element) return;  //this is for immunity
         if (enemy != null && !frozenEnemies.Contains(enemy) && !enemy.IsDead())    //continue if enemy exist, not already frozen and not dead
         {
             frozenEnemies.Add(enemy);   //We store them so we know who’s frozen
