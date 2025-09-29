@@ -15,8 +15,12 @@ public class Fireball : MonoBehaviour
     public GameObject EnemyImpactVFX;
     public GameObject EnemyImpactVFX2;
     public GameObject GroundEntitySlamVFX;
-  
+
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Fire;
+
     private Rigidbody rb;
+
 
     void Start()
     {
@@ -85,6 +89,9 @@ public class Fireball : MonoBehaviour
             EnemyHealthRagdoll health = enemy.GetComponent<EnemyHealthRagdoll>();  //fetch script
             if (health != null)
             {
+                if (health.immuneTo == element) continue;  //FOR FIRE IUMMUNITY -------------
+
+
                 Vector3 direction = (enemy.transform.position - transform.position).normalized; //we find direction from us teh player to enemy 
                 health.TakeDamage(slamDamage, direction);  //in enemyHealthRagdoll script 
 

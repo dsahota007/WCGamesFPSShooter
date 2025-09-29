@@ -25,6 +25,9 @@ public class IceMagic : MonoBehaviour
     private bool hasImpacted = false;
     private GameObject spawnedGroundVFX;
 
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Ice;
+
     private List<EnemyHealthRagdoll> frozenEnemies = new List<EnemyHealthRagdoll>();
     private List<Rigidbody> frozenBodies = new List<Rigidbody>();
 
@@ -90,6 +93,9 @@ public class IceMagic : MonoBehaviour
                 EnemyHealthRagdoll enemy = col.GetComponentInParent<EnemyHealthRagdoll>();  //Checks for colliders inside it
                 if (enemy != null && !frozenEnemies.Contains(enemy))   //Make sure the enemy is ot in list of frozen enemy -- Avoid freezing the same enemy multiple times 
                 {
+
+                    if (enemy.immuneTo == element) continue;
+
                     frozenEnemies.Add(enemy);       //Add to the list of frozen enemies
 
                     // Freeze movement

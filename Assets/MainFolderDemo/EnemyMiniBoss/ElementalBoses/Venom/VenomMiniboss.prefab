@@ -3663,7 +3663,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "<color=red>\u25CF</color> CRIMSON MINIBOSS"
+  m_Text: "<color=red>\u25CF</color> VENOM MINIBOSS"
 --- !u!114 &8530467540394054667
 MonoBehaviour:
   m_ObjectHideFlags: 0

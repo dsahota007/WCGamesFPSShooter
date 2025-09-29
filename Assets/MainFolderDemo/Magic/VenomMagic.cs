@@ -20,6 +20,9 @@ public class VenomMagic : MonoBehaviour
     private bool hasImpacted = false;
     private GameObject poisonCloudInstance;
 
+    [Header("Element Tag")]
+    public ElementType element = ElementType.Venom;
+
     private List<EnemyHealthRagdoll> killedEnemies = new List<EnemyHealthRagdoll>();     //Keeps track of already-killed enemies so they don’t die twice.
 
     void Start()
@@ -88,6 +91,7 @@ public class VenomMagic : MonoBehaviour
                 EnemyHealthRagdoll enemy = col.GetComponentInParent<EnemyHealthRagdoll>();   // find colliders of enemies
                 if (enemy != null && !killedEnemies.Contains(enemy))
                 {
+                    if (enemy.immuneTo == element) continue;
                     killedEnemies.Add(enemy);   //add enemy to killed list so we dont kill again
 
                     Vector3 dir = (enemy.transform.position - impactPoint).normalized;    //calc the direction bc we get the the enemy pos adn impact pos than .normalized to find direction bc fo unit 0-1
