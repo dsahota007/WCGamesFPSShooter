@@ -5,9 +5,15 @@ using System.Collections;
 [RequireComponent(typeof(Collider))]
 public class LaunchPad : MonoBehaviour
 {
+    [Header("Launch")]
     public float launchSpeed = 24f;
     public float launchDuration = 1.25f;
     public string playerTag = "Player";
+    public bool grantKineticJump = true;
+
+    [Header("Cancel Conditions")]
+    public bool cancelOnDash = true;   // stop pad the moment player dashes
+    public bool cancelOnSlam = true;   // stop pad the moment player starts slam
 
     void Reset()
     {
@@ -19,13 +25,18 @@ public class LaunchPad : MonoBehaviour
     {
         if (!other.CompareTag(playerTag)) return;
 
+        // find the player root
         var root = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
         var pm = root.GetComponent<PlayerMovement>();
         var cc = root.GetComponent<CharacterController>();
         var rb = root.GetComponent<Rigidbody>();
 
-        if (pm) pm.EnableKineticJumpNow();  // keep this if you want the booster to grant KJ
+        // If already dashing and we don't want to interfere, ignore pad
+        if (pm && cancelOnDash && pm.IsDashing()) return;
+
+        // Give Kinetic Jump window if desired
+        if (pm && grantKineticJump) pm.EnableKineticJumpNow();
 
         Vector3 dir = transform.forward.normalized;
 
@@ -37,21 +48,20 @@ public class LaunchPad : MonoBehaviour
     {
         float end = Time.time + launchDuration;
 
-        // BOOST PHASE
+        // BOOST PHASE (actively push)
         while (Time.time < end)
         {
-            // if player started slam, give control back immediately
-            if (pm && pm.IsSlamming()) yield break;
+            if (ShouldCancel(pm)) yield break;
 
             cc.Move(dir * launchSpeed * Time.deltaTime);
             yield return null;
         }
 
-        // MOMENTUM PHASE
+        // MOMENTUM PHASE (coast with gravity until grounded)
         Vector3 vel = dir * launchSpeed;
         while (true)
         {
-            if (pm && pm.IsSlamming()) yield break;
+            if (ShouldCancel(pm)) yield break;
 
             float dt = Time.deltaTime;
             vel += Physics.gravity * dt;
@@ -69,21 +79,24 @@ public class LaunchPad : MonoBehaviour
 
         float end = Time.time + launchDuration;
 
-        // BOOST PHASE
+        // BOOST PHASE (actively set velocity)
         while (Time.time < end)
         {
-            // if the player started slamming, stop boosting immediately
-            if (pm != null && pm.IsSlamming())
-                yield break;
+            if (ShouldCancel(pm)) yield break;
 
-            // run on physics tick
             yield return new WaitForFixedUpdate();
-
-            // push rigidbody in launch direction
             rb.linearVelocity = dir * launchSpeed;
         }
 
-        // after this, normal physics (including gravity) takes over
+        // After boost, RB just falls under normal physics
     }
 
+    // Helper to centralize cancel rules
+    bool ShouldCancel(PlayerMovement pm)
+    {
+        if (pm == null) return false;
+        if (cancelOnSlam && pm.IsSlamming()) return true;
+        if (cancelOnDash && pm.IsDashing()) return true;
+        return false;
+    }
 }

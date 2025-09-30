@@ -1632,7 +1632,7 @@ public class UI : MonoBehaviour
         img.SetNativeSize();                                            // optional
                                                                         // optional: clamp size
         var rt = img.rectTransform;
-        rt.sizeDelta = new Vector2(30, 30);
+        rt.sizeDelta = new Vector2(22, 22);   //control the size of the perk icons ------------------------
 
         // pop-in anim
         StartCoroutine(PopIn(img));
