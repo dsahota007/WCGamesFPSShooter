@@ -92,6 +92,7 @@ public class EnemyHealthRagdoll : MonoBehaviour
 
     [Header("Elemental Immunity")]
     public ElementType immuneTo = ElementType.None;  // set in Inspector
+    public bool immuneToKineticSlam = false;
 
     [Header("Zombie and Miniboss Entity")]
     public bool isMiniboss = false;                 // check this on miniboss prefabs

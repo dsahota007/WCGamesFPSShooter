@@ -444,6 +444,9 @@ public class PlayerMovement : MonoBehaviour
             EnemyHealthRagdoll health = enemy.GetComponent<EnemyHealthRagdoll>();  //fetch script
             if (health != null)
             {
+
+                if (health.immuneToKineticSlam) continue; //this is for immunity ot minibosses
+
                 Vector3 direction = (enemy.transform.position - transform.position).normalized; //we find direction from us teh player to enemy 
                 health.TakeDamage(slamDamage, direction);   //in enemyHealthRagdoll script 
 

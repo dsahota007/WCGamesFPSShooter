@@ -2929,6 +2929,7 @@ MonoBehaviour:
   fadeSpeed: 10
   lookAtOffset: {x: 0, y: 1.6, z: 0}
   immuneTo: 7
+  immuneToKineticSlam: 1
   isMiniboss: 1
   minibossElement: 7
   minibossPoints: 250
