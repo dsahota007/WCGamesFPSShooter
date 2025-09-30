@@ -1092,6 +1092,14 @@ public class UI : MonoBehaviour
         //    DashNotReadyText.text = onCooldown ? "Dash on Cooldown" : "";
         //}
 
+        // --- Magic when it is full VFX smoke toggle ---
+        if (magicManager != null)
+        {
+            bool ready = magicManager.IsReady() && magicManager.HasMagicEquipped();
+            SetMagicVFXActive(magicManager.GetCurrentMagicType(), ready);
+        }
+
+
 
     }
     // ------------------- point animaiton 
@@ -1462,48 +1470,86 @@ public class UI : MonoBehaviour
         magicStatusText.gameObject.SetActive(false);
     }
     //--- Magic slot bottom right image 
+    //public void UpdateMagicSlot(MagicType type)
+    //{
+    //    if (magicSlotIcon == null) return; // for this the code leaves 
+
+    //    // reset sprite
+    //    magicSlotIcon.sprite = GetMagicSpriteForSlots(type);
+    //    //magicSlotIcon.enabled = (magicSlotIcon.sprite != null);
+
+    //    // disable all VFX 
+    //    if (fireMagicVFX) fireMagicVFX.SetActive(false);
+    //    if (crystalMagicVFX) crystalMagicVFX.SetActive(false);
+    //    if (voidMagicVFX) voidMagicVFX.SetActive(false);
+    //    if (iceMagicVFX) iceMagicVFX.SetActive(false);
+    //    if (venomMagicVFX) venomMagicVFX.SetActive(false);
+    //    if (lightningMagicVFX) lightningMagicVFX.SetActive(false);
+    //    if (windMagicVFX) windMagicVFX.SetActive(false);
+    //    if (meteorMagicVFX) meteorMagicVFX.SetActive(false);
+    //    if (crimsonMagicVFX) crimsonMagicVFX.SetActive(false);
+
+    //    // enable the one that matches the sprite
+    //    switch (type)
+    //    {
+    //        case MagicType.Normal: if (fireMagicVFX) fireMagicVFX.SetActive(true); break;
+    //        case MagicType.Crystal: if (crystalMagicVFX) crystalMagicVFX.SetActive(true); break;
+    //        case MagicType.Void: if (voidMagicVFX) voidMagicVFX.SetActive(true); break;
+    //        case MagicType.Ice: if (iceMagicVFX) iceMagicVFX.SetActive(true); break;
+    //        case MagicType.Venom: if (venomMagicVFX) venomMagicVFX.SetActive(true); break;
+    //        case MagicType.Lightning: if (lightningMagicVFX) lightningMagicVFX.SetActive(true); break;
+    //        case MagicType.Wind: if (windMagicVFX) windMagicVFX.SetActive(true); break;
+    //        case MagicType.Meteor: if (meteorMagicVFX) meteorMagicVFX.SetActive(true); break;
+    //        case MagicType.Crimson: if (crimsonMagicVFX) crimsonMagicVFX.SetActive(true); break;
+    //    }
+
+    //    // keep your rotation logic
+    //    if (magicSlotIcon.enabled)
+    //    {
+    //        magicSlotIcon.rectTransform.localRotation = Quaternion.identity;
+    //        magicSlotIcon.rectTransform.Rotate(0f, 0f, 45f);
+    //    }
+
+    //    SetMagicCooldownColor(type);  //this is to change color of the fill bar
+    //}
+
     public void UpdateMagicSlot(MagicType type)
     {
-        if (magicSlotIcon == null) return; // for this the code leaves 
+        if (magicSlotIcon == null) return;
 
-        // reset sprite
+        // icon
         magicSlotIcon.sprite = GetMagicSpriteForSlots(type);
-        //magicSlotIcon.enabled = (magicSlotIcon.sprite != null);
-         
-        // disable all VFX 
-        if (fireMagicVFX) fireMagicVFX.SetActive(false);
-        if (crystalMagicVFX) crystalMagicVFX.SetActive(false);
-        if (voidMagicVFX) voidMagicVFX.SetActive(false);
-        if (iceMagicVFX) iceMagicVFX.SetActive(false);
-        if (venomMagicVFX) venomMagicVFX.SetActive(false);
-        if (lightningMagicVFX) lightningMagicVFX.SetActive(false);
-        if (windMagicVFX) windMagicVFX.SetActive(false);
-        if (meteorMagicVFX) meteorMagicVFX.SetActive(false);
-        if (crimsonMagicVFX) crimsonMagicVFX.SetActive(false);
 
-        // enable the one that matches the sprite
-        switch (type)
-        {
-            case MagicType.Normal: if (fireMagicVFX) fireMagicVFX.SetActive(true); break;
-            case MagicType.Crystal: if (crystalMagicVFX) crystalMagicVFX.SetActive(true); break;
-            case MagicType.Void: if (voidMagicVFX) voidMagicVFX.SetActive(true); break;
-            case MagicType.Ice: if (iceMagicVFX) iceMagicVFX.SetActive(true); break;
-            case MagicType.Venom: if (venomMagicVFX) venomMagicVFX.SetActive(true); break;
-            case MagicType.Lightning: if (lightningMagicVFX) lightningMagicVFX.SetActive(true); break;
-            case MagicType.Wind: if (windMagicVFX) windMagicVFX.SetActive(true); break;
-            case MagicType.Meteor: if (meteorMagicVFX) meteorMagicVFX.SetActive(true); break;
-            case MagicType.Crimson: if (crimsonMagicVFX) crimsonMagicVFX.SetActive(true); break;
-        }
+        // VFX only when ready
+        bool ready = magicManager != null && magicManager.HasMagicEquipped() && magicManager.IsReady();
+        SetMagicVFXActive(type, ready);      // turns off all others automatically
 
-        // keep your rotation logic
+        // keep your rotation
         if (magicSlotIcon.enabled)
         {
             magicSlotIcon.rectTransform.localRotation = Quaternion.identity;
             magicSlotIcon.rectTransform.Rotate(0f, 0f, 45f);
         }
 
-        SetMagicCooldownColor(type);  //this is to change color of the fill bar
+        // bar color
+        SetMagicCooldownColor(type);
     }
+
+
+
+    void SetMagicVFXActive(MagicType type, bool active)   //this fo rmaking it appear when ur bar is full
+    {
+        if (fireMagicVFX) fireMagicVFX.SetActive(active && type == MagicType.Normal);
+        if (crystalMagicVFX) crystalMagicVFX.SetActive(active && type == MagicType.Crystal);
+        if (voidMagicVFX) voidMagicVFX.SetActive(active && type == MagicType.Void);
+        if (iceMagicVFX) iceMagicVFX.SetActive(active && type == MagicType.Ice);
+        if (venomMagicVFX) venomMagicVFX.SetActive(active && type == MagicType.Venom);
+        if (lightningMagicVFX) lightningMagicVFX.SetActive(active && type == MagicType.Lightning);
+        if (windMagicVFX) windMagicVFX.SetActive(active && type == MagicType.Wind);
+        if (meteorMagicVFX) meteorMagicVFX.SetActive(active && type == MagicType.Meteor);
+        if (crimsonMagicVFX) crimsonMagicVFX.SetActive(active && type == MagicType.Crimson);
+    }
+
 
     private void SetMagicCooldownColor(MagicType type)
     {
