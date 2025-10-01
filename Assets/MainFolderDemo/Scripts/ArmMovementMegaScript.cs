@@ -69,9 +69,9 @@ public class ArmMovementMegaScript : MonoBehaviour
     public bool useRightArmForGrapple = false;              // left or right arm
     public Vector3 grappleLocalOffset = new Vector3(-0.048f, 0f, 0f); // X (right+ / left-), Y (up+), Z (forward+)
     public Vector3 grappleRotOffsetEuler = new Vector3(0f, -10f, -6f); // pitch, yaw, roll
-    public float grapplePopTime = 0.10f;
-    public float grappleHoldTime = 0.08f;
-    public float grappleReturnTime = 0.12f;
+    public float grapplePopTime = 0.10f;     // up speed
+    public float grappleHoldTime = 0.08f;    // only used by the flash version
+    public float grappleReturnTime = 0.12f;  // down speed
 
     private bool isGrappleAnimPlaying = false;
     public bool IsGrappleAnimating => isGrappleAnimPlaying;
@@ -428,7 +428,7 @@ public class ArmMovementMegaScript : MonoBehaviour
         }
     }
 
-    //--------------------grapple hook
+    //----------------------------------------------  grapple hook
     bool CanPlayGrappleFlash()
     {
         if (isCastingSpell) return false;       // block during magic cast
@@ -438,14 +438,16 @@ public class ArmMovementMegaScript : MonoBehaviour
         Transform arm = useRightArmForGrapple ? rightArm : leftArm;
         return arm != null;
     }
+
     IEnumerator GrappleFlashAnimation()
     {
         isGrappleAnimPlaying = true;
 
-        Transform arm = useRightArmForGrapple ? rightArm : leftArm;
+        Transform armT = useRightArmForGrapple ? rightArm : leftArm;
+        if (armT == null) { isGrappleAnimPlaying = false; yield break; }
 
-        Vector3 startPos = arm.localPosition;
-        Quaternion startRot = arm.localRotation;
+        Vector3 startPos = armT.localPosition;
+        Quaternion startRot = armT.localRotation;
 
         // additive local-space move & rotation
         Vector3 targetPos = startPos + grappleLocalOffset;
@@ -456,12 +458,12 @@ public class ArmMovementMegaScript : MonoBehaviour
         while (t < 1f)
         {
             t += Time.deltaTime / dur;
-            arm.localPosition = Vector3.Lerp(startPos, targetPos, t);
-            arm.localRotation = Quaternion.Slerp(startRot, targetRot, t);
+            armT.localPosition = Vector3.Lerp(startPos, targetPos, t);
+            armT.localRotation = Quaternion.Slerp(startRot, targetRot, t);
             yield return null;
         }
 
-        // HOLD
+        // HOLD (short) — only for the flash version
         if (grappleHoldTime > 0f)
             yield return new WaitForSeconds(grappleHoldTime);
 
@@ -470,17 +472,81 @@ public class ArmMovementMegaScript : MonoBehaviour
         while (t < 1f)
         {
             t += Time.deltaTime / dur;
-            arm.localPosition = Vector3.Lerp(targetPos, startPos, t);
-            arm.localRotation = Quaternion.Slerp(targetRot, startRot, t);
+            armT.localPosition = Vector3.Lerp(targetPos, startPos, t);
+            armT.localRotation = Quaternion.Slerp(targetRot, startRot, t);
             yield return null;
         }
 
         isGrappleAnimPlaying = false;
     }
 
+    // ---- HOLD-UNTIL-RELEASE pose used by GrappleHook ----
+    // BeginGrapplePose() when latch starts; EndGrapplePose() when player releases.
+    private Coroutine _grapplePoseRoutine;
+    private bool _grappleHoldActive = false;
 
+    public void BeginGrapplePose()
+    {
+        if (_grapplePoseRoutine != null) StopCoroutine(_grapplePoseRoutine);
+        _grapplePoseRoutine = StartCoroutine(GrapplePoseRoutine());
+    }
 
-    //---------------------perk drinking
+    public void EndGrapplePose()
+    {
+        // signals the routine to return the arm to default
+        _grappleHoldActive = false;
+    }
+
+    private IEnumerator GrapplePoseRoutine()
+    {
+        Transform armT = useRightArmForGrapple ? rightArm : leftArm;
+        if (armT == null) yield break;
+
+        isGrappleAnimPlaying = true;
+        _grappleHoldActive = true;
+
+        // cache start
+        Vector3 startPos = armT.localPosition;
+        Quaternion startRot = armT.localRotation;
+
+        // target (additive)
+        Vector3 targetPos = startPos + grappleLocalOffset;
+        Quaternion targetRot = startRot * Quaternion.Euler(grappleRotOffsetEuler);
+
+        // POP UP
+        float t = 0f, dur = Mathf.Max(0.01f, grapplePopTime);
+        while (t < 1f)
+        {
+            t += Time.deltaTime / dur;
+            armT.localPosition = Vector3.Lerp(startPos, targetPos, t);
+            armT.localRotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        // HOLD until EndGrapplePose() is called
+        while (_grappleHoldActive)
+        {
+            // keep pinned so other systems don't lerp it away
+            armT.localPosition = targetPos;
+            armT.localRotation = targetRot;
+            yield return null;
+        }
+
+        // RETURN
+        t = 0f; dur = Mathf.Max(0.01f, grappleReturnTime);
+        while (t < 1f)
+        {
+            t += Time.deltaTime / dur;
+            armT.localPosition = Vector3.Lerp(targetPos, startPos, t);
+            armT.localRotation = Quaternion.Slerp(targetRot, startRot, t);
+            yield return null;
+        }
+
+        isGrappleAnimPlaying = false;
+        _grapplePoseRoutine = null;
+    }
+
+    //-----------------------------------------   perk drinking
     public IEnumerator PerkDrinkDropOnly()
     {
         if (isPerkAnimPlaying || isGrenadeGrabPlaying || isGrappleAnimPlaying || leftArm == null) yield break; //leave if any of these are true

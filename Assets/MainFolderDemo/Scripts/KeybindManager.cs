@@ -57,6 +57,7 @@ public class KeybindManager : MonoBehaviour
 
     public bool GetKeyDown(string action) => Input.GetKeyDown(GetKey(action)); //True only on the frame the key is pressed.
     public bool GetKeyHeld(string action) => Input.GetKey(GetKey(action));  // True while key being held.
+    public bool GetKeyUp(string action) => Input.GetKeyUp(GetKey(action));
 
     public string GetKeyName(string action)
     {
