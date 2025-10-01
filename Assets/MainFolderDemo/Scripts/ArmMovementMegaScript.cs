@@ -45,7 +45,7 @@ public class ArmMovementMegaScript : MonoBehaviour
     public float equipAnimationSpeed = 3f;
 
     private bool isEquipping = false;
-    private float equipTimer = 0f; 
+    private float equipTimer = 0f;
 
     [Header("Quick Grenade Grab")]
     public Transform leftArm; // Assign your left arm transform
@@ -283,7 +283,7 @@ public class ArmMovementMegaScript : MonoBehaviour
 
 
         //gernade throw logic
-        if (!isGrenadeGrabPlaying && KeybindManager.Instance.GetKeyDown("Grenade") && leftArm != null &&!PauseUI.IsPaused)
+        if (!isGrenadeGrabPlaying && KeybindManager.Instance.GetKeyDown("Grenade") && leftArm != null && !PauseUI.IsPaused)
         {
             if (CanThrowGrenade())
             {
@@ -434,6 +434,7 @@ public class ArmMovementMegaScript : MonoBehaviour
         if (isCastingSpell) return false;       // block during magic cast
         if (isGrenadeGrabPlaying) return false; // block during grenade throw
         if (isPerkAnimPlaying) return false; // block during perk drink
+        if (KeybindManager.Instance.GetKeyHeld("Sprint")) return false;
         Transform arm = useRightArmForGrapple ? rightArm : leftArm;
         return arm != null;
     }
