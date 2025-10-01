@@ -69040,6 +69040,9 @@ MonoBehaviour:
   launchSpeed: 45
   launchDuration: 0.1
   playerTag: Player
+  grantKineticJump: 1
+  cancelOnDash: 1
+  cancelOnSlam: 1
 --- !u!65 &1224815514
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -90222,6 +90225,9 @@ MonoBehaviour:
   launchSpeed: 45
   launchDuration: 0.1
   playerTag: Player
+  grantKineticJump: 1
+  cancelOnDash: 1
+  cancelOnSlam: 1
 --- !u!65 &1728423906
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -129389,6 +129395,12 @@ MonoBehaviour:
     type: 3}
   grenadeSpawn: {fileID: 8485041174111536051}
   throwForce: 14
+  useRightArmForGrapple: 0
+  grappleLocalOffset: {x: -0.15, y: 0, z: -0.21}
+  grappleRotOffsetEuler: {x: 106.3, y: -40, z: 85}
+  grapplePopTime: 0.1
+  grappleHoldTime: 0.08
+  grappleReturnTime: 0.12
   perkDropOffset: {x: -0.5, y: -0.6, z: 0.18}
   perkDropTime: 0.2
   perkHoldTime: 0.15

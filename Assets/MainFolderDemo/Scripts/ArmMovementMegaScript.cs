@@ -65,6 +65,16 @@ public class ArmMovementMegaScript : MonoBehaviour
     public Transform grenadeSpawn;     // Child transform on hand/camera
     public float throwForce = 14f;     // Speed forward
 
+    [Header("Grapple Flash")]
+    public bool useRightArmForGrapple = false;              // left or right arm
+    public Vector3 grappleLocalOffset = new Vector3(-0.048f, 0f, 0f); // X (right+ / left-), Y (up+), Z (forward+)
+    public Vector3 grappleRotOffsetEuler = new Vector3(0f, -10f, -6f); // pitch, yaw, roll
+    public float grapplePopTime = 0.10f;
+    public float grappleHoldTime = 0.08f;
+    public float grappleReturnTime = 0.12f;
+
+    private bool isGrappleAnimPlaying = false;
+    public bool IsGrappleAnimating => isGrappleAnimPlaying;
 
     //----------------------------
     [Header("Perk Drink (drop-only)")]
@@ -252,7 +262,7 @@ public class ArmMovementMegaScript : MonoBehaviour
 
         // --- Per-gun arm placement (only while holding a gun) ---
         var held = WeaponManager.ActiveWeapon;
-        if (held != null && !isReloading && !isGrenadeGrabPlaying && !IsPerkAnimating && !isCastingSpell)
+        if (held != null && !isReloading && !isGrenadeGrabPlaying && !IsPerkAnimating && !isCastingSpell && !isGrappleAnimPlaying)
 
         {
             // we only touch the arm bones; all your root offsets/bob/sway stay the same
@@ -290,6 +300,16 @@ public class ArmMovementMegaScript : MonoBehaviour
                 }
             }
         }
+
+        // Grapple flash (Middle Mouse) — blocked while casting or throwing grenade
+        if (!isGrappleAnimPlaying
+            && KeybindManager.Instance.GetKeyDown("Grapple")
+            && !PauseUI.IsPaused
+            && CanPlayGrappleFlash())
+        {
+            StartCoroutine(GrappleFlashAnimation());
+        }
+
 
     }
 
@@ -408,9 +428,61 @@ public class ArmMovementMegaScript : MonoBehaviour
         }
     }
 
+    //--------------------grapple hook
+    bool CanPlayGrappleFlash()
+    {
+        if (isCastingSpell) return false;       // block during magic cast
+        if (isGrenadeGrabPlaying) return false; // block during grenade throw
+        if (isPerkAnimPlaying) return false; // block during perk drink
+        Transform arm = useRightArmForGrapple ? rightArm : leftArm;
+        return arm != null;
+    }
+    IEnumerator GrappleFlashAnimation()
+    {
+        isGrappleAnimPlaying = true;
+
+        Transform arm = useRightArmForGrapple ? rightArm : leftArm;
+
+        Vector3 startPos = arm.localPosition;
+        Quaternion startRot = arm.localRotation;
+
+        // additive local-space move & rotation
+        Vector3 targetPos = startPos + grappleLocalOffset;
+        Quaternion targetRot = startRot * Quaternion.Euler(grappleRotOffsetEuler);
+
+        // POP
+        float t = 0f, dur = Mathf.Max(0.01f, grapplePopTime);
+        while (t < 1f)
+        {
+            t += Time.deltaTime / dur;
+            arm.localPosition = Vector3.Lerp(startPos, targetPos, t);
+            arm.localRotation = Quaternion.Slerp(startRot, targetRot, t);
+            yield return null;
+        }
+
+        // HOLD
+        if (grappleHoldTime > 0f)
+            yield return new WaitForSeconds(grappleHoldTime);
+
+        // RETURN
+        t = 0f; dur = Mathf.Max(0.01f, grappleReturnTime);
+        while (t < 1f)
+        {
+            t += Time.deltaTime / dur;
+            arm.localPosition = Vector3.Lerp(targetPos, startPos, t);
+            arm.localRotation = Quaternion.Slerp(targetRot, startRot, t);
+            yield return null;
+        }
+
+        isGrappleAnimPlaying = false;
+    }
+
+
+
+    //---------------------perk drinking
     public IEnumerator PerkDrinkDropOnly()
     {
-        if (isPerkAnimPlaying || isGrenadeGrabPlaying || leftArm == null) yield break; //leave if any of these are true
+        if (isPerkAnimPlaying || isGrenadeGrabPlaying || isGrappleAnimPlaying || leftArm == null) yield break; //leave if any of these are true
 
         isPerkAnimPlaying = true;
 

@@ -32,6 +32,8 @@ public class KeybindManager : MonoBehaviour
         LoadKey("Grenade", KeyCode.G);
         LoadKey("Reload", KeyCode.R);
         LoadKey("SwitchWeapons", KeyCode.Alpha1);
+        LoadKey("Grapple", KeyCode.Mouse2);
+
     }
 
     private void LoadKey(string action, KeyCode defaultKey)  //action and than actual keycode
