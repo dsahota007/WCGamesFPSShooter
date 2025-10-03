@@ -1,32 +1,49 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 [RequireComponent(typeof(CharacterController))]
 public class GrappleHook : MonoBehaviour
 {
     [Header("Refs")]
-    public PlayerMovement playerMovement;      // for sprint check + momentum carry
-    public ArmMovementMegaScript arm;          // to block + pose the arm
-    public Transform cam;                      // camera for ray
+    public PlayerMovement playerMovement;      // optional: checks like IsSprinting/IsDashing
+    public ArmMovementMegaScript arm;          // keeps hand up while latched
+    public Transform cam;                      // ray origin
     public CharacterController controller;     // same CC as player
-    public Transform grappleTip;               // rope start (hand/muzzle)
-    public LineRenderer rope;                  // optional line renderer
+    public Transform grappleTip;               // hand/wrist tip for rope start
+    public LineRenderer rope;                  // optional visual
 
     [Header("Raycast")]
     public LayerMask grappleMask;
     public float maxGrappleDistance = 35f;
 
     [Header("Pull")]
-    public float pullAcceleration = 60f;       // acceleration toward anchor
-    public float maxPullSpeed = 18f;           // clamp speed
-    public float gravityWhileGrappling = -2f;  // small down drift while attached
+    public float pullAcceleration = 60f;       // accel toward anchor
+    public float maxPullSpeed = 18f;           // clamp
+    public float gravityWhileGrappling = -2f;  // tiny drift down while attached
 
     [Header("Input/Timing")]
     public float fireCooldown = 0.2f;          // delay between shots
-    public bool holdToGrapple = true;          // release to stop
+    public bool holdToGrapple = true;          // release key to stop
 
     [Header("Rules")]
     public bool blockStartWhileSprinting = true;
     public bool respectPause = true;
+
+    [Header("Rope Style (tip flight + wobble)")]
+    public float tipTravelSpeed = 80f;
+    public float springK = 22f;
+    public float springDamping = 6f;
+    public int ropeSegments = 10;
+    public float waveAmplitude = 0.10f;
+    public float waveFrequency = 18f;
+
+    [Header("Rope Settle")]
+    public float settleSpeed = 6f;
+
+    [Header("Release Momentum")]
+    public float releaseMaxSeconds = 2.0f;     // cap coasting
+    public bool stopCoastWhenGrounded = true;  // end on land
+    public float coastFriction = 0.6f;         // lerp factor per second
 
     // runtime
     private bool isGrappling = false;
@@ -34,158 +51,235 @@ public class GrappleHook : MonoBehaviour
     private Vector3 pullVelocity;
     private float nextFireTime = 0f;
 
+    // rope state
+    private Vector3 tipWorld;
+    private float flyT = 0f;          // 0→1 during tip flight
+    private float springVel = 0f;     // small spring wobble
+    private float anchoredTime = 0f;  // time after tip arrived
+
+    // post-release coasting (horizontal)
+    private Coroutine coastRoutine;
+    private Vector3 coastVelocity = Vector3.zero;
+
     void Reset()
     {
         controller = GetComponent<CharacterController>();
+        if (rope) { rope.useWorldSpace = true; rope.positionCount = 0; }
     }
 
     void Update()
     {
-        if (respectPause && PauseUI.IsPaused)
-        {
-            // if the game pauses, just stop visuals (don’t forcibly unhook movement by design)
-            UpdateRope();
-            return;
-        }
+        if (respectPause && PauseUI.IsPaused) return;
 
-        bool press = KeybindManager.Instance != null && KeybindManager.Instance.GetKeyDown("Grapple");
+        bool press = KeybindManager.Instance && KeybindManager.Instance.GetKeyDown("Grapple");
         bool release = IsGrappleKeyUp();
 
-        // Try start
         if (!isGrappling && press && Time.time >= nextFireTime && CanStartGrapple())
             TryLatch();
 
-        // While latched: pull
         if (isGrappling)
         {
             TickPull();
 
-            // let go if using hold-to-grapple
             if (holdToGrapple && release)
-                StopAndCarryMomentum();
+                StopAndBeginCoast();
         }
 
-        UpdateRope();
+        UpdateRopeVisual();
     }
 
     bool CanStartGrapple()
     {
-        // block by arm states
-        if (arm != null)
+        if (arm)
         {
             if (arm.IsGrenadeAnimating) return false;
             if (arm.DrinkingPerk) return false;
-            if (arm.IsGrappleAnimating) return false; // avoids fighting the arm pose transition
+            // we do NOT block on other arm anims; the arm script pins the grapple arm itself
         }
-
-        // optional: don't start while sprinting
         if (blockStartWhileSprinting)
         {
-            if (playerMovement != null && playerMovement.IsSprinting()) return false;
-
-            if (KeybindManager.Instance != null &&
+            if (playerMovement && playerMovement.IsSprinting()) return false;
+            if (KeybindManager.Instance &&
                 KeybindManager.Instance.GetKeyHeld("Sprint") &&
-                controller != null && controller.velocity.magnitude > 0.1f)
+                controller && controller.velocity.magnitude > 0.1f)
                 return false;
         }
-
         return true;
     }
 
     void TryLatch()
     {
-        if (cam == null) return;
+        if (!cam) return;
 
-        Ray r = new Ray(cam.position, cam.forward);
-        if (Physics.Raycast(r, out var hit, maxGrappleDistance, grappleMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(new Ray(cam.position, cam.forward),
+                            out var hit, maxGrappleDistance, grappleMask,
+                            QueryTriggerInteraction.Ignore))
         {
             anchor = hit.point;
             isGrappling = true;
             nextFireTime = Time.time + fireCooldown;
             pullVelocity = Vector3.zero;
 
-            // hold the arm up while latched
-            if (arm != null) arm.BeginGrapplePose();
-        }
-        else
-        {
-            // optional: UI "no latch" feedback
+            // rope head starts at hand and flies to anchor
+            tipWorld = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;
+            flyT = 0f; springVel = 0f; anchoredTime = 0f;
+            if (rope) rope.positionCount = Mathf.Max(2, ropeSegments);
+
+            // raise and keep the hand up
+            if (arm) arm.BeginGrappleHold();
+
+            // cancel any previous coast
+            if (coastRoutine != null) StopCoroutine(coastRoutine);
+            coastVelocity = Vector3.zero;
         }
     }
 
     void TickPull()
     {
-        float dt = Time.deltaTime;
-        if (dt <= 0f) return;
+        float dt = Time.deltaTime; if (dt <= 0f) return;
 
-        // direction toward anchor
         Vector3 toAnchor = anchor - transform.position;
-        if (toAnchor.sqrMagnitude < 0.0001f)
-        {
-            StopAndCarryMomentum();
-            return;
-        }
+        if (toAnchor.sqrMagnitude < 0.0001f) { StopAndBeginCoast(); return; }
+
         Vector3 dir = toAnchor.normalized;
 
-        // integrate pull + light gravity
+        // accelerate toward anchor
         pullVelocity += dir * (pullAcceleration * dt);
-        pullVelocity += Vector3.up * (gravityWhileGrappling * dt);
+        pullVelocity = Vector3.ClampMagnitude(pullVelocity, maxPullSpeed);
 
-        // clamp speed
-        float spd = pullVelocity.magnitude;
-        if (spd > maxPullSpeed) pullVelocity = pullVelocity.normalized * maxPullSpeed;
+        // optional tiny gravity drift while attached
+        Vector3 move = pullVelocity * dt;
+        if (gravityWhileGrappling != 0f) move += Vector3.up * (gravityWhileGrappling * dt);
 
-        // apply via CharacterController (additive to your normal movement)
-        controller.Move(pullVelocity * dt);
+        controller.Move(move);
     }
 
-    void StopAndCarryMomentum()
+    void StopAndBeginCoast()
     {
+        if (!isGrappling) return;
+
         isGrappling = false;
 
-        // hand momentum to PlayerMovement so we “keep going” like a booster
-        if (playerMovement != null)
-            playerMovement.ApplyExternalForce(pullVelocity);
-
+        // lock momentum at release
+        coastVelocity = pullVelocity;
         pullVelocity = Vector3.zero;
 
-        // drop the arm back down
-        if (arm != null) arm.EndGrapplePose();
-
+        if (arm) arm.EndGrappleHold();
         ClearRope();
+
+        if (coastRoutine != null) StopCoroutine(coastRoutine);
+        coastRoutine = StartCoroutine(CoastMomentum());
     }
 
-    void UpdateRope()
+    IEnumerator CoastMomentum()
     {
-        if (!rope)
-            return;
-
-        if (!isGrappling)
+        float t = 0f;
+        while (t < releaseMaxSeconds)
         {
-            ClearRope();
-            return;
+            float dt = Time.deltaTime;
+            if (dt <= 0f) { yield return null; continue; }
+
+            if (stopCoastWhenGrounded && controller.isGrounded)
+            {
+                CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
+                break;
+            }
+
+            // coast horizontally—PlayerMovement still handles vertical/gravity
+            Vector3 horiz = new Vector3(coastVelocity.x, 0f, coastVelocity.z);
+            controller.Move(horiz * dt);
+
+            // smooth decay
+            coastVelocity = Vector3.Lerp(coastVelocity, Vector3.zero, dt * coastFriction);
+
+            t += dt;
+            yield return null;
         }
 
-        rope.positionCount = 2;
-        Vector3 tip = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;
-        rope.SetPosition(0, tip);
-        rope.SetPosition(1, anchor);
+        coastVelocity = Vector3.zero;
+        coastRoutine = null;
     }
+
+    // external interruption (e.g., dash)
+    public void InjectDash(Vector3 dashVelocity, bool cutRope)
+    {
+        if (cutRope && isGrappling) StopAndBeginCoast();
+
+        if (coastRoutine != null) StopCoroutine(coastRoutine);
+        coastVelocity = dashVelocity;
+        coastRoutine = StartCoroutine(CoastMomentum());
+    }
+
+    // ------------- rope visual (flight + spring + settle) -------------
+    void UpdateRopeVisual()
+    {
+        if (!rope) return;
+
+        if (!isGrappling) { ClearRope(); return; }
+
+        // --- ORIGIN = FIREPOINT ---
+        Vector3 firepoint = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;
+
+        // 1) tip flight (head flies from firepoint to anchor)
+        float dist = Vector3.Distance(firepoint, anchor);
+        float travel = tipTravelSpeed * Time.deltaTime;
+        flyT = Mathf.Clamp01(flyT + (travel / Mathf.Max(0.01f, dist)));
+        tipWorld = Vector3.Lerp(firepoint, anchor, flyT);
+
+        // 2) settle
+        if (flyT < 1f) anchoredTime = 0f;
+        else anchoredTime += Time.deltaTime;
+        float settle = 1f - Mathf.Exp(-settleSpeed * Mathf.Max(0f, anchoredTime));
+
+        // 3) tiny spring wobble
+        float targetLen = Vector3.Distance(firepoint, anchor);
+        float currentLen = Vector3.Distance(firepoint, tipWorld);
+        float x = currentLen - targetLen;
+        float extraDamping = (flyT >= 1f) ? settleSpeed : 0f;
+        springVel += (-springK * x - (springDamping + extraDamping) * springVel) * Time.deltaTime;
+        float lengthOffset = springVel * 0.02f * (1f - settle);
+        Vector3 tipWithSpring = Vector3.Lerp(firepoint, tipWorld, 1f + lengthOffset);
+
+        // 4) draw from firepoint outward
+        int N = Mathf.Max(2, ropeSegments);
+        rope.useWorldSpace = true;
+        rope.positionCount = N;
+
+        // force the origin to be the firepoint
+        rope.SetPosition(0, firepoint);
+
+        Vector3 fwd = (anchor - firepoint).sqrMagnitude > 0.0001f ? (anchor - firepoint).normalized : transform.forward;
+        Vector3 side = Vector3.Cross(Vector3.up, fwd).normalized;
+
+        for (int i = 1; i < N; i++)
+        {
+            float t = i / (float)(N - 1);
+            Vector3 p = Vector3.Lerp(firepoint, tipWithSpring, t);
+
+            if (waveAmplitude > 0f)
+            {
+                float flyFade = (flyT < 1f) ? (1f - flyT) : 0f;
+                float wave = Mathf.Sin(Time.time * waveFrequency + t * Mathf.PI * 2f)
+                           * waveAmplitude * Mathf.Max(0f, flyFade) * (1f - settle);
+                p += side * wave;
+            }
+
+            rope.SetPosition(i, p);
+        }
+    }
+
 
     void ClearRope()
     {
         if (rope) rope.positionCount = 0;
     }
 
-    // helper: KeyUp using your KeybindManager
     bool IsGrappleKeyUp()
     {
-        if (KeybindManager.Instance == null) return false;
+        if (!KeybindManager.Instance) return false;
         var code = KeybindManager.Instance.GetKey("Grapple");
-        if (code == KeyCode.None) return false;
-        return Input.GetKeyUp(code);
+        return code != KeyCode.None && Input.GetKeyUp(code);
     }
 
-    // Optional read-only
     public bool IsGrappling => isGrappling;
 }
