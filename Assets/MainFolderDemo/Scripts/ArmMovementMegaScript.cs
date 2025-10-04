@@ -80,6 +80,10 @@ public class ArmMovementMegaScript : MonoBehaviour
     private Vector3 _grappleTargetPos;           // start+offset
     private Quaternion _grappleTargetRot;        // start*rotOffset
 
+    public bool IsHandPinnedForGrapple => _grappleHoldActive;
+    // ArmMovementMegaScript.cs (top of class)
+    private bool _grappleReturning = false;
+
 
     //----------------------------
     [Header("Perk Drink (drop-only)")]
@@ -289,6 +293,7 @@ public class ArmMovementMegaScript : MonoBehaviour
         //gernade throw logic
         if (!isGrenadeGrabPlaying && KeybindManager.Instance.GetKeyDown("Grenade") && leftArm != null && !PauseUI.IsPaused)
         {
+            if (IsHandPinnedForGrapple) return;
             if (CanThrowGrenade())
             {
 
@@ -315,23 +320,35 @@ public class ArmMovementMegaScript : MonoBehaviour
         //}
 
         // --- GRAPPLE HOLD: keep the chosen arm up while latched ---
+        // --- GRAPPLE HOLD: keep the chosen arm up while latched ---
         if (_grappleHoldActive && _grappleArm != null)
         {
-            // smooth pin to target every frame so other systems can't pull it away
-            _grappleArm.localPosition = Vector3.Lerp(_grappleArm.localPosition, _grappleTargetPos, Time.deltaTime * grappleRaiseSpeed);
-            _grappleArm.localRotation = Quaternion.Slerp(_grappleArm.localRotation, _grappleTargetRot, Time.deltaTime * grappleRaiseSpeed);
+            // pin while latched
+            _grappleArm.localPosition = Vector3.Lerp(
+                _grappleArm.localPosition, _grappleTargetPos, Time.deltaTime * grappleRaiseSpeed);
+            _grappleArm.localRotation = Quaternion.Slerp(
+                _grappleArm.localRotation, _grappleTargetRot, Time.deltaTime * grappleRaiseSpeed);
         }
-        else if (_grappleArm != null)
+        // Smoothly return only if we're in "returning" state, and do NOT fight other animations
+        else if (_grappleReturning
+                 && _grappleArm != null
+                 && !isCastingSpell
+                 && !isGrenadeGrabPlaying
+                 && !isPerkAnimPlaying)
         {
-            // smoothly return toward the original pose we captured at begin
-            // (only if we had a valid start; cheap guard)
-            if (_grappleStartRot != default)
+            _grappleArm.localPosition = Vector3.Lerp(
+                _grappleArm.localPosition, _grappleStartPos, Time.deltaTime * grappleReturnSpeed);
+            _grappleArm.localRotation = Quaternion.Slerp(
+                _grappleArm.localRotation, _grappleStartRot, Time.deltaTime * grappleReturnSpeed);
+
+            // when close enough, stop returning and release the reference
+            if (Vector3.Distance(_grappleArm.localPosition, _grappleStartPos) < 0.001f &&
+                Quaternion.Angle(_grappleArm.localRotation, _grappleStartRot) < 0.2f)
             {
-                _grappleArm.localPosition = Vector3.Lerp(_grappleArm.localPosition, _grappleStartPos, Time.deltaTime * grappleReturnSpeed);
-                _grappleArm.localRotation = Quaternion.Slerp(_grappleArm.localRotation, _grappleStartRot, Time.deltaTime * grappleReturnSpeed);
+                _grappleReturning = false;
+                _grappleArm = null;              // <— stops future interference
             }
         }
-
 
     }
 
@@ -456,7 +473,6 @@ public class ArmMovementMegaScript : MonoBehaviour
         _grappleArm = useRightArmForGrapple ? rightArm : leftArm;
         if (_grappleArm == null) return;
 
-        // capture current pose and compute target
         _grappleStartPos = _grappleArm.localPosition;
         _grappleStartRot = _grappleArm.localRotation;
 
@@ -464,19 +480,22 @@ public class ArmMovementMegaScript : MonoBehaviour
         _grappleTargetRot = _grappleStartRot * Quaternion.Euler(grappleRotOffsetEuler);
 
         _grappleHoldActive = true;
+        _grappleReturning = false;   // fresh latch
     }
 
     public void EndGrappleHold()
     {
         _grappleHoldActive = false;
+        _grappleReturning = true;    // go to return phase once rope releases
     }
+
 
 
 
     //-----------------------------------------   perk drinking
     public IEnumerator PerkDrinkDropOnly()
     {
-        if (isPerkAnimPlaying || isGrenadeGrabPlaying ||   leftArm == null) yield break; //leave if any of these are true
+        if (isPerkAnimPlaying || isGrenadeGrabPlaying || leftArm == null) yield break; //leave if any of these are true
 
         isPerkAnimPlaying = true;
 

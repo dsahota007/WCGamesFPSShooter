@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Unity.Burst.Intrinsics;
 //using Unity.Mathematics;
 
 public enum FireType { Single, Burst, Auto }
@@ -540,6 +541,9 @@ public class Weapon : MonoBehaviour
 
     public void StartReload()
     {
+        var arm = FindFirstObjectByType<ArmMovementMegaScript>();
+        if (arm.IsHandPinnedForGrapple) return;
+
         if (isReloading || currentAmmo == clipSize || ammoReserve <= 0 || (armMover != null && armMover.IsPerkAnimating))
             return;
 

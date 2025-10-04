@@ -28,12 +28,17 @@ public class ArmMagicSpell : MonoBehaviour
     public Transform MagicfirePoint;
     public GameObject MagicArmFireVFX;
 
+    //--
+
+    private GrappleHook grapple;
+
     void Start()
     {
         originalPos = transform.localPosition;      //current pos of the arms 
         originalRot = transform.localRotation.eulerAngles;
 
         playerMovement = FindFirstObjectByType<PlayerMovement>();           //fetch scripts
+        grapple = FindFirstObjectByType<GrappleHook>();
         armMover = FindFirstObjectByType<ArmMovementMegaScript>();
     }
 
@@ -45,8 +50,11 @@ public class ArmMagicSpell : MonoBehaviour
 
     bool CanCastSpell()
     {
+
         if (isCasting) return false;                //if your already casting magic than get outt this code
-        if (armMover.IsPerkAnimating) return false;
+        if (grapple && grapple.IsGrappling) return false;
+        // (or also allow arm lock check)
+        if (armMover != null && armMover.IsHandPinnedForGrapple) return false;
 
         if (KeybindManager.Instance.GetKeyDown("Reload")) return false;              //if your already reloading than get out of this code
         if (currentWeapon != null && currentWeapon.IsReloading) return false;
