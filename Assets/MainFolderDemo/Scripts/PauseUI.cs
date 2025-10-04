@@ -66,6 +66,8 @@ public class PauseUI : MonoBehaviour
     public Button grenadeBtn; public Text grenadeKeyText;
     public Button reloadBtn; public Text reloadKeyText;
     public Button switchBtn; public Text switchKeyText;
+    public Button grappleBtn; public Text grappleKeyText;
+
 
     public bool preventDuplicates = true;
 
@@ -172,6 +174,7 @@ public class PauseUI : MonoBehaviour
         Wire("Grenade", grenadeBtn, grenadeKeyText);
         Wire("Reload", reloadBtn, reloadKeyText);
         Wire("SwitchWeapons", switchBtn, switchKeyText);
+        Wire("Grapple", grappleBtn, grappleKeyText);
 
         HideHint();
     }
