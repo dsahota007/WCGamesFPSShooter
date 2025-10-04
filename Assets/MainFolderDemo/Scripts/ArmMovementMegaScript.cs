@@ -65,8 +65,7 @@ public class ArmMovementMegaScript : MonoBehaviour
     public Transform grenadeSpawn;     // Child transform on hand/camera
     public float throwForce = 14f;     // Speed forward
 
-    // === GRAPPLE HOLD (simple: arm goes up and stays until release) ===
-    [Header("Grapple Hold")]
+    [Header("Grapple Animation")]
     public bool useRightArmForGrapple = false;                       // which arm to raise
     public Vector3 grappleLocalOffset = new Vector3(-0.048f, 0f, 0f);// additive local pos
     public Vector3 grappleRotOffsetEuler = new Vector3(0f, -10f, -6f); // additive local rot

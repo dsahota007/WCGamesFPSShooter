@@ -244,6 +244,11 @@ public class UI : MonoBehaviour
     [Header("Debris")]
     public Text DebrisText;
 
+    [Header("Grapple Hook Box UI")]
+    public GrapplingHookBox grappleHookBox;     // assign in Inspector
+    public Text grappleHookText; // the prompt text object
+
+
     [Header("Control Hint Texts")]
     public Text dashControlText;
     public Text kineticSlamControlText;   // this is your Jump&Slam key
@@ -1099,6 +1104,7 @@ public class UI : MonoBehaviour
             SetMagicVFXActive(magicManager.GetCurrentMagicType(), ready);
         }
 
+        HandleGrappleHookBoxUI();
 
 
     }
@@ -1399,6 +1405,66 @@ public class UI : MonoBehaviour
             default: grenadeSlotIcon.sprite = fragIcon; break;
         }
     }
+
+    //------------------------ grappling hook logic 
+
+    void HandleGrappleHookBoxUI()
+    {
+        if (grappleHookBox == null || grappleHookText == null || player == null) return;
+
+        // Hide if paused or not close enough
+        bool inRange = grappleHookBox.InRange(player);
+        if (!inRange || PauseUI.IsPaused)
+        {
+            if (grappleHookText.gameObject.activeSelf)
+                grappleHookText.gameObject.SetActive(false);
+            return;
+        }
+
+        // Show prompt while in range
+        if (!grappleHookText.gameObject.activeSelf)
+            grappleHookText.gameObject.SetActive(true);
+
+        // Already bought → static message
+        if (grappleHookBox.IsPurchased)
+        {
+            grappleHookText.text = "Grappling Hook already bought";
+            return;
+        }
+
+        // Not bought: show buy or need text
+        int cost = grappleHookBox.cost;
+        int pts = (PointManager.Instance != null) ? PointManager.Instance.GetPoints() : 0;
+        string key = (KeybindManager.Instance != null) ? KeybindManager.Instance.GetKeyName("Interact") : "F";
+
+        if (pts < cost)
+        {
+            grappleHookText.text = $"Need {cost} Points for Grappling Hook";
+        }
+        else
+        {
+            grappleHookText.text = $"Press [{key}] to buy Grappling Hook ({cost} Points)";
+        }
+
+        // Interact → attempt purchase (UI owns input)
+        if (KeybindManager.Instance != null && KeybindManager.Instance.GetKeyDown("Interact"))
+        {
+            var pm = PointManager.Instance;
+            bool ok = (pm != null) && grappleHookBox.TryPurchase(pm);
+
+            if (ok)
+            {
+                // Immediately update text
+                grappleHookText.text = "Grappling Hook already bought";
+            }
+            else
+            {
+                // Not enough points or missing PM
+                ShowTemporaryPerkMessage($"Need {cost} pts to buy Grappling Hook");
+            }
+        }
+    }
+
 
 
     //-------------------------MAGIC functions
