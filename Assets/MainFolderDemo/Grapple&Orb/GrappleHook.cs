@@ -61,6 +61,14 @@ public class GrappleHook : MonoBehaviour
     private Coroutine coastRoutine;
     private Vector3 coastVelocity = Vector3.zero;
 
+    [Header("Release Tuning")]
+    public float releaseUpScale = 0.25f; // how much of your upward speed you keep
+    public float releaseUpMax = 6f;    // cap the upward pop
+
+    [Header("Air Control")]
+    public float airControl = 4f; // higher = turns faster while coasting
+
+
     void Reset()
     {
         controller = GetComponent<CharacterController>();
@@ -115,28 +123,22 @@ public class GrappleHook : MonoBehaviour
                             out var hit, maxGrappleDistance, grappleMask,
                             QueryTriggerInteraction.Ignore))
         {
-            // >>> CANCEL RELOAD IF ONE IS RUNNING <<<
-            var w = WeaponManager.ActiveWeapon; // or FindFirstObjectByType<Weapon>()
-            if (w != null && w.IsReloading)
-            {
-                w.CancelReload(); // stops the coroutine, snaps mag/arm back, clears reload flag
-            }
-
             anchor = hit.point;
             isGrappling = true;
             nextFireTime = Time.time + fireCooldown;
             pullVelocity = Vector3.zero;
 
+            // rope head starts at hand and flies to anchor
             tipWorld = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;
             flyT = 0f; springVel = 0f; anchoredTime = 0f;
             if (rope) rope.positionCount = Mathf.Max(2, ropeSegments);
 
+            // raise and keep the hand up
             if (arm) arm.BeginGrappleHold();
 
+            // cancel any previous coast
             if (coastRoutine != null) StopCoroutine(coastRoutine);
             coastVelocity = Vector3.zero;
-
-
         }
     }
 
@@ -159,27 +161,30 @@ public class GrappleHook : MonoBehaviour
 
         controller.Move(move);
     }
+
     void StopAndBeginCoast()
     {
         if (!isGrappling) return;
 
         isGrappling = false;
 
-        // keep ONLY the upward component as a one-shot boost (your current logic)
-        float up = Vector3.Dot(pullVelocity, Vector3.up);
-        if (up > 0f && playerMovement != null)
-            playerMovement.AddUpwardVelocity(up);
+        // --- tame Y at release ---
+        // keep only a *small, capped* portion of your upward speed
+        float up = Mathf.Max(0f, pullVelocity.y) * releaseUpScale;
+        if (playerMovement != null)
+            playerMovement.AddUpwardVelocity(Mathf.Min(up, releaseUpMax));
 
+        // --- keep horizontal carry exactly as-is ---
+        coastVelocity = new Vector3(pullVelocity.x, 0f, pullVelocity.z);
+
+        // clear grapple motion/visuals
         pullVelocity = Vector3.zero;
         if (arm) arm.EndGrappleHold();
         ClearRope();
 
-        // >>> THIS is the only thing you need <<<
         if (coastRoutine != null) StopCoroutine(coastRoutine);
-        coastRoutine = StartCoroutine(CoastMomentum());   // <— run the coroutine so your Shake() can trigger on landing
+        coastRoutine = StartCoroutine(CoastMomentum());
     }
-
-
 
 
     IEnumerator CoastMomentum()
@@ -190,17 +195,29 @@ public class GrappleHook : MonoBehaviour
             float dt = Time.deltaTime;
             if (dt <= 0f) { yield return null; continue; }
 
+            // stop on landing (and shake once)
             if (stopCoastWhenGrounded && controller.isGrounded)
             {
-                CameraScript.Main?.Shake(0.5f, 1.5f, 35f, true);
+                CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
                 break;
             }
 
-            // coast horizontally—PlayerMovement still handles vertical/gravity
+            // --- AIR CONTROL: steer coast toward current input ---
+            float x = Input.GetAxisRaw("Horizontal");
+            float z = Input.GetAxisRaw("Vertical");
+            if (Mathf.Abs(x) + Mathf.Abs(z) > 0f)
+            {
+                Vector3 inputDir = (transform.right * x + transform.forward * z).normalized;
+                float speed = coastVelocity.magnitude;          // keep your current speed
+                Vector3 target = inputDir * speed;              // where you want to steer
+                coastVelocity = Vector3.Lerp(coastVelocity, target, airControl * dt);
+            }
+
+            // move using the (possibly steered) coast velocity (horizontal only)
             Vector3 horiz = new Vector3(coastVelocity.x, 0f, coastVelocity.z);
             controller.Move(horiz * dt);
 
-            // smooth decay
+            // decay speed over time
             coastVelocity = Vector3.Lerp(coastVelocity, Vector3.zero, dt * coastFriction);
 
             t += dt;
