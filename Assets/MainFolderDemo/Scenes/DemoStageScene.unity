@@ -87630,7 +87630,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 227, y: 579}
+  m_AnchoredPosition: {x: 150, y: 606}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1556970201
@@ -133475,14 +133475,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkSpeed: 6.5
   sprintSpeed: 9
-  gravity: -12.81
+  gravity: -22.81
   jumpHeight: 2
   aimSpeed: 5
   slideSpeed: 16
   slideDuration: 1
   slideDeceleration: 5
   slideControllerHeight: 0.0001
-  KineticJumpForce: 12
+  KineticJumpForce: 22
   slamDownForce: -50
   slamCooldown: 5
   minSlideTimeForKineticJump: 0.7
@@ -135911,23 +135911,23 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 256
   maxGrappleDistance: 35
-  pullAcceleration: 95
+  pullAcceleration: 65
   maxPullSpeed: 95
   gravityWhileGrappling: -2
   fireCooldown: 0.35
   holdToGrapple: 1
   blockStartWhileSprinting: 1
   respectPause: 1
-  tipTravelSpeed: 80
-  springK: 22
-  springDamping: 6
-  ropeSegments: 10
-  waveAmplitude: 0.1
-  waveFrequency: 18
+  tipTravelSpeed: 91.9
+  springK: 47.9
+  springDamping: 17.56
+  ropeSegments: 152
+  waveAmplitude: 4.82
+  waveFrequency: 40.5
   settleSpeed: 6
   releaseMaxSeconds: 2
   stopCoastWhenGrounded: 1
-  coastFriction: 0.6
+  coastFriction: 0.1
 --- !u!4 &8684000375291283226
 Transform:
   m_ObjectHideFlags: 0

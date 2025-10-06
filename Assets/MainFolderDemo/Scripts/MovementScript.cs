@@ -628,5 +628,26 @@ public class PlayerMovement : MonoBehaviour
         isKineticJump = true;   // you'll auto-reset to false on landing (you already do that)
     }
     public bool IsSlamming() => isSlamming;  //getter for the booster Jump Pad. u can kinetic slam off that 
+                                             // PlayerMovement.cs
+    public void AddUpwardVelocity(float v)
+    {
+        velocity.y = Mathf.Max(velocity.y, v);
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        // Only react to the specific layer you use for walls/ceilings
+        if (hit.gameObject.layer != LayerMask.NameToLayer("Wall")) return;
+
+        // Is this a ceiling hit? (surface normal points downward)
+        bool hitCeiling = Vector3.Dot(hit.normal, Vector3.down) > 0.5f;
+
+        if (hitCeiling && velocity.y > 0f)
+        {
+            // kill upward momentum so we immediately start falling
+            velocity.y = 0f;
+        }
+    }
+
 
 }

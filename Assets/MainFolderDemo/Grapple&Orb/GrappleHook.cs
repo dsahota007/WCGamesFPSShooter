@@ -115,22 +115,28 @@ public class GrappleHook : MonoBehaviour
                             out var hit, maxGrappleDistance, grappleMask,
                             QueryTriggerInteraction.Ignore))
         {
+            // >>> CANCEL RELOAD IF ONE IS RUNNING <<<
+            var w = WeaponManager.ActiveWeapon; // or FindFirstObjectByType<Weapon>()
+            if (w != null && w.IsReloading)
+            {
+                w.CancelReload(); // stops the coroutine, snaps mag/arm back, clears reload flag
+            }
+
             anchor = hit.point;
             isGrappling = true;
             nextFireTime = Time.time + fireCooldown;
             pullVelocity = Vector3.zero;
 
-            // rope head starts at hand and flies to anchor
             tipWorld = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;
             flyT = 0f; springVel = 0f; anchoredTime = 0f;
             if (rope) rope.positionCount = Mathf.Max(2, ropeSegments);
 
-            // raise and keep the hand up
             if (arm) arm.BeginGrappleHold();
 
-            // cancel any previous coast
             if (coastRoutine != null) StopCoroutine(coastRoutine);
             coastVelocity = Vector3.zero;
+
+
         }
     }
 
@@ -153,23 +159,28 @@ public class GrappleHook : MonoBehaviour
 
         controller.Move(move);
     }
-
     void StopAndBeginCoast()
     {
         if (!isGrappling) return;
 
         isGrappling = false;
 
-        // lock momentum at release
-        coastVelocity = pullVelocity;
-        pullVelocity = Vector3.zero;
+        // keep ONLY the upward component as a one-shot boost (your current logic)
+        float up = Vector3.Dot(pullVelocity, Vector3.up);
+        if (up > 0f && playerMovement != null)
+            playerMovement.AddUpwardVelocity(up);
 
+        pullVelocity = Vector3.zero;
         if (arm) arm.EndGrappleHold();
         ClearRope();
 
+        // >>> THIS is the only thing you need <<<
         if (coastRoutine != null) StopCoroutine(coastRoutine);
-        coastRoutine = StartCoroutine(CoastMomentum());
+        coastRoutine = StartCoroutine(CoastMomentum());   // <— run the coroutine so your Shake() can trigger on landing
     }
+
+
+
 
     IEnumerator CoastMomentum()
     {
@@ -181,7 +192,7 @@ public class GrappleHook : MonoBehaviour
 
             if (stopCoastWhenGrounded && controller.isGrounded)
             {
-                CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
+                CameraScript.Main?.Shake(0.5f, 1.5f, 35f, true);
                 break;
             }
 
