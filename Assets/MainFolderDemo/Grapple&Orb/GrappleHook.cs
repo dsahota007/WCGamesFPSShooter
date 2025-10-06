@@ -98,12 +98,16 @@ public class GrappleHook : MonoBehaviour
 
     bool CanStartGrapple()
     {
+        // Block while aiming down sights
+        if (KeybindManager.Instance != null && KeybindManager.Instance.GetKeyHeld("AimDownSight"))
+            return false;
+
         if (arm)
         {
             if (arm.IsGrenadeAnimating) return false;
             if (arm.DrinkingPerk) return false;
-            // we do NOT block on other arm anims; the arm script pins the grapple arm itself
         }
+
         if (blockStartWhileSprinting)
         {
             if (playerMovement && playerMovement.IsSprinting()) return false;
@@ -112,8 +116,10 @@ public class GrappleHook : MonoBehaviour
                 controller && controller.velocity.magnitude > 0.1f)
                 return false;
         }
+
         return true;
     }
+
 
     void TryLatch()
     {

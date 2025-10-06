@@ -248,6 +248,11 @@ public class UI : MonoBehaviour
     public GrapplingHookBox grappleHookBox;     // assign in Inspector
     public Text grappleHookText; // the prompt text object
 
+    [Header("Grapple Crosshair")]
+    public Image grappleCrosshair;       // assign a UI Image in Canvas
+    public GrappleHook grappleHook;      // reference your GrappleHook component
+    public bool requirePurchase = true;  // only show after buying from box
+
 
     [Header("Control Hint Texts")]
     public Text dashControlText;
@@ -1105,6 +1110,7 @@ public class UI : MonoBehaviour
         }
 
         HandleGrappleHookBoxUI();
+        UpdateGrappleCrosshair();
 
 
     }
@@ -1465,6 +1471,50 @@ public class UI : MonoBehaviour
         }
     }
 
+
+    void UpdateGrappleCrosshair()
+    {
+        if (grappleCrosshair == null) return;
+
+        // Hide in menus / paused OR while holding ADS
+        if (PauseUI.IsPaused
+            || IsGrenadePanelOpen
+            || IsInfusePanelOpen
+            || (KeybindManager.Instance != null && KeybindManager.Instance.GetKeyHeld("AimDownSight")))
+        {
+            if (grappleCrosshair.gameObject.activeSelf)
+                grappleCrosshair.gameObject.SetActive(false);
+            return;
+        }
+
+        // Must have a hook component + camera + controller set up
+        if (grappleHook == null || grappleHook.cam == null)
+        {
+            if (grappleCrosshair.gameObject.activeSelf)
+                grappleCrosshair.gameObject.SetActive(false);
+            return;
+        }
+
+        // Optional: require that the player has purchased the hook
+        if (requirePurchase && grappleHookBox != null && !grappleHookBox.IsPurchased)
+        {
+            if (grappleCrosshair.gameObject.activeSelf)
+                grappleCrosshair.gameObject.SetActive(false);
+            return;
+        }
+
+        // Raycast from the grapple camera to see if we’re aiming at a valid target
+        bool show = Physics.Raycast(
+            new Ray(grappleHook.cam.position, grappleHook.cam.forward),
+            out var hit,
+            grappleHook.maxGrappleDistance,
+            grappleHook.grappleMask,
+            QueryTriggerInteraction.Ignore
+        );
+
+        if (grappleCrosshair.gameObject.activeSelf != show)
+            grappleCrosshair.gameObject.SetActive(show);
+    }
 
 
     //-------------------------MAGIC functions

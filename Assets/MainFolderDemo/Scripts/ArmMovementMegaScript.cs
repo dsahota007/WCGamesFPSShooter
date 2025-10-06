@@ -139,7 +139,8 @@ public class ArmMovementMegaScript : MonoBehaviour
     {
 
         bool hasMovementInput = Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D);
-        bool isAiming = !isPerkAnimPlaying && KeybindManager.Instance.GetKeyHeld("AimDownSight");
+        bool grapplingNow = (FindFirstObjectByType<GrappleHook>()?.IsGrappling ?? false);
+        bool isAiming = !isPerkAnimPlaying && !grapplingNow && KeybindManager.Instance.GetKeyHeld("AimDownSight");
 
         bool freezeForPerk = lockBobbingDuringPerk && isPerkAnimPlaying;
 
