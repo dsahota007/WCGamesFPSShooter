@@ -45,6 +45,7 @@ public class GrappleHook : MonoBehaviour
 
     [Header("Release Momentum")]
     public float releaseMaxSeconds = 2.0f;     // cap coasting
+    public float releaseDistance = 20f;
     public bool stopCoastWhenGrounded = true;  // end on land
     public float coastFriction = 0.6f;         // lerp factor per second
 
@@ -91,7 +92,9 @@ public class GrappleHook : MonoBehaviour
         bool releaseBtn = Input.GetKeyUp(KeybindManager.Instance.GetKey("Grapple")); //when we release the key to let go of grappling
 
         if (!isGrappling && pressBtn && Time.time >= nextFireTime && CanStartGrapple()) //nextFireTime is 0 and canStart grapple all this needs to be met
+        {
             TryLatch();
+        }
 
         if (isGrappling)
         {
@@ -134,55 +137,86 @@ public class GrappleHook : MonoBehaviour
 
     void TryLatch()
     {
-        if (!cam) return;
+        if (!cam) return;  //need cam
 
-        if (Physics.Raycast(new Ray(cam.position, cam.forward),
-                            out var hit, maxGrappleDistance, grappleMask,
-                            QueryTriggerInteraction.Ignore))
+        //physics.Raycast (origin, direction, maxDistacne, layerMask, QueryTriggerInteractoin)
+        //Ray is a struct with two fields: origin and direction.    ---  new Ray(origin, direction)
+
+
+        if (Physics.Raycast(new Ray(cam.position, cam.forward),out var hit, maxGrappleDistance, grappleMask,QueryTriggerInteraction.Ignore))
         {
-            anchor = hit.point;
+            anchor = hit.point;  //hook point of the world when we HIT !!!
             isGrappling = true;
-            nextFireTime = Time.time + fireCooldown;
+            nextFireTime = Time.time + fireCooldown;   //with this we can control how many sedconds we want to add so we can fire again.
             pullVelocity = Vector3.zero;
 
             // rope head starts at hand and flies to anchor
-            tipWorld = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;
-            flyT = 0f; springVel = 0f; anchoredTime = 0f;
-            if (rope) rope.positionCount = Mathf.Max(2, ropeSegments);
+            tipWorld = grappleTip ? grappleTip.position : transform.position + Vector3.up * 1.4f;  //set spawnPoint as gun tip and if we dont have that fake a point above the player
+
+            //if (grappleTip != null) // or: if (grappleTip != null)
+            //{
+            //    tipWorld = grappleTip.position;   //the guns TRANSFORM is the origin. 
+            //}
+            //else
+            //{
+            //    tipWorld = transform.position + Vector3.up * 1.4f;  //fake a point above player if no grapple point
+            //}   ---another way to write the line above
+
+            flyT = 0f;          //we start the rope tip travel progress to 0
+            springVel = 0f;     //stop any wobble or string motion
+            anchoredTime = 0f;  //reset how long I have been attached back to 0 
+
+            if (rope)
+            {
+                rope.positionCount = Mathf.Max(2, ropeSegments);   //we get maxiumum back so 2 is lowest and than we get back whatever rope segments we have.
+            }
 
             // raise and keep the hand up
-            if (arm) arm.BeginGrappleHold();
-
+            if (arm)
+            {
+                arm.BeginGrappleHold();   //begin holding
+            }
             // cancel any previous coast
-            if (coastRoutine != null) StopCoroutine(coastRoutine);
-            coastVelocity = Vector3.zero;
+            if (coastRoutine != null)  ///-----------------------------------------------------------------------------------COEMBACK TO THIS
+            {
+                StopCoroutine(coastRoutine);
+                coastVelocity = Vector3.zero;
+            }
         }
     }
 
     void TickPull()
     {
-        float dt = Time.deltaTime; if (dt <= 0f) return;
+        float dt = Time.deltaTime; 
+        if (dt <= 0f) return;  //Get frame time; if paused/frozen, do nothing.
 
-        Vector3 toAnchor = anchor - transform.position;
-        if (toAnchor.sqrMagnitude < 0.0001f) { StopAndBeginCoast(); return; }
+        Vector3 toAnchor = anchor - transform.position;   //anchor is the hitPoint so we get that and player distance
+        
+        //THIS IS FOR RELASE  
+        if (toAnchor.sqrMagnitude < releaseDistance)    
+        {
+            StopAndBeginCoast(); return;
+        }
 
-        Vector3 dir = toAnchor.normalized;
+        Vector3 dir = toAnchor.normalized;  //get the direction
 
         // accelerate toward anchor
-        pullVelocity += dir * (pullAcceleration * dt);
-        pullVelocity = Vector3.ClampMagnitude(pullVelocity, maxPullSpeed);
+        pullVelocity += dir * (pullAcceleration * dt);  //how much speed to add to this frame
+        pullVelocity = Vector3.ClampMagnitude(pullVelocity, maxPullSpeed);   //if that velocity gets too big, limit it to maxPullSpeed
 
-        // optional tiny gravity drift while attached
-        Vector3 move = pullVelocity * dt;
-        if (gravityWhileGrappling != 0f) move += Vector3.up * (gravityWhileGrappling * dt);
+        // optional tiny gravity drift while attached  --- took this out
+        Vector3 move = pullVelocity * dt; 
+        //if (gravityWhileGrappling != 0f)
+        //{
+        //    move += Vector3.up * (gravityWhileGrappling * dt);
+        //}
 
-        controller.Move(move);
+        controller.Move(move);  //this is now physically moving the player now. NO TP were jus nudging the player in that direction.
     }
 
     void StopAndBeginCoast()
     {
         if (!isGrappling) return;
-
         isGrappling = false;
 
         // --- tame Y at release ---
