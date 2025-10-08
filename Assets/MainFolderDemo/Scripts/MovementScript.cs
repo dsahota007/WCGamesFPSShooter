@@ -27,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     public float slideDuration = 1f;
     public float slideDeceleration = 5f;
     public float slideControllerHeight = 1f;   // Height during slide
-
+    private bool slideQueued = false;   
 
     [Header("Kinetic Jump & Slam Settings")]
     public float KineticJumpForce = 12f;
@@ -485,14 +485,25 @@ public class PlayerMovement : MonoBehaviour
         if (armMover != null && armMover.DrinkingPerk)  
         {
             if (isSliding) EndSlide();
+            slideQueued = false;
             return;
         }
 
-        bool canSlide = KeybindManager.Instance.GetKeyHeld("Sprint") && KeybindManager.Instance.GetKeyDown("Slide") && isGrounded && !isSliding;
-
-        if (canSlide)
+        if (!isGrounded && KeybindManager.Instance.GetKeyDown("Slide")) // If airborne and player presses Slide, queue it -- when we land we can start sliding
         {
-            StartSlide(); }
+            slideQueued = true;
+        }
+
+        bool canSlide = KeybindManager.Instance.GetKeyHeld("Sprint") && KeybindManager.Instance.GetKeyDown("Slide") && isGrounded && !isSliding;
+        
+ 
+        bool fireQueuedNow = isGrounded && slideQueued && !isSliding;        // Also start slide instantly if we landed with a queued slide (BO3/Apex style)
+
+        if (canSlide || fireQueuedNow)
+        {
+            StartSlide();
+            slideQueued = false;
+        }
         if (isSliding)
         {
             UpdateSlide();
@@ -542,6 +553,7 @@ public class PlayerMovement : MonoBehaviour
         lastSlideEndTime = Time.time;  //for the dashSlam perk
         controller.height = normalControllerHeight;        // Restore normal controller dimensions
         controller.center = normalControllerCenter;
+        slideQueued = false;
     }
 
     public void IncreaseSpeedFromMoreSpeedPerk(float WalkSpeed, float SprintSpeed)

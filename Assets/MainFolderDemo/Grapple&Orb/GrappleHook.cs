@@ -8,8 +8,8 @@ public class GrappleHook : MonoBehaviour
     [Header("Refs")]
     public PlayerMovement playerMovement;      
     public ArmMovementMegaScript arm;
-    public ArmMagicSpell armMagic;
-    public Weapon weapon;
+    //public ArmMagicSpell armMagic;
+    //public Weapon weapon;
     public Transform cam;                      
     public CharacterController controller;     
     public Transform grappleTip;              
