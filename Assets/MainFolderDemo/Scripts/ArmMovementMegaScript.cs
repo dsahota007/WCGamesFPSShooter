@@ -66,21 +66,20 @@ public class ArmMovementMegaScript : MonoBehaviour
     public float throwForce = 14f;     // Speed forward
 
     [Header("Grapple Animation")]
-    public bool useRightArmForGrapple = false;                       // which arm to raise
-    public Vector3 grappleLocalOffset = new Vector3(-0.048f, 0f, 0f);// additive local pos
-    public Vector3 grappleRotOffsetEuler = new Vector3(0f, -10f, -6f); // additive local rot
-    public float grappleRaiseSpeed = 14f;                            // how fast to pin up
-    public float grappleReturnSpeed = 10f;                           // how fast to return
+    public bool useRightArmForGrapple = false;                       
+    public Vector3 grappleLocalOffset = new Vector3(-0.048f, 0f, 0f);   //where the hand wil be
+    public Vector3 grappleRotOffsetEuler = new Vector3(0f, -10f, -6f);   //where rotation will be
+    public float grappleRaiseSpeed = 14f;                               
+    public float grappleReturnSpeed = 10f;                           
 
-    private bool _grappleHoldActive = false;     // true while latched
-    private Transform _grappleArm;               // cached arm being held up
-    private Vector3 _grappleStartPos;            // arm pose when we began hold
-    private Quaternion _grappleStartRot;         // …
-    private Vector3 _grappleTargetPos;           // start+offset
-    private Quaternion _grappleTargetRot;        // start*rotOffset
+    private bool _grappleHoldActive = false;          // true while latched
+    private Transform _grappleArm;               //cached arm being held     
+    private Vector3 _grappleStartPos;             
+    private Quaternion _grappleStartRot;         
+    private Vector3 _grappleTargetPos;           
+    private Quaternion _grappleTargetRot;       
 
     public bool IsHandPinnedForGrapple => _grappleHoldActive;
-    // ArmMovementMegaScript.cs (top of class)
     private bool _grappleReturning = false;
 
 
@@ -310,40 +309,22 @@ public class ArmMovementMegaScript : MonoBehaviour
             }
         }
 
-        // Grapple flash (Middle Mouse) — blocked while casting or throwing grenade
-        //if (!isGrappleAnimPlaying
-        //    && KeybindManager.Instance.GetKeyDown("Grapple")
-        //    && !PauseUI.IsPaused
-        //    && CanPlayGrappleFlash())
-        //{
-        //    TriggerGrappleFlash();
-        //}
 
-        // --- GRAPPLE HOLD: keep the chosen arm up while latched ---
-        // --- GRAPPLE HOLD: keep the chosen arm up while latched ---
-        if (_grappleHoldActive && _grappleArm != null)
+        // ---------- grapple
+        if (_grappleHoldActive && _grappleArm != null)  //holding ouyr arm up 
         {
-            // pin while latched
-            _grappleArm.localPosition = Vector3.Lerp(
-                _grappleArm.localPosition, _grappleTargetPos, Time.deltaTime * grappleRaiseSpeed);
-            _grappleArm.localRotation = Quaternion.Slerp(
-                _grappleArm.localRotation, _grappleTargetRot, Time.deltaTime * grappleRaiseSpeed);
+            _grappleArm.localPosition = Vector3.Lerp(_grappleArm.localPosition, _grappleTargetPos, Time.deltaTime * grappleRaiseSpeed);   //grab current position and move to the target smoothly 
+            _grappleArm.localRotation = Quaternion.Slerp(_grappleArm.localRotation, _grappleTargetRot, Time.deltaTime * grappleRaiseSpeed) ;//grab current rotation and move to the target smoothly 
         }
         // Smoothly return only if we're in "returning" state, and do NOT fight other animations
-        else if (_grappleReturning
-                 && _grappleArm != null
-                 && !isCastingSpell
-                 && !isGrenadeGrabPlaying
-                 && !isPerkAnimPlaying)
+        
+        else if (_grappleReturning && _grappleArm != null && !isCastingSpell && !isGrenadeGrabPlaying && !isPerkAnimPlaying)
         {
-            _grappleArm.localPosition = Vector3.Lerp(
-                _grappleArm.localPosition, _grappleStartPos, Time.deltaTime * grappleReturnSpeed);
-            _grappleArm.localRotation = Quaternion.Slerp(
-                _grappleArm.localRotation, _grappleStartRot, Time.deltaTime * grappleReturnSpeed);
+            _grappleArm.localPosition = Vector3.Lerp(_grappleArm.localPosition, _grappleStartPos, Time.deltaTime * grappleReturnSpeed);        //grab current postiion which would be up and returnu it soothly 
+            _grappleArm.localRotation = Quaternion.Slerp(_grappleArm.localRotation, _grappleStartRot, Time.deltaTime * grappleReturnSpeed);   //grab current rotation which and return it soothly 
 
             // when close enough, stop returning and release the reference
-            if (Vector3.Distance(_grappleArm.localPosition, _grappleStartPos) < 0.001f &&
-                Quaternion.Angle(_grappleArm.localRotation, _grappleStartRot) < 0.2f)
+            if (Vector3.Distance(_grappleArm.localPosition, _grappleStartPos) < 0.001f && Quaternion.Angle(_grappleArm.localRotation, _grappleStartRot) < 0.2f)  //ok so were in range of OG position so now we can shoot, cast magic and all that BS for smooth gameplay  ( this method only releases the arm pose. Whether you can shoot/aim/cast is controlled elsewhere ) 
             {
                 _grappleReturning = false;
                 _grappleArm = null;              // <— stops future interference
@@ -470,23 +451,23 @@ public class ArmMovementMegaScript : MonoBehaviour
     //----------------------------------------------  grapple hook
     public void BeginGrappleHold()
     {
-        _grappleArm = useRightArmForGrapple ? rightArm : leftArm;
-        if (_grappleArm == null) return;
+        _grappleArm = useRightArmForGrapple ? rightArm : leftArm;  //jsu gonna be left arm for us --- THIS IS EXTRA bS that we dont need
+        if (_grappleArm == null) return;    //if no arm than get out this code
 
-        _grappleStartPos = _grappleArm.localPosition;
-        _grappleStartRot = _grappleArm.localRotation;
+        _grappleStartPos = _grappleArm.localPosition;  //save Pos
+        _grappleStartRot = _grappleArm.localRotation;   //save Rot
 
-        _grappleTargetPos = _grappleStartPos + grappleLocalOffset;
-        _grappleTargetRot = _grappleStartRot * Quaternion.Euler(grappleRotOffsetEuler);
+        _grappleTargetPos = _grappleStartPos + grappleLocalOffset;    //the target is now the new offset
+        _grappleTargetRot = _grappleStartRot * Quaternion.Euler(grappleRotOffsetEuler);  //the target is the new rotation euler
 
-        _grappleHoldActive = true;
-        _grappleReturning = false;   // fresh latch
+        _grappleHoldActive = true;      //we are NOW lifting our hands so this has to be true 
+        _grappleReturning = false;   // fresh latch  --- we are not returnign bc its going up 
     }
 
     public void EndGrappleHold()
     {
-        _grappleHoldActive = false;
-        _grappleReturning = true;    // go to return phase once rope releases
+        _grappleHoldActive = false;  //we are no longer lifting our hands so this has to be false now 
+        _grappleReturning = true;    // go to return phase once rope releases 
     }
 
 

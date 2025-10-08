@@ -5,25 +5,25 @@ using System.Collections;
 public class GrappleHook : MonoBehaviour
 {
     [Header("Refs")]
-    public PlayerMovement playerMovement;      // optional: checks like IsSprinting/IsDashing
-    public ArmMovementMegaScript arm;          // keeps hand up while latched
-    public Transform cam;                      // ray origin
-    public CharacterController controller;     // same CC as player
-    public Transform grappleTip;               // hand/wrist tip for rope start
-    public LineRenderer rope;                  // optional visual
+    public PlayerMovement playerMovement;      
+    public ArmMovementMegaScript arm;          
+    public Transform cam;                      
+    public CharacterController controller;     
+    public Transform grappleTip;              
+    public LineRenderer rope;                  
 
     [Header("Raycast")]
     public LayerMask grappleMask;
     public float maxGrappleDistance = 35f;
 
     [Header("Pull")]
-    public float pullAcceleration = 60f;       // accel toward anchor
-    public float maxPullSpeed = 18f;           // clamp
-    public float gravityWhileGrappling = -2f;  // tiny drift down while attached
+    public float pullAcceleration = 60f;       
+    public float maxPullSpeed = 18f;         
+    public float gravityWhileGrappling = -2f;  
 
     [Header("Input/Timing")]
-    public float fireCooldown = 0.2f;          // delay between shots
-    public bool holdToGrapple = true;          // release key to stop
+    public float fireCooldown = 0.2f;         
+    public bool holdToGrapple = true;          
 
     [Header("Rules")]
     public bool blockStartWhileSprinting = true;
@@ -71,8 +71,13 @@ public class GrappleHook : MonoBehaviour
 
     void Reset()
     {
-        controller = GetComponent<CharacterController>();
-        if (rope) { rope.useWorldSpace = true; rope.positionCount = 0; }
+        controller = GetComponent<CharacterController>();  //controller
+        if (rope)   
+        {    
+            rope.useWorldSpace = true; 
+            rope.positionCount = 0; 
+        }
+
     }
 
     void Update()
