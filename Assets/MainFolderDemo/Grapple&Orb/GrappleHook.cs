@@ -383,4 +383,30 @@ public class GrappleHook : MonoBehaviour
     //}
 
     public bool IsGrappling => isGrappling;
+
+    // --- Cooldown helpers ---
+    public bool IsGrappleReady()
+    {
+        return Time.time >= nextFireTime && !isGrappling;  //if we are exceeded cooldown so we can shoot adn were not already grappling 
+    }
+
+    public float GetCooldownProgress01()
+    {
+        if (fireCooldown <= 0f) return 1f;
+
+        // time left until we can fire again
+        float remaining = Mathf.Max(0f, nextFireTime - Time.time);
+        float p = 1f - (remaining / fireCooldown);
+
+        // optional: if you prefer "busy" look while attached, clamp to 0 while grappling
+        // if (isGrappling) return 0f;
+
+        return Mathf.Clamp01(p);
+    }
+
+    public float GetCooldownSecondsRemaining()
+    {
+        return Mathf.Max(0f, nextFireTime - Time.time);
+    }
+
 }

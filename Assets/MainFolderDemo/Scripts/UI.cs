@@ -253,6 +253,11 @@ public class UI : MonoBehaviour
     public GrappleHook grappleHook;      // reference your GrappleHook component
     public bool requirePurchase = true;  // only show after buying from box
 
+    [Header("Grapple Cooldown UI")]
+    public Slider grappleCooldownSlider;
+    public Image grappleCooldownFill;
+    public GameObject grappleSlotBG;   // assign GrappleSlotBG
+    public GameObject grappleSlotRoot; // assign GrappleSlot
 
     [Header("Control Hint Texts")]
     public Text dashControlText;
@@ -343,6 +348,39 @@ public class UI : MonoBehaviour
         {
             KeybindManager.Instance.OnKeyChanged += HandleKeyChanged;
         }
+
+        //-- grapple
+
+        if (grappleCooldownSlider != null)
+        {
+            grappleCooldownSlider.minValue = 0f;
+            grappleCooldownSlider.maxValue = 1f;
+            grappleCooldownSlider.value = 1f; // start as "ready"
+            grappleCooldownSlider.gameObject.SetActive(false); // hidden until we can use it
+        }
+
+        if (grappleCooldownFill == null && grappleCooldownSlider != null && grappleCooldownSlider.fillRect != null)
+        {
+            grappleCooldownFill = grappleCooldownSlider.fillRect.GetComponent<Image>();
+        }
+
+        // --- Grapple UI default hidden ---
+        if (grappleSlotBG) grappleSlotBG.SetActive(false);
+        if (grappleSlotRoot) grappleSlotRoot.SetActive(false);
+
+        if (grappleCooldownSlider != null)
+        {
+            grappleCooldownSlider.minValue = 0f;
+            grappleCooldownSlider.maxValue = 1f;
+            grappleCooldownSlider.value = 1f;                      // looks "ready" if ever shown
+            grappleCooldownSlider.gameObject.SetActive(false);     // hidden by default
+        }
+        if (grappleCooldownFill == null && grappleCooldownSlider != null && grappleCooldownSlider.fillRect != null)
+        {
+            grappleCooldownFill = grappleCooldownSlider.fillRect.GetComponent<Image>();
+        }
+
+
 
     }
 
@@ -1109,8 +1147,42 @@ public class UI : MonoBehaviour
             SetMagicVFXActive(magicManager.GetCurrentMagicType(), ready);
         }
 
+
+        //---- grapple
+
+        // --- Grapple Cooldown UI ---
+        //if (grappleCooldownSlider != null)
+        //{
+        //    bool canShow = grappleHook != null && grappleHook.cam != null &&(!requirePurchase || (grappleHookBox != null && grappleHookBox.IsPurchased)) && !PauseUI.IsPaused;                             // hide in menus
+
+        //    if (!canShow)
+        //    {
+        //        if (grappleCooldownSlider.gameObject.activeSelf)
+        //            grappleCooldownSlider.gameObject.SetActive(false);
+        //    }
+        //    else
+        //    {
+        //        if (!grappleCooldownSlider.gameObject.activeSelf)
+        //            grappleCooldownSlider.gameObject.SetActive(true);
+
+        //        float p = grappleHook.GetCooldownProgress01(); // 0..1
+        //        grappleCooldownSlider.value = p;
+
+        //        // Optional: tint when ready vs recharging
+        //        if (grappleCooldownFill != null)
+        //        {
+        //            // ready = full opaque white; recharging = slightly dim
+        //            float a = (p >= 1f && grappleHook.IsGrappleReady()) ? 1f : 0.6f;
+        //            var c = grappleCooldownFill.color;
+        //            grappleCooldownFill.color = new Color(c.r, c.g, c.b, a);
+        //        }
+        //    }
+        //}
+
+
         HandleGrappleHookBoxUI();
         UpdateGrappleCrosshair();
+        UpdateGrappleUIVisibility();
 
 
     }
@@ -1470,6 +1542,44 @@ public class UI : MonoBehaviour
             }
         }
     }
+
+    void UpdateGrappleUIVisibility()
+    {
+        // Conditions to show grapple UI
+        bool purchasedOk = !requirePurchase || (grappleHookBox != null && grappleHookBox.IsPurchased);
+        bool hookReady = (grappleHook != null && grappleHook.cam != null);
+        bool notInMenus = !PauseUI.IsPaused && !IsGrenadePanelOpen && !IsInfusePanelOpen;
+
+        bool show = purchasedOk && hookReady && notInMenus;
+
+        // Toggle slot BG + slot root
+        if (grappleSlotBG && grappleSlotBG.activeSelf != show)
+            grappleSlotBG.SetActive(show);
+
+        if (grappleSlotRoot && grappleSlotRoot.activeSelf != show)
+            grappleSlotRoot.SetActive(show);
+
+        // Toggle & update cooldown slider (same visibility rule)
+        if (grappleCooldownSlider)
+        {
+            if (grappleCooldownSlider.gameObject.activeSelf != show)
+                grappleCooldownSlider.gameObject.SetActive(show);
+
+            if (show && grappleHook != null)
+            {
+                float p = grappleHook.GetCooldownProgress01();   // from earlier helper
+                grappleCooldownSlider.value = p;
+
+                if (grappleCooldownFill != null)
+                {
+                    float a = (p >= 1f && grappleHook.IsGrappleReady()) ? 1f : 0.6f;
+                    var c = grappleCooldownFill.color;
+                    grappleCooldownFill.color = new Color(c.r, c.g, c.b, a);
+                }
+            }
+        }
+    }
+
 
 
     void UpdateGrappleCrosshair()
