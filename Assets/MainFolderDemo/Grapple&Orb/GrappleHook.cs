@@ -46,7 +46,7 @@ public class GrappleHook : MonoBehaviour
     [Header("Release Momentum")]
     public float releaseMaxSeconds = 2.0f;     // cap coasting
     public float releaseDistance = 20f;
-    public bool stopCoastWhenGrounded = true;  // end on land
+    //public bool stopCoastWhenGrounded = true;  // end on land
     public float coastFriction = 0.6f;         // lerp factor per second
 
     // runtime
@@ -219,60 +219,75 @@ public class GrappleHook : MonoBehaviour
         if (!isGrappling) return;
         isGrappling = false;
 
-        // --- tame Y at release ---
+        // --------------------------- tame Y at release and also ADDING Y phyiscs upon release --------------------------
         // keep only a *small, capped* portion of your upward speed
-        float up = Mathf.Max(0f, pullVelocity.y) * releaseUpScale;
+        float up = Mathf.Max(0f, pullVelocity.y) * releaseUpScale;  //max so never below 0 and shrink it down to percent so we dont rocket upwards
         if (playerMovement != null)
-            playerMovement.AddUpwardVelocity(Mathf.Min(up, releaseUpMax));
+        {
+            playerMovement.AddUpwardVelocity(Mathf.Min(up, releaseUpMax));  //we are adding + capping y release so we dont go flying up
+        }
 
         // --- keep horizontal carry exactly as-is ---
-        coastVelocity = new Vector3(pullVelocity.x, 0f, pullVelocity.z);
+        coastVelocity = new Vector3(pullVelocity.x, 0f, pullVelocity.z);  //Zero out Y so the “coast” is horizontal only.
 
         // clear grapple motion/visuals
-        pullVelocity = Vector3.zero;
-        if (arm) arm.EndGrappleHold();
-        ClearRope();
+        pullVelocity = Vector3.zero;   //no more pull
 
-        if (coastRoutine != null) StopCoroutine(coastRoutine);
+        if (arm)
+        {
+            arm.EndGrappleHold();  //get rid of animaitons
+        }
+        
+        ClearRope();  //no rope
+
+        if (coastRoutine != null)   //------------------------COME BACAK TO THIS 
+        {
+            StopCoroutine(coastRoutine);
+        }
+
         coastRoutine = StartCoroutine(CoastMomentum());
     }
 
 
-    IEnumerator CoastMomentum()
+    IEnumerator CoastMomentum()  //run this frame by frame 
     {
-        float t = 0f;
-        while (t < releaseMaxSeconds)
+        float timer = 0f; // start a timer
+        while (timer < releaseMaxSeconds)   //keep glidingn until we hit max glide time 
         {
-            float dt = Time.deltaTime;
-            if (dt <= 0f) { yield return null; continue; }
+            float dt = Time.deltaTime;   
+            if (dt <= 0f)    //how much time ahas passed this frame if pasued or frozen than wait a frame and try again
+            { 
+                yield return null; 
+                continue; 
+            }
 
             // stop on landing (and shake once)
-            if (stopCoastWhenGrounded && controller.isGrounded)
+            //if (stopCoastWhenGrounded && controller.isGrounded)  
+            if (controller.isGrounded)  //we do this for camera shake
             {
-                CameraScript.Main?.Shake(0.5f, 2.5f, 55f, false);
+                CameraScript.Main?.Shake(0.5f, 2.5f, 55f, true);
                 break;
             }
 
             // --- AIR CONTROL: steer coast toward current input ---
             float x = Input.GetAxisRaw("Horizontal");
             float z = Input.GetAxisRaw("Vertical");
-            if (Mathf.Abs(x) + Mathf.Abs(z) > 0f)
+            if (Mathf.Abs(x) + Mathf.Abs(z) > 0f)  //we get abs so we dont get neg numbers
             {
-                Vector3 inputDir = (transform.right * x + transform.forward * z).normalized;
-                float speed = coastVelocity.magnitude;          // keep your current speed
-                Vector3 target = inputDir * speed;              // where you want to steer
-                coastVelocity = Vector3.Lerp(coastVelocity, target, airControl * dt);
+                Vector3 inputDir = (transform.right * x + transform.forward * z).normalized;   //right is left/right adn forward is back adn foruth -- find direction of this (find direciot of all movements 
+                float speed = coastVelocity.magnitude;          // keep your current speed -- magnitude is the length of the vector 
+                Vector3 target = inputDir * speed;              // where you want to steer  
+                coastVelocity = Vector3.Lerp(coastVelocity, target, airControl * dt);  //(a,b,t)
             }
 
             // move using the (possibly steered) coast velocity (horizontal only)
-            Vector3 horiz = new Vector3(coastVelocity.x, 0f, coastVelocity.z);
-            controller.Move(horiz * dt);
-
+            Vector3 horiz = new Vector3(coastVelocity.x, 0f, coastVelocity.z);   //Take your glide velocity but remove any up/down (Y=0). So it’s purely horizontal.
+            controller.Move(horiz * dt);  //Move the CharacterController this frame by that horizontal distance.
             // decay speed over time
             coastVelocity = Vector3.Lerp(coastVelocity, Vector3.zero, dt * coastFriction);
 
-            t += dt;
-            yield return null;
+            timer += dt;
+            yield return null;   //Wait one frame, then loop again.
         }
 
         coastVelocity = Vector3.zero;
@@ -282,14 +297,21 @@ public class GrappleHook : MonoBehaviour
     // external interruption (e.g., dash)
     public void InjectDash(Vector3 dashVelocity, bool cutRope)
     {
-        if (cutRope && isGrappling) StopAndBeginCoast();
+        if (cutRope && isGrappling)
+        {
+            StopAndBeginCoast();
+        }
+        
+        if (coastRoutine != null)
+        {
+            StopCoroutine(coastRoutine);
+        }
 
-        if (coastRoutine != null) StopCoroutine(coastRoutine);
         coastVelocity = dashVelocity;
         coastRoutine = StartCoroutine(CoastMomentum());
     }
 
-    // ------------- rope visual (flight + spring + settle) -------------
+    // ------------- rope visual (flight + spring + settle) ------------- wave frequnecy style
     void UpdateRopeVisual()
     {
         if (!rope) return;

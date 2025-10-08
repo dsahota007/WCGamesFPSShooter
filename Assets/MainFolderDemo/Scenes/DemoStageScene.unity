@@ -135982,6 +135982,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 4377810075656032752}
   arm: {fileID: 1086035602920849397}
+  armMagic: {fileID: 0}
+  weapon: {fileID: 0}
   cam: {fileID: 488069948980469609}
   controller: {fileID: 8670137107313947320}
   grappleTip: {fileID: 392319651}
@@ -136005,11 +136007,11 @@ MonoBehaviour:
   waveFrequency: 55
   settleSpeed: 6
   releaseMaxSeconds: 2
-  stopCoastWhenGrounded: 1
+  releaseDistance: 20
   coastFriction: 0.1
   releaseUpScale: 0.25
-  releaseUpMax: 6
-  airControl: 4
+  releaseUpMax: 15
+  airControl: 8
 --- !u!4 &8684000375291283226
 Transform:
   m_ObjectHideFlags: 0
