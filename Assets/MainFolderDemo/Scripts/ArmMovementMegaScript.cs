@@ -349,6 +349,7 @@ public class ArmMovementMegaScript : MonoBehaviour
     {
         isCastingSpell = casting;
     }
+    public bool IsCasting => isCastingSpell; //another getter from magic script were doing it again for grapple lock LOCK State
 
 
     public void ReloadOffset(bool state)

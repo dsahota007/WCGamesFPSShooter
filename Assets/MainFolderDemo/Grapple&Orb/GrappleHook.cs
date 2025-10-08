@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Mono.Cecil.Cil;
 
 [RequireComponent(typeof(CharacterController))]
 public class GrappleHook : MonoBehaviour
 {
     [Header("Refs")]
     public PlayerMovement playerMovement;      
-    public ArmMovementMegaScript arm;          
+    public ArmMovementMegaScript arm;
+    public ArmMagicSpell armMagic;
+    public Weapon weapon;
     public Transform cam;                      
     public CharacterController controller;     
     public Transform grappleTip;              
@@ -75,26 +78,26 @@ public class GrappleHook : MonoBehaviour
         if (rope)   
         {    
             rope.useWorldSpace = true; 
-            rope.positionCount = 0; 
+            rope.positionCount = 0; //grapple must be 0
         }
 
     }
 
     void Update()
     {
-        if (respectPause && PauseUI.IsPaused) return;
+        if (respectPause && PauseUI.IsPaused) return; // if game is paused then leave
 
-        bool press = KeybindManager.Instance && KeybindManager.Instance.GetKeyDown("Grapple");
-        bool release = IsGrappleKeyUp();
+        bool pressBtn = KeybindManager.Instance && KeybindManager.Instance.GetKeyDown("Grapple");  //this is that we have clicked it
+        bool releaseBtn = Input.GetKeyUp(KeybindManager.Instance.GetKey("Grapple")); //when we release the key to let go of grappling
 
-        if (!isGrappling && press && Time.time >= nextFireTime && CanStartGrapple())
+        if (!isGrappling && pressBtn && Time.time >= nextFireTime && CanStartGrapple()) //nextFireTime is 0 and canStart grapple all this needs to be met
             TryLatch();
 
         if (isGrappling)
         {
             TickPull();
 
-            if (holdToGrapple && release)
+            if (holdToGrapple && releaseBtn)
                 StopAndBeginCoast();
         }
 
@@ -103,24 +106,27 @@ public class GrappleHook : MonoBehaviour
 
     bool CanStartGrapple()
     {
-        // Block while aiming down sights
-        if (KeybindManager.Instance != null && KeybindManager.Instance.GetKeyHeld("AimDownSight"))
-            return false;
-
+        // BLOCK OFF
+        if (KeybindManager.Instance != null && KeybindManager.Instance.GetKeyHeld("AimDownSight")) return false; 
         if (arm)
         {
             if (arm.IsGrenadeAnimating) return false;
             if (arm.DrinkingPerk) return false;
+            if (arm.IsCasting) return false;   //we just added a getter in armScipt
+            if (arm.isReloading) return false;
         }
+        //if (armMagic != null && armMagic.IsCasting()) return false;
+        if (playerMovement && playerMovement.IsSprinting()) return false;
+        if (KeybindManager.Instance && KeybindManager.Instance.GetKeyHeld("Sprint") && controller && controller.velocity.magnitude > 0.1f) return false;
 
-        if (blockStartWhileSprinting)
-        {
-            if (playerMovement && playerMovement.IsSprinting()) return false;
-            if (KeybindManager.Instance &&
-                KeybindManager.Instance.GetKeyHeld("Sprint") &&
-                controller && controller.velocity.magnitude > 0.1f)
-                return false;
-        }
+        //if (blockStartWhileSprinting)
+        //{
+        //    if (playerMovement && playerMovement.IsSprinting()) return false;
+        //    if (KeybindManager.Instance &&
+        //        KeybindManager.Instance.GetKeyHeld("Sprint") &&
+        //        controller && controller.velocity.magnitude > 0.1f)
+        //        return false;
+        //}
 
         return true;
     }
@@ -313,12 +319,12 @@ public class GrappleHook : MonoBehaviour
         if (rope) rope.positionCount = 0;
     }
 
-    bool IsGrappleKeyUp()
-    {
-        if (!KeybindManager.Instance) return false;
-        var code = KeybindManager.Instance.GetKey("Grapple");
-        return code != KeyCode.None && Input.GetKeyUp(code);
-    }
+    //bool IsGrappleKeyUp()   ---took this out and made release variable into one line
+    //{
+    //    if (!KeybindManager.Instance) return false;  
+    //    var code = KeybindManager.Instance.GetKey("Grapple"); //get grapple key
+    //    return code != KeyCode.None && Input.GetKeyUp(code); //return true if it is a key and its grapple  (GetKeyUp THIS IS THE RELEASE
+    //}
 
     public bool IsGrappling => isGrappling;
 }
