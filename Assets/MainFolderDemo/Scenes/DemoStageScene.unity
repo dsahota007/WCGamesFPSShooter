@@ -1059,84 +1059,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 27400779}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &29931820
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -42.557957
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.50000095
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -20.333847
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -6067185528594298527, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 3a453a88e772f9a4b840db0d2af28555, type: 2}
-    - target: {fileID: 919132149155446097, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: m_Name
-      value: B_P_e
-      objectReference: {fileID: 0}
-    - target: {fileID: 2586607309129781981, guid: 0514a0d95fb5dee4e94f6f06e20afb3a,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 3a453a88e772f9a4b840db0d2af28555, type: 2}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0514a0d95fb5dee4e94f6f06e20afb3a, type: 3}
 --- !u!1 &35703239
 GameObject:
   m_ObjectHideFlags: 0
@@ -48831,7 +48753,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02d475b85354eb43947ff9daa895714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropChance: 0.005
+  dropChance: 0.8
   pickupPrefabs:
   - {fileID: 4943829022777390022, guid: 2bef4749036d684448815405d878c249, type: 3}
   - {fileID: 4943829022777390022, guid: fbffac4892099554c9213caea41fb0cc, type: 3}
@@ -89065,7 +88987,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1595701417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89079,10 +89001,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefabs:
-  - {fileID: 5213014239458159033, guid: 8339c0fe9dc32ab48b69174d23421ca3, type: 3}
-  - {fileID: 5213014239458159033, guid: 4d75010ad04ddce4f8f88434f2d50394, type: 3}
   - {fileID: 7560827146355968688, guid: 89d43b2956839244988f109367c4f229, type: 3}
-  - {fileID: 7217697383087328957, guid: 1bb4d1d757d2f9840b251f80547560bf, type: 3}
   spawnPoints:
   - {fileID: 1632199129}
   startZombies: 6
@@ -141868,4 +141787,3 @@ SceneRoots:
   - {fileID: 1079767163}
   - {fileID: 325588687}
   - {fileID: 1966398558}
-  - {fileID: 29931820}
