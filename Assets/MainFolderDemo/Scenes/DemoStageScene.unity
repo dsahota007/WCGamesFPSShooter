@@ -132053,6 +132053,7 @@ MonoBehaviour:
   leftArm: {fileID: 2154476448309521855}
   rightArm: {fileID: 5296297881967605068}
   weaponPrefabs:
+  - {fileID: 7896929993975101864, guid: 59a1781a64d4c8c4fbb85453686a515c, type: 3}
   - {fileID: 7896929993975101864, guid: 3cf51b44393fa4043a20003c20e3e5b4, type: 3}
   - {fileID: 7896929993975101864, guid: 3638afb2936fd064397e126682322ff6, type: 3}
   - {fileID: 7896929993975101864, guid: 786a7cdbc902d1044b0da9f008da0a67, type: 3}
@@ -136630,8 +136631,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 4377810075656032752}
   arm: {fileID: 1086035602920849397}
-  armMagic: {fileID: 0}
-  weapon: {fileID: 0}
   cam: {fileID: 488069948980469609}
   controller: {fileID: 8670137107313947320}
   grappleTip: {fileID: 392319651}
