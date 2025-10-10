@@ -69,6 +69,11 @@ public class Weapon : MonoBehaviour
     [Header("Kickback")]
     public float kickbackAmount = 0.05f;
     public float kickbackReturnSpeed = 12f;
+    
+    [Header("Gun Knockback")]
+    public float gunKickImpulse = 12f;     // total shove strength
+    public float groundLift = 6f;          // instant upward pop if grounded
+    private PlayerMovement pm;
 
     [Header("Muzzle Flash")]
     public GameObject defaultMuzzleFlash;
@@ -324,6 +329,7 @@ public class Weapon : MonoBehaviour
         cam = Camera.main.transform;          // Grab camera
         armMover = FindFirstObjectByType<ArmMovementMegaScript>();    // we gonna use this for kickback 
         ui = FindFirstObjectByType<UI>();   //fetch to not shoot while in grenade menu
+        pm = FindFirstObjectByType<PlayerMovement>();
     }
 
     void Update()
@@ -487,7 +493,30 @@ public class Weapon : MonoBehaviour
         }
 
         ApplyRecoil();
+        ApplyRecoil();
         ApplyKickback();
+        ApplyPlayerGunKick();
+    }
+
+    // REPLACE your ApplyPlayerGunKick() with this:
+    private void ApplyPlayerGunKick()
+    {
+        if (cam == null || pm == null) return;
+
+        // camera-opposite vector (free control mid-air)
+        Vector3 dir = (-cam.forward).normalized;
+
+        if (pm.IsSlamming())
+        {
+            // While slamming: NO UPWARD LIFT. Only horizontal shove.
+            Vector3 horiz = Vector3.ProjectOnPlane(dir, Vector3.up).normalized;
+            pm.ApplyExternalForce(horiz * gunKickImpulse);
+            return;
+        }
+
+        // Normal shots: a tiny pop up so ground doesn’t absorb the shove
+        pm.AddUpwardVelocity(groundLift);
+        pm.ApplyExternalForce(dir * gunKickImpulse);
     }
 
     private void ApplyRecoil()
@@ -642,12 +671,20 @@ public class Weapon : MonoBehaviour
         ammoReserve = maxReserve;
     }
 
+    // REPLACE your IsSprinting() with this:
     private bool IsSprinting()
     {
-        var movement = FindFirstObjectByType<PlayerMovement>();             //fetch script
-        bool isSliding = movement != null && movement.IsSliding();     //find sliding 
-        return KeybindManager.Instance.GetKeyHeld("Sprint") && !KeybindManager.Instance.GetKeyHeld("AimDownSight") && !isSliding;  //retrun true --- when ur trying to sprint and your not trying to aim and ur not sliding. 
+        var movement = FindFirstObjectByType<PlayerMovement>();
+        bool isSliding = movement != null && movement.IsSliding();
+        bool isGrounded = movement != null && movement.IsGrounded();
+
+        // only block shots when sprinting on ground
+        return isGrounded
+            && KeybindManager.Instance.GetKeyHeld("Sprint")
+            && !KeybindManager.Instance.GetKeyHeld("AimDownSight")
+            && !isSliding;
     }
+
 
     private bool CanShoot()  //check if have ammo
     {
