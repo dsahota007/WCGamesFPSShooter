@@ -71,6 +71,7 @@ public class Weapon : MonoBehaviour
     public float kickbackReturnSpeed = 12f;
     
     [Header("Gun Knockback")]
+    public bool allowGunKnockback = true;
     public float gunKickImpulse = 12f;     // total shove strength
     public float groundLift = 6f;          // instant upward pop if grounded
     private PlayerMovement pm;
@@ -501,6 +502,7 @@ public class Weapon : MonoBehaviour
     // REPLACE your ApplyPlayerGunKick() with this:
     private void ApplyPlayerGunKick()
     {
+        if (!allowGunKnockback) return;          // <- toggle check
         if (cam == null || pm == null) return;
 
         // camera-opposite vector (free control mid-air)
@@ -518,7 +520,6 @@ public class Weapon : MonoBehaviour
         pm.AddUpwardVelocity(groundLift);
         pm.ApplyExternalForce(dir * gunKickImpulse);
     }
-
     private void ApplyRecoil()
     {
         float recoilX = UnityEngine.Random.Range(recoilAngle * 0.8f, recoilAngle * 1.2f);   //we have to put UnityEngine.Random bc of some vs bug try to get rid of it (DJ from the past)

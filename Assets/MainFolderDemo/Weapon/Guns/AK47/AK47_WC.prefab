@@ -6090,6 +6090,9 @@ MonoBehaviour:
   recoilReturnSpeed: 6
   kickbackAmount: 0.15
   kickbackReturnSpeed: 12
+  allowGunKnockback: 0
+  gunKickImpulse: 0
+  groundLift: 0
   defaultMuzzleFlash: {fileID: 6980259576133684760, guid: 3d09da8d2bc7d4c4f82428ac9d5e55d1,
     type: 3}
   papMuzzleFlash: {fileID: 6980259576133684760, guid: b20f7526ce1c99c4c8cc79f7033ca994,
@@ -6103,36 +6106,6 @@ MonoBehaviour:
   leftHoldRotEuler: {x: -24.22, y: 199.835, z: -50.626}
   rightHoldPos: {x: -0.05, y: 0.12, z: -0.32}
   rightHoldRotEuler: {x: -51.385, y: -133.7, z: -22.396}
-  applyPhysicalKickback: 1
-  kickbackPower: 30
-  kickbackDuration: 0.12
-  includeVerticalAim: 0
-  kickbackFalloff:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  onlyUpwardVertical: 1
-  verticalWeight: 1
   bulletDamage: 10
   upgradeLevel: 0
   maxUpgradeLevel: 3
