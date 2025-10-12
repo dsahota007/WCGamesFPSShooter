@@ -33,6 +33,7 @@ public class KeybindManager : MonoBehaviour
         LoadKey("Reload", KeyCode.R);
         LoadKey("SwitchWeapons", KeyCode.Alpha1);
         LoadKey("Grapple", KeyCode.Mouse2);
+        LoadKey("QuickTurn", KeyCode.H);
 
     }
 

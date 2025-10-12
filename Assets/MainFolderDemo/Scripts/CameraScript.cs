@@ -103,6 +103,16 @@ public class CameraScript : MonoBehaviour
 
     // -------------- this is so i can call func
 
+
+    [Header("Quick Turn")]
+    public float quickTurnAngle = 180f;
+    public float quickTurnDuration = 0.12f;
+    public float quickTurnCooldown = 0.4f;
+
+    private bool _isQuickTurning = false;
+    private float _quickTurnReadyAt = 0f;
+
+
     void Awake() => Main = this;
 
     // call this from anywhere
@@ -258,7 +268,8 @@ public class CameraScript : MonoBehaviour
 
         // remember for next frame
         wasGrounded = isGroundedNow;
-
+        // QUICK TURN input (block during menus; optional blocks: sliding/dashing/slamming)
+        QuickTurn();
 
     }
 
@@ -484,6 +495,52 @@ public class CameraScript : MonoBehaviour
         sprintFOV = defaultFOV + 25f;  // keep sprint offset consistent
     }
 
+    private IEnumerator QuickTurnRoutine()
+    {
+        if (playerBody == null) yield break;
+
+        _isQuickTurning = true;
+
+        // capture start & end yaw (keep pitch/roll exactly as-is)
+        Vector3 startEuler = playerBody.eulerAngles;
+        float startYaw = startEuler.y;
+        float targetYaw = startYaw + quickTurnAngle;
+
+        float t = 0f;
+        float dur = Mathf.Max(0.0001f, quickTurnDuration);
+
+        // while we tween yaw, we’ll ignore Mouse X inside VertClamp via _isQuickTurning
+        while (t < 1f)
+        {
+            t += Time.deltaTime / dur;
+            float y = Mathf.LerpAngle(startYaw, targetYaw, t);
+            playerBody.rotation = Quaternion.Euler(startEuler.x, y, startEuler.z);
+            yield return null;
+        }
+
+        _quickTurnReadyAt = Time.time + quickTurnCooldown;
+        _isQuickTurning = false;
+    }
+
+    public void QuickTurn()
+    {
+        bool quickTurnAllowed = !cameraLocked
+                        && !_isQuickTurning
+                        && Time.time >= _quickTurnReadyAt;
+
+        if (playerMovement != null)
+        {
+            // optional gameplay guards so it doesn’t fight big moves
+            quickTurnAllowed &= !playerMovement.IsSliding()
+                                && !playerMovement.IsDashing()
+                                && !playerMovement.IsSlamming();
+        }
+
+        if (quickTurnAllowed && KeybindManager.Instance.GetKeyHeld("QuickTurn")) 
+        {
+            StartCoroutine(QuickTurnRoutine());
+        }
+    }
 
 
 

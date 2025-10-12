@@ -1570,12 +1570,12 @@ public class UI : MonoBehaviour
                 float p = grappleHook.GetCooldownProgress01();   // from earlier helper
                 grappleCooldownSlider.value = p;
 
-                if (grappleCooldownFill != null)
-                {
-                    float a = (p >= 1f && grappleHook.IsGrappleReady()) ? 1f : 0.6f;
-                    var c = grappleCooldownFill.color;
-                    grappleCooldownFill.color = new Color(c.r, c.g, c.b, a);
-                }
+                //if (grappleCooldownFill != null)   -- this is for color fade
+                //{
+                //    float a = (p >= 1f && grappleHook.IsGrappleReady()) ? 1f : 0.6f;
+                //    var c = grappleCooldownFill.color;
+                //    grappleCooldownFill.color = new Color(c.r, c.g, c.b, a);
+                //}
             }
         }
     }

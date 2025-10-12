@@ -132051,6 +132051,7 @@ MonoBehaviour:
   rightArm: {fileID: 5296297881967605068}
   weaponPrefabs:
   - {fileID: 7896929993975101864, guid: 59a1781a64d4c8c4fbb85453686a515c, type: 3}
+  - {fileID: 7896929993975101864, guid: 433355bd0a5e274409142778b880311b, type: 3}
   - {fileID: 7896929993975101864, guid: 3cf51b44393fa4043a20003c20e3e5b4, type: 3}
   - {fileID: 7896929993975101864, guid: 3638afb2936fd064397e126682322ff6, type: 3}
   - {fileID: 7896929993975101864, guid: 786a7cdbc902d1044b0da9f008da0a67, type: 3}
@@ -134233,6 +134234,10 @@ MonoBehaviour:
   dashDuration: 0.2
   dashCooldown: 5
   ExternalSpeedMult: 1
+  quickTurnKey: 104
+  quickTurnAngle: 180
+  quickTurnDuration: 0.12
+  quickTurnCooldown: 0.5
 --- !u!1 &4401133597006426830
 GameObject:
   m_ObjectHideFlags: 0

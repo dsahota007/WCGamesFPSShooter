@@ -111,7 +111,7 @@ Transform:
   m_GameObject: {fileID: 1294959111783018880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.043096337, z: 0, w: 0.999071}
-  m_LocalPosition: {x: 0.03, y: -0.01, z: 0.02}
+  m_LocalPosition: {x: 0.021, y: 0.038, z: 0.02}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -142,7 +142,7 @@ Transform:
   m_GameObject: {fileID: 4022974244671153971}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.090980224, z: -0, w: -0.9958527}
-  m_LocalPosition: {x: -0.24196017, y: 0.02150011, z: 0.8698908}
+  m_LocalPosition: {x: -0.196, y: 0.02150011, z: 0.667}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -260,7 +260,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.6262003, z: -0, w: 0.7796622}
   m_LocalPosition: {x: -0.109, y: 0.03399992, z: 0.2787429}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.39370078}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2310327404866311926}
@@ -315,11 +315,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponOffset: {fileID: 1264731600694966330}
-  magazine: {fileID: 0}
+  magazine: {fileID: 443991320898253781}
   firePoint: {fileID: 2902328080267144550}
   bulletPrefab: {fileID: 6410560179999154620, guid: fdcae1bd4cb08e341ad2dcfa0e7cb465,
     type: 3}
-  weaponName: AK-47
+  weaponName: MP40
   fireType: 2
   fireRate: 0.1
   burstDelay: 0.02
@@ -351,17 +351,17 @@ MonoBehaviour:
   controller: {fileID: 0}
   targetKickbackOffset: {x: 0.03, y: 0, z: 0}
   isWeaponBeingShowcased: 0
-  leftHoldPos: {x: -0.26, y: -0.2255, z: -0.17}
+  leftHoldPos: {x: -0.29, y: -0.2255, z: -0.05}
   leftHoldRotEuler: {x: -24.22, y: 199.835, z: -50.626}
-  rightHoldPos: {x: -0.05, y: 0.12, z: -0.32}
+  rightHoldPos: {x: -0.05, y: 0.17, z: -0.45}
   rightHoldRotEuler: {x: -51.385, y: -133.7, z: -22.396}
   bulletDamage: 10
   upgradeLevel: 0
   maxUpgradeLevel: 3
-  gunRenderer: {fileID: 0}
-  magazineRenderer: {fileID: 0}
-  papGunMaterial: {fileID: 2100000, guid: 7ddc8d91e3e3cc743890ec2673be481b, type: 2}
-  papMagMaterial: {fileID: 2100000, guid: 8867023f86d0a4e408c73aac2acc8af4, type: 2}
+  gunRenderer: {fileID: 8919101119414605030}
+  magazineRenderer: {fileID: 6295942770350620437}
+  papGunMaterial: {fileID: 2100000, guid: aba28a195d2cdb94e98da0d4350ef005, type: 2}
+  papMagMaterial: {fileID: 2100000, guid: 79838df6c3b0d5f4aaaef73c436c4bf6, type: 2}
   infusion: 0
   fireInfusionVFXPrefab: {fileID: 3473529909581181512, guid: 05030faaf97464749b7c2dbbc4956660,
     type: 3}
