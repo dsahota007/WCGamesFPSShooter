@@ -135595,7 +135595,7 @@ GameObject:
   - component: {fileID: 8670137107313947322}
   - component: {fileID: 8670137107313947321}
   m_Layer: 7
-  m_Name: MainPlayerModelCENTER
+  m_Name: MainPlayerModelCenter
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
