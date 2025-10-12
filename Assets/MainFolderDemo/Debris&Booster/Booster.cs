@@ -7,7 +7,7 @@ public class LaunchPad : MonoBehaviour
 {
     [Header("Launch")]
     public float launchSpeed = 24f;
-    public float launchDuration = 1.25f;
+    //public float launchDuration = 1.25f;
     public string playerTag = "Player";
     public bool grantKineticJump = true;
 
@@ -46,16 +46,16 @@ public class LaunchPad : MonoBehaviour
 
     IEnumerator LaunchCC(CharacterController cc, Vector3 dir, PlayerMovement pm)
     {
-        float end = Time.time + launchDuration;
+        //float end = Time.time + launchDuration;
 
         // BOOST PHASE (actively push)
-        while (Time.time < end)
-        {
+        //while (Time.time )
+        //{
             if (ShouldCancel(pm)) yield break;
 
             cc.Move(dir * launchSpeed * Time.deltaTime);
             yield return null;
-        }
+        
 
         // MOMENTUM PHASE (coast with gravity until grounded)
         Vector3 vel = dir * launchSpeed;
@@ -77,16 +77,16 @@ public class LaunchPad : MonoBehaviour
         if (rb.isKinematic) rb.isKinematic = false;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-        float end = Time.time + launchDuration;
+        //float end = Time.time + launchDuration;
 
         // BOOST PHASE (actively set velocity)
-        while (Time.time < end)
-        {
+        //while (Time.time < end)
+        //{
             if (ShouldCancel(pm)) yield break;
 
             yield return new WaitForFixedUpdate();
             rb.linearVelocity = dir * launchSpeed;
-        }
+        
 
         // After boost, RB just falls under normal physics
     }
