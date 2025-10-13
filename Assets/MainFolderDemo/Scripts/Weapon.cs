@@ -53,6 +53,11 @@ public class Weapon : MonoBehaviour
     public int Tier3clipSize = 60;
     public int Tier3maxReserve = 180;
 
+    [Header("PAP Tier 1 Overrides")]
+    public GameObject papBulletPrefabTier1;      // assign in inspector (your upgraded bullet)
+    public FireType papFireTypeTier1 = FireType.Auto; // what it becomes at Tier 1
+
+
     //[Header("Pack-A-Punch VFX")]
     //public GameObject packVFXPrefab;
     //public Vector3 packVFXOffset = Vector3.zero;
@@ -398,6 +403,17 @@ public class Weapon : MonoBehaviour
 
         isSkinned = true;
     }
+
+    public void ApplyTier1PackOverrides()
+    {
+        if (papBulletPrefabTier1 != null)
+        {
+            bulletPrefab = papBulletPrefabTier1;
+        }
+
+        fireType = papFireTypeTier1;  //new upgrade to singel or burst to auto or same. 
+    }
+
 
 
     private GameObject GetMuzzleFlashPrefab()

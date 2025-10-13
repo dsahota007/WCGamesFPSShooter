@@ -320,7 +320,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 6410560179999154620, guid: fdcae1bd4cb08e341ad2dcfa0e7cb465,
     type: 3}
   weaponName: MP40
-  fireType: 2
+  fireType: 0
   fireRate: 0.1
   burstDelay: 0.02
   reloadMoveAmount: 1.5
@@ -334,6 +334,9 @@ MonoBehaviour:
   Tier2maxReserve: 150
   Tier3clipSize: 60
   Tier3maxReserve: 180
+  papBulletPrefabTier1: {fileID: 6410560179999154620, guid: f3866e6df371a344cb43d39c7fb1ef46,
+    type: 3}
+  papFireTypeTier1: 2
   recoilAngle: 6
   recoilSnappiness: 6
   recoilReturnSpeed: 6

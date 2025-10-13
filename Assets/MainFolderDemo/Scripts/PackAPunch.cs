@@ -220,6 +220,8 @@ public class PackAPunch : MonoBehaviour
                 case 1:
                     w.clipSize = w.Tier1clipSize;
                     w.maxReserve = w.Tier1maxReserve;
+                    w.ApplyTier1PackOverrides();  //apply changes here
+
                     break;
                 case 2:
                     w.clipSize = w.Tier2clipSize;
@@ -250,7 +252,7 @@ public class PackAPunch : MonoBehaviour
             isReady = false;
             storedIndex = -1;
 
-            // 🔓 allow switching again
+            // allow switching again
             weaponManager.disableSwitching = false;
         }
     }
