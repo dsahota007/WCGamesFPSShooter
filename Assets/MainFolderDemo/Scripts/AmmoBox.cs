@@ -41,6 +41,8 @@ public class AmmoBox : MonoBehaviour
             // successful purchase → refill
             RefillCurrentWeaponAmmo(current);
             Debug.Log($"[AmmoBox] Refilled {current.weaponName} for {cost} pts (tier {current.upgradeLevel}).");
+            UI.Main?.ShowCenterPopup("Ammo Replenished", Color.white);
+
         }
         else
         {

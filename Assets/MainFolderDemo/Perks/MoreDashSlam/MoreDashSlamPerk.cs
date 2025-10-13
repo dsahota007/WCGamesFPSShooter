@@ -66,7 +66,7 @@ public class MoreDashSlamPerk : MonoBehaviour
     {
         hasMoreDashSlamPerk = true;
         //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
-
+        UI.Main?.ShowCenterPopup("More Dash Slam Potion Acquired", new Color(0f, 1f, 0.9f));
 
         var pm = FindFirstObjectByType<PlayerMovement>();
         if (pm != null)

@@ -72,6 +72,7 @@ public class ResurrectPerk : MonoBehaviour
         //WE ADD RES LOGIC HERE BUT WE WILL COME BACKK TO THIS ****************************************************************************
         //WE ADD RES LOGIC HERE BUT WE WILL COME BACKK TO THIS ****************************************************************************
 
+        UI.Main?.ShowCenterPopup("Ressurection Potion Acquired", new Color(0.1f, 0.2f, 0.6f));
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.Resurrect);
 

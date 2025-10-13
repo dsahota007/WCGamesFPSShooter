@@ -77,6 +77,9 @@ public class FastHandsPerk : MonoBehaviour
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.FastHands);
         //FindFirstObjectByType<UI>()?.RemovePerkIcon(PerkType.Speed);
 
+        UI.Main?.ShowCenterPopup("Fast Hands Potion Acquired", new Color(0.5f, 1f, 0.4f));
+
+
         if (player != null && PlayerDrinkVFX != null)
         {
             //GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position + Vector3.up * 2.85f, Quaternion.Euler(180f, 0f, 0f));  

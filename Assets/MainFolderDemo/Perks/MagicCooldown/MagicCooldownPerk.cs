@@ -71,7 +71,7 @@ public class MagicCooldownPerk : MonoBehaviour
         MagicManager.GlobalCooldownMult *= 1.5f;  // 👈 apply magic cooldown upgrade
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.MagicCooldown);
-
+        UI.Main?.ShowCenterPopup("Magic Cooldown Potion Acquired", new Color(0.6f, 0.3f, 1f));
         if (player != null && PlayerDrinkVFX != null)
         {
             GameObject PerkVFX = Instantiate(PlayerDrinkVFX, player.transform.position, Quaternion.identity);

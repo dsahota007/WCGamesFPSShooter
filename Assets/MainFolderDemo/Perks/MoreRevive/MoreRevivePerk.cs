@@ -70,7 +70,7 @@ public class MoreRevivePerk : MonoBehaviour
     {
         hasMoreRevivePerk = true;
         player?.GetComponent<PlayerAttributes>()?.IncreaseRegenFromMoreRevivePerk(timeToRegen, regenRatePerSecondIncrease);
-
+        UI.Main?.ShowCenterPopup("More Revive Potion Acquired", new Color(0.6f, 0.8f, 1f));
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.Revive);
 
         if (player != null && PlayerDrinkVFX != null)

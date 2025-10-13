@@ -69,7 +69,7 @@ public class LessAmmoConsumePerk : MonoBehaviour
         hasLessAmmoPerk = true;
         //player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
         Weapon.GlobalNoConsumeAmmoChance = Mathf.Max(Weapon.GlobalNoConsumeAmmoChance, AmountOfPrecentToNotConsume); // 15%
-
+        UI.Main?.ShowCenterPopup("Less Ammo Potion Potion Acquired", new Color(1f, 0.4f, 0.7f));
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.LessAmmoConsume);
 

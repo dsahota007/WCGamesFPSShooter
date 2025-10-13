@@ -90,6 +90,8 @@ public class AdrenalinePerk : MonoBehaviour
     IEnumerator DoPerkDrink(ArmMovementMegaScript arms)
     {
         hasAdrenalinePerk = true;
+        UI.Main?.ShowCenterPopup("Adrenaline Potion Acquired", Color.white);
+
 
         // UI icon (add PerkType.Adrenaline in your enum + UI if you want a unique icon)
         ui?.ShowPerkIcon(PerkType.Adrenaline); // or PerkType.Adrenaline if you add one

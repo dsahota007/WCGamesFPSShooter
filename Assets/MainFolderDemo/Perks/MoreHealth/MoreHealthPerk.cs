@@ -71,7 +71,7 @@ public class MoreHealthPerk : MonoBehaviour
     {
         hasMoreHealthPerk = true;
         player?.GetComponent<PlayerAttributes>()?.IncreaseHealthFromMoreHealthPerk(newHealth);
-
+        UI.Main?.ShowCenterPopup("More Health Potion Acquired", new Color(1f, 0.1f, 0.1f));
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.Health);
 
         if (player != null && PlayerDrinkVFX != null)

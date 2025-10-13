@@ -69,6 +69,7 @@ public class MoreFireRatePerk : MonoBehaviour
         Weapon.GlobalFireRateMult *= 1.5f;   //perk effect
 
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.FireRate);
+        UI.Main?.ShowCenterPopup("More FireRate Potion Acquired", new Color(1f, 0.5f, 0f));
 
         if (player != null && PlayerDrinkVFX != null)
         {

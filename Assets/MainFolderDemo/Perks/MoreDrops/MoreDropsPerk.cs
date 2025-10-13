@@ -70,7 +70,7 @@ public class MoreDropsPerk : MonoBehaviour
         //Weapon.GlobalFireRateMult *= 1.5f;   // 👈 perk effect
         DropSpawner.GlobalDropChanceMult *= Mathf.Max(0.01f, dropChanceMultiplier);
         //Weapon.GlobalNoConsumeAmmoChance = Mathf.Max(Weapon.GlobalNoConsumeAmmoChance, 0.10f); // 10%
-
+        UI.Main?.ShowCenterPopup("More Drops Potion Acquired", new Color(0.8f, 1f, 0.9f));
 
 
 

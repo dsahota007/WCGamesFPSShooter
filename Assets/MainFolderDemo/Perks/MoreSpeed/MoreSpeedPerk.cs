@@ -69,7 +69,7 @@ public class MoreSpeedPerk : MonoBehaviour
     {
         hasMoreSpeedPerk = true;
         player?.GetComponent<PlayerMovement>()?.IncreaseSpeedFromMoreSpeedPerk(upgradedWalkSpeed, upgradedSprintSpeed);
-
+        UI.Main?.ShowCenterPopup("More Speed Potion Acquired", new Color(1f, 0.75f, 0.3f));
         FindFirstObjectByType<UI>()?.ShowPerkIcon(PerkType.Speed);
 
         if (player != null && PlayerDrinkVFX != null)

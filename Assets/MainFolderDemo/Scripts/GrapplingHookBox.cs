@@ -69,6 +69,8 @@ public class GrapplingHookBox : MonoBehaviour
 
         // tiny feedback (optional)
         CameraScript.Main?.Shake(0.2f, 1.6f, 70f, false);
+        UI.Main?.ShowCenterPopup("Grappling Hook Acquired", Color.white);  //new Color(0f, 0f, 0f));
+
     }
 
 
