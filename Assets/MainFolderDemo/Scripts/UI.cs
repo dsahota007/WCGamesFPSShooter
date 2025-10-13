@@ -264,7 +264,23 @@ public class UI : MonoBehaviour
     public Text kineticSlamControlText;   // this is your Jump&Slam key
     public Text grenadeControlText;
     public Text summonMagicControlText;
- 
+
+    [Header("Center Popup")]
+    public RectTransform centerPopupRoot;   // an empty RectTransform, anchored center of your Canvas
+    public Text centerPopupPrefab;          // a Text prefab (no scripts), center-aligned
+    public float centerPopupFadeIn = 0.25f;
+    public float centerPopupHold = 0.60f;
+    public float centerPopupFadeOut = 0.40f;
+    public Vector2 centerPopupStartScale = new Vector2(0.8f, 0.8f);
+    public Vector2 centerPopupEndScale = new Vector2(1.15f, 1.15f);
+    public Color centerPopupColor = Color.white;
+
+    public static UI Main;
+    void Awake()
+    {
+        if (Main != null && Main != this) { Destroy(gameObject); return; }
+        Main = this;
+    }
 
     void Start()
     {
@@ -2340,6 +2356,72 @@ public class UI : MonoBehaviour
         if (grenadeControlText) grenadeControlText.text = km.GetKeyName("Grenade");
         if (summonMagicControlText) summonMagicControlText.text = km.GetKeyName("SummonMagic");
     }
+
+    //-- pop up text
+
+    public void ShowCenterPopup(string message) => ShowCenterPopup(message, centerPopupColor);
+
+    public void ShowCenterPopup(string message, Color color)
+    {
+        if (centerPopupRoot == null || centerPopupPrefab == null) return;
+        StartCoroutine(CenterPopupRoutine(message, color));
+    }
+
+    private IEnumerator CenterPopupRoutine(string message, Color color)
+    {
+        // spawn
+        Text row = Instantiate(centerPopupPrefab, centerPopupRoot);
+        RectTransform rt = row.rectTransform;
+        rt.anchoredPosition = Vector2.zero;
+        rt.localScale = new Vector3(centerPopupStartScale.x, centerPopupStartScale.y, 1f);
+
+        // ensure a CanvasGroup for fading
+        CanvasGroup cg = row.GetComponent<CanvasGroup>();
+        if (cg == null) cg = row.gameObject.AddComponent<CanvasGroup>();
+        cg.alpha = 0f;
+
+        // set visuals
+        color.a = 1f;                 // full color; alpha comes from CanvasGroup
+        row.color = color;
+        row.text = message;
+        row.raycastTarget = false;    // don't block clicks
+
+        // FADE IN (scale up a bit)
+        float t = 0f;
+        float fin = Mathf.Max(0.0001f, centerPopupFadeIn);
+        Vector2 s0 = centerPopupStartScale;
+        Vector2 s1 = Vector2.one;     // settle at 1.0x on fade-in
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / fin;
+            float k = Mathf.Clamp01(t);
+            cg.alpha = Mathf.Lerp(0f, 1f, k);
+            Vector2 s = Vector2.Lerp(s0, s1, k);
+            rt.localScale = new Vector3(s.x, s.y, 1f);
+            yield return null;
+        }
+
+        // HOLD
+        float hold = Mathf.Max(0f, centerPopupHold);
+        if (hold > 0f) yield return new WaitForSecondsRealtime(hold);
+
+        // FADE OUT (continue to grow slightly)
+        t = 0f;
+        float fout = Mathf.Max(0.0001f, centerPopupFadeOut);
+        Vector2 s2 = centerPopupEndScale;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / fout;
+            float k = Mathf.Clamp01(t);
+            cg.alpha = Mathf.Lerp(1f, 0f, k);
+            Vector2 s = Vector2.Lerp(Vector2.one, s2, k);
+            rt.localScale = new Vector3(s.x, s.y, 1f);
+            yield return null;
+        }
+
+        if (row != null) Destroy(row.gameObject);
+    }
+
 
 
 }

@@ -69,12 +69,36 @@ public class MagicStation : MonoBehaviour
         // pay cost (block if not enough)
         if (!points.TrySpend(cost))
         {
-            if (ui != null) ui.ShowTemporaryMagicMessage("Not enough points");
+            if (ui != null)
+            {
+                ui.ShowTemporaryMagicMessage("Not enough points");
+                ui.ShowCenterPopup("Not Enough Points", Color.red); // POPUP
+            }
             return;
         }
-
-        // equip and confirm
         magicManager.SetMagicType(magicType);
-        if (ui != null) ui.ShowTemporaryMagicMessage(magicType.ToString() + " Magic purchased");
+        if (ui != null)
+        {
+            ui.ShowTemporaryMagicMessage(magicType.ToString() + " Magic purchased");
+            ui.ShowCenterPopup(magicType + " Magic Purchased", PopupColorFor(magicType)); // POPUP
+        }
     }
+
+    Color PopupColorFor(MagicType t)
+    {
+        switch (t)
+        {
+            case MagicType.Normal: return new Color(1f, 0.35f, 0.2f);   // matches your normalColor vibe
+            case MagicType.Crystal: return new Color(0.35f, 0.85f, 1f);
+            case MagicType.Void: return new Color(0.6f, 0.3f, 1f);
+            case MagicType.Ice: return new Color(0.6f, 0.9f, 1f);
+            case MagicType.Venom: return new Color(0.5f, 1f, 0.4f);
+            case MagicType.Lightning: return new Color(1f, 1f, 0.4f);
+            case MagicType.Wind: return new Color(0.8f, 1f, 0.9f);
+            case MagicType.Meteor: return new Color(1f, 0.5f, 0.1f);
+            case MagicType.Crimson: return new Color(1f, 0.2f, 0.35f);
+            default: return Color.white;
+        }
+    }
+
 }
