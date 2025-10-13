@@ -786,7 +786,11 @@ public class Weapon : MonoBehaviour
         }
 
         FindFirstObjectByType<UI>()?.GetInfusionSpriteForSlots(type);   //this is for the SLOT in bottom right in UI
+        if (type != InfusionType.None)
+        {
+            UI.Main?.ShowCenterPopup($"{GetDisplayName()} infused with {type} Magic", InfusionColor(type));
 
+        }
     }
 
 
@@ -1077,6 +1081,38 @@ public class Weapon : MonoBehaviour
             }
         }
     }
+    private static Color InfusionColor(InfusionType t)
+    {
+        switch (t)
+        {
+            case InfusionType.Fire: return new Color(1f, 0.35f, 0.2f);   // orange-red
+            case InfusionType.Crystal: return new Color(0.35f, 0.85f, 1f);   // cyan
+            case InfusionType.Void: return new Color(0.6f, 0.3f, 1f);     // violet
+            case InfusionType.Ice: return new Color(0.6f, 0.9f, 1f);     // light blue
+            case InfusionType.Venom: return new Color(0.5f, 1f, 0.4f);     // green
+            case InfusionType.Lightning: return new Color(0.35f, 0.85f, 1f);
+            case InfusionType.Wind: return new Color(0.8f, 1f, 0.9f);     // mint
+            case InfusionType.Meteor: return new Color(1f, 0.5f, 0.1f);     // orange
+            case InfusionType.Crimson: return new Color(1f, 0.2f, 0.35f);    // crimson
+            default: return Color.white;
+        }
+    }
+
+    public string GetDisplayName()
+    {
+        if (upgradeLevel <= 0) return weaponName;
+
+        string tier = upgradeLevel switch
+        {
+            1 => "Tier I",
+            2 => "Tier II",
+            3 => "Tier III",
+            _ => "Max Tier"
+        };
+        return $"{weaponName} {tier}";
+    }
+
+
 
     //for ui -- getter methods
     public int GetCurrentAmmo() => currentAmmo;

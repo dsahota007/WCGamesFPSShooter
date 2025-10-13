@@ -59,12 +59,12 @@ public class MagicStation : MonoBehaviour
 
         UI ui = FindFirstObjectByType<UI>();            //fetch scirpt ui
 
-        // already equipped?
-        //if (magicManager.GetCurrentMagicType() == magicType)
-        //{
-        //    if (ui != null) ui.ShowTemporaryMagicMessage(magicType.ToString() + " Magic already equipped");  //we got the same magic already equipped
-        //    return;
-        //}
+        //already equipped?
+        if (magicManager.GetCurrentMagicType() == magicType)
+        {
+            //if (ui != null) ui.ShowTemporaryMagicMessage(magicType.ToString() + " Magic already equipped");  //we got the same magic already equipped
+            return;
+        }
 
         // pay cost (block if not enough)
         if (!points.TrySpend(cost))
@@ -72,7 +72,7 @@ public class MagicStation : MonoBehaviour
             if (ui != null)
             {
                 ui.ShowTemporaryMagicMessage("Not enough points");
-                ui.ShowCenterPopup("Not Enough Points", Color.red); // POPUP
+                //ui.ShowCenterPopup("Not Enough Points", Color.red); // POPUP
             }
             return;
         }

@@ -1584,7 +1584,7 @@ RectTransform:
   m_Father: {fileID: 199234115}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -26903,7 +26903,7 @@ RectTransform:
   m_Father: {fileID: 1997391840}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -34229,7 +34229,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02d475b85354eb43947ff9daa895714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropChance: 0.8
+  dropChance: 0.005
   pickupPrefabs:
   - {fileID: 4943829022777390022, guid: 2bef4749036d684448815405d878c249, type: 3}
   - {fileID: 4943829022777390022, guid: fbffac4892099554c9213caea41fb0cc, type: 3}
@@ -40993,7 +40993,7 @@ RectTransform:
   m_Father: {fileID: 1871936851}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -41931,7 +41931,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1022961016
 Transform:
   m_ObjectHideFlags: 0
@@ -55322,7 +55322,7 @@ RectTransform:
   m_Father: {fileID: 1981624219}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -64559,7 +64559,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   zombiePrefabs:
   - {fileID: 7560827146355968688, guid: 89d43b2956839244988f109367c4f229, type: 3}
-  - {fileID: 2087124329}
   spawnPoints:
   - {fileID: 1632199129}
   startZombies: 568
@@ -66167,7 +66166,7 @@ RectTransform:
   m_Father: {fileID: 1115472128}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -80827,7 +80826,7 @@ RectTransform:
   m_Father: {fileID: 1731497549}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -91416,12 +91415,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082434319}
   m_CullTransparentMesh: 1
---- !u!1 &2087124329 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5213014239458159033, guid: 4d737c36734c19a49acb085898dba25d,
-    type: 3}
-  m_PrefabInstance: {fileID: 1170849120}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2092633411
 GameObject:
   m_ObjectHideFlags: 0
@@ -102621,9 +102614,9 @@ MonoBehaviour:
   leftArm: {fileID: 2154476448309521855}
   rightArm: {fileID: 5296297881967605068}
   weaponPrefabs:
+  - {fileID: 7896929993975101864, guid: 3cf51b44393fa4043a20003c20e3e5b4, type: 3}
   - {fileID: 7896929993975101864, guid: 59a1781a64d4c8c4fbb85453686a515c, type: 3}
   - {fileID: 7896929993975101864, guid: 433355bd0a5e274409142778b880311b, type: 3}
-  - {fileID: 7896929993975101864, guid: 3cf51b44393fa4043a20003c20e3e5b4, type: 3}
   - {fileID: 7896929993975101864, guid: 3638afb2936fd064397e126682322ff6, type: 3}
   - {fileID: 7896929993975101864, guid: 786a7cdbc902d1044b0da9f008da0a67, type: 3}
   - {fileID: 7896929993975101864, guid: 8cfb9d92a596d79478b329debec6748f, type: 3}

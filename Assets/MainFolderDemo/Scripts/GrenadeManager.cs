@@ -92,6 +92,11 @@ public class GrenadeManager : MonoBehaviour
         currentType = type; //weWhen the player selects a grenade type in your UI panel, you call this. It simply records “the current grenade type” you’re using.
         FindFirstObjectByType<UI>()?.GetGrenadeSpriteForSlots(type);  // this is to set the image in UI
 
+
+        //-- pop up text
+        var ui = FindFirstObjectByType<UI>();
+        ui?.ShowCenterPopup($"{type} Grenade Equipped", GetGrenadeColor(type));
+
     }
 
     public GameObject GetCurrentPrefab()
@@ -128,9 +133,26 @@ public class GrenadeManager : MonoBehaviour
         return true;
     }
 
-    // Optional: add ammo for a type (caps respected) -----!!!!!!!!!!!!!! future stuff right here
+    // Optional -- add ammo for a type (caps respected) -----!!!!!!!!!!!!!! future stuff right here
     public void Give(GrenadeType type, int amount)
     {
         count[type] = Mathf.Clamp(GetCount(type) + amount, 0, GetCap(type));
+    }
+
+    private Color GetGrenadeColor(GrenadeType t)
+    {
+        switch (t)
+        {
+            case GrenadeType.Frag: return new Color(0.76f, 0.29f, 0.16f); // rusty red-orange
+            case GrenadeType.Impact: return new Color(0.90f, 0.48f, 0.12f); // hot orange
+            case GrenadeType.Semtex: return new Color(0.77f, 0.23f, 0.18f); // deep red
+            case GrenadeType.Bio: return new Color(0.37f, 0.95f, 0.42f); // toxic neon green
+            case GrenadeType.SulfuricNapalm: return new Color(0.31f, 0.76f, 1.00f); // bright cyan
+            case GrenadeType.CrystalCluster: return new Color(0.42f, 0.91f, 1.00f); // turquoise/icy blue
+            case GrenadeType.Bastion: return new Color(0.92f, 0.76f, 0.35f); // warm gold
+            case GrenadeType.Ragnarok: return new Color(0.90f, 0.86f, 0.35f); // electric yellow
+            case GrenadeType.Spider: return new Color(0.85f, 0.85f, 0.85f); // light silver
+            default: return Color.white;
+        }
     }
 }
