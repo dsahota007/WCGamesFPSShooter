@@ -14660,8 +14660,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1029285694}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -15907,7 +15907,7 @@ RectTransform:
   m_Father: {fileID: 1620436619}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -33880,7 +33880,7 @@ RectTransform:
   m_Father: {fileID: 1418591604}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -55265,8 +55265,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 804685196}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -61565,7 +61565,7 @@ RectTransform:
   m_Father: {fileID: 278202409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -66947,7 +66947,7 @@ RectTransform:
   m_Father: {fileID: 856218976}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -97990,12 +97990,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d59a1e1fcf4eb9a4ea910968b2ceb0cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chaosButton: {fileID: 86897650}
-  chaosObject: {fileID: 205301631}
   pausePanel: {fileID: 1573899800}
   resumeButton: {fileID: 2023241329}
   toggleKey: 112
   lockCursorWhenPlaying: 1
+  hudRoots: []
+  postProcessVolume: {fileID: 1597167267}
+  motionBlurToggle: {fileID: 1057420344}
+  vignetteToggle: {fileID: 454280795}
+  ambientOcclusionToggle: {fileID: 734682024}
+  grainToggle: {fileID: 1057669112}
   vsyncToggle: {fileID: 2007568850}
   fpsSlider: {fileID: 1108210821}
   fpsValueText: {fileID: 1992956177}
@@ -98012,12 +98016,37 @@ MonoBehaviour:
   defaultFOV: 90
   minFOV: 60
   maxFOV: 90
-  motionBlurToggle: {fileID: 1057420344}
-  vignetteToggle: {fileID: 454280795}
-  ambientOcclusionToggle: {fileID: 734682024}
-  grainToggle: {fileID: 1057669112}
-  postProcessVolume: {fileID: 1597167267}
   enemyHealthBarToggle: {fileID: 651122031}
+  mythicalBorderToggle: {fileID: 0}
+  mythicalBorder: {fileID: 0}
+  ControlToggle: {fileID: 0}
+  ControlObject: {fileID: 0}
+  hintText: {fileID: 0}
+  jumpBtn: {fileID: 0}
+  jumpKeyText: {fileID: 0}
+  interactBtn: {fileID: 0}
+  interactKeyText: {fileID: 0}
+  dashBtn: {fileID: 0}
+  dashKeyText: {fileID: 0}
+  slideBtn: {fileID: 0}
+  slideKeyText: {fileID: 0}
+  sprintBtn: {fileID: 0}
+  sprintKeyText: {fileID: 0}
+  summonBtn: {fileID: 0}
+  summonKeyText: {fileID: 0}
+  fireBtn: {fileID: 0}
+  fireKeyText: {fileID: 0}
+  adsBtn: {fileID: 0}
+  adsKeyText: {fileID: 0}
+  grenadeBtn: {fileID: 0}
+  grenadeKeyText: {fileID: 0}
+  reloadBtn: {fileID: 0}
+  reloadKeyText: {fileID: 0}
+  switchBtn: {fileID: 0}
+  switchKeyText: {fileID: 0}
+  grappleBtn: {fileID: 0}
+  grappleKeyText: {fileID: 0}
+  preventDuplicates: 1
 --- !u!1001 &656111891
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -116198,7 +116227,7 @@ RectTransform:
   m_Father: {fileID: 1674124273}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -126578,7 +126607,7 @@ RectTransform:
   m_Father: {fileID: 878008711}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -179565,23 +179594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fedc9c35d33c9544bd5239e7958d571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sha: {fileID: 4800000, guid: 99d80d0fdb7c6724c89e77d81bbc026a, type: 3}
-  mat: {fileID: 0}
-  flatLut: {fileID: 2800000, guid: b536a29ef1c463b4a894cf616766d37b, type: 3}
-  bayerTexture: {fileID: 2800000, guid: eac7505667530464e91debe0b4a8492b, type: 3}
-  ColorBleed: 0.25
-  LinesMult: 0.9
-  ColorShift: 0.29
-  newScreenSize: {x: 160, y: 200}
-  screenStretching: {x: 2, y: 1}
-  CustomScreenSize: 1
-  AspectRatioBars: 0
-  OneBitColor: 0
-  VerticalLines: 0
-  HorizontalLines: 0
-  Dithering: 1
-  Paletting: 1
-  clearNextUpdate: 0
 --- !u!114 &1223491012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179654,16 +179666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1a4c69f7a9d3ea43907b5765229dc85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TextureWarpingFactor: 1
-  _TextureWarpingMode: 0
-  _VertexGridResolution: 50
-  _VertexWobbleMode: 1
-  _UseRetroVertexLighting: 1
-  _RetroLightingNormalFactor: 0.5
-  _RetroLightFalloffStart: 0.75
-  _FlatShadingMode: 0
-  _TriangleSortMode: 3
-  _DepthDebugView: 0
 --- !u!114 &1223491014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179676,18 +179678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 433faa8b758afed4f9295b193c697276, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PixelationFactor: 0.2
-  _ColorEmulationMode: 2
-  _FullscreenColorDepth: {x: 256, y: 256, z: 256}
-  _FullscreenDitherDepth: {x: 32, y: 32, z: 32}
-  _DitheringMatrixSize: 2
-  _DitheringScale: 0.2
-  _InterlacingSize: 1
-  _PostProcessShader: {fileID: 4800000, guid: 56d52fd5b7c6911468179e5a7359ce0e, type: 3}
-  _PostProcessShaderAccurate: {fileID: 4800000, guid: 2ebed186567d3c244a87538744a62920,
-    type: 3}
-  _PixelationShader: {fileID: 4800000, guid: f2da0e2a14a532548b5db043244b3df1, type: 3}
-  _InterlacingShader: {fileID: 4800000, guid: 03ebd34214b41ef459d7ee6753b062be, type: 3}
 --- !u!114 &1223491015
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -179700,7 +179690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faf4171cb4dee5249b6795e3b9f35ff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
 --- !u!81 &1223491016
 AudioListener:
   m_ObjectHideFlags: 0
@@ -197489,6 +197478,11 @@ MonoBehaviour:
     type: 3}
   grenadeSpawn: {fileID: 1464311271}
   throwForce: 14
+  useRightArmForGrapple: 0
+  grappleLocalOffset: {x: -0.048, y: 0, z: 0}
+  grappleRotOffsetEuler: {x: 0, y: -10, z: -6}
+  grappleRaiseSpeed: 14
+  grappleReturnSpeed: 10
   perkDropOffset: {x: -0.5, y: -0.6, z: 0.18}
   perkDropTime: 0.2
   perkHoldTime: 0.15
@@ -222034,7 +222028,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1524405839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222050,6 +222044,7 @@ MonoBehaviour:
   player: {fileID: 1683422980}
   WeaponAmmoText: {fileID: 1489792369}
   WeaponNameText: {fileID: 2130866861}
+  setBonusText: {fileID: 0}
   MysteryBoxText: {fileID: 1702894111}
   mysteryBox: {fileID: 302661237}
   roundText: {fileID: 495072374}
@@ -222059,8 +222054,15 @@ MonoBehaviour:
   playerMovement: {fileID: 1683422979}
   kineticJumpHintText: {fileID: 0}
   slamHintText: {fileID: 0}
+  kineticJumpCooldownSlider: {fileID: 0}
   playerHealthSlider: {fileID: 2022183864}
   pointsText: {fileID: 1748654969}
+  pointsToastRoot: {fileID: 0}
+  pointsToastPrefab: {fileID: 0}
+  toastYJitter: 18
+  toastXJitter: 6
+  toastStartBias: {x: -10, y: 0}
+  toastSlidePixels: 80
   ammoBoxText: {fileID: 1700028272}
   ammoBox: {fileID: 2139667510}
   magicStations:
@@ -222197,10 +222199,33 @@ MonoBehaviour:
   dashCooldownSlider: {fileID: 0}
   dashFill: {fileID: 0}
   dashReadyColor: {r: 1, g: 1, b: 1, a: 1}
+  dashVFXPicture: {fileID: 0}
   postProcessVolume: {fileID: 0}
   eliminationStackRoot: {fileID: 0}
   eliminationRowPrefab: {fileID: 0}
   maxEliminationRows: 10
+  DebrisText: {fileID: 0}
+  grappleHookBox: {fileID: 0}
+  grappleHookText: {fileID: 0}
+  grappleCrosshair: {fileID: 0}
+  grappleHook: {fileID: 0}
+  requirePurchase: 1
+  grappleCooldownSlider: {fileID: 0}
+  grappleCooldownFill: {fileID: 0}
+  grappleSlotBG: {fileID: 0}
+  grappleSlotRoot: {fileID: 0}
+  dashControlText: {fileID: 0}
+  kineticSlamControlText: {fileID: 0}
+  grenadeControlText: {fileID: 0}
+  summonMagicControlText: {fileID: 0}
+  centerPopupRoot: {fileID: 0}
+  centerPopupPrefab: {fileID: 0}
+  centerPopupFadeIn: 0.25
+  centerPopupHold: 0.6
+  centerPopupFadeOut: 0.4
+  centerPopupStartScale: {x: 0.8, y: 0.8}
+  centerPopupEndScale: {x: 1.15, y: 1.15}
+  centerPopupColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &1524405840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235434,7 +235459,7 @@ RectTransform:
   m_Father: {fileID: 707526507}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -245862,7 +245887,6 @@ MonoBehaviour:
   dashSpeed: 40
   dashDuration: 0.1
   dashCooldown: 0.2
-  dashVFX: {fileID: 0}
   ExternalSpeedMult: 1
 --- !u!4 &1683422980
 Transform:
@@ -245873,7 +245897,7 @@ Transform:
   m_GameObject: {fileID: 1683422978}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.9982275, z: -0, w: 0.059514143}
-  m_LocalPosition: {x: 448.9, y: 32.59, z: 456.9}
+  m_LocalPosition: {x: 448.9, y: 23.12, z: 456.9}
   m_LocalScale: {x: 1, y: 1.0899999, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -245987,7 +246011,20 @@ MonoBehaviour:
   hitmarkerScaleLerp: 12
   hitmarkerDefaultScale: {x: 0, y: 0, z: 0}
   hitmarkerTargetScale: {x: 0, y: 0, z: 0}
+  airTimeThreshold: 1
+  groundShakeDuration: 0.3
+  groundShakeAmplitude: 0.08
+  groundShakeFrequency: 26
+  slamVFXPrefab: {fileID: 0}
+  slamVFXOffset: {x: 0, y: 0, z: 0}
+  slamVFXEuler: {x: 0, y: 0, z: 0}
+  slamVFXScale: {x: 1, y: 1, z: 1}
+  slamVFXLifetime: 2
+  placeVFXOnGround: 1
   cameraLocked: 0
+  quickTurnAngle: 180
+  quickTurnDuration: 0.12
+  quickTurnCooldown: 0.4
 --- !u!114 &1683422985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267793,8 +267830,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 937190297}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -268849,7 +268886,7 @@ RectTransform:
   m_Father: {fileID: 1355421973}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -305056,7 +305093,7 @@ RectTransform:
   m_Father: {fileID: 147832261}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
