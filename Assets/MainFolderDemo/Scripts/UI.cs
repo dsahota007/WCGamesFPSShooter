@@ -49,7 +49,7 @@ public class UI : MonoBehaviour
     private float kineticHintReadyTime = -999f; // when the hint is allowed to appear
 
     [Header("Player Health UI")]
-    public Slider playerHealthSlider;  
+    public Slider playerHealthSlider;
 
     [Header("Points UI")]
     public Text pointsText;
@@ -83,8 +83,8 @@ public class UI : MonoBehaviour
     //public MagicStation WindMagicStation;
     //public MagicStation MeteorMagicStation;
     //public MagicStation CrimsonMagicStation;
-    
-    
+
+
     [Header("Magic Station UI")]
     public MagicStationUI[] magicStations;
     public Text NoMoneyStatusText;
@@ -95,7 +95,7 @@ public class UI : MonoBehaviour
     public Image magicCooldownFill;
 
     [Header("Magic Cooldown Colors")]
-    public Color normalColor = new Color(1f, 0.35f, 0.2f);      
+    public Color normalColor = new Color(1f, 0.35f, 0.2f);
     public Color crystalColor = new Color(0.35f, 0.85f, 1f);
     public Color voidColor = new Color(0.6f, 0.3f, 1f);
     public Color iceColor = new Color(0.6f, 0.9f, 1f);
@@ -121,7 +121,7 @@ public class UI : MonoBehaviour
     //-------------------- grenade
 
     [Header("Grenade Chest UI")]
-    public GrenadeChest grenadeChest;   
+    public GrenadeChest grenadeChest;
     public Text grenadePrompt;     // "Press [E] to open"
     public GameObject grenadePanel;
     public Text grenadeAmountText;
@@ -162,7 +162,7 @@ public class UI : MonoBehaviour
 
     private readonly List<PerkType> _perkOrder = new List<PerkType>();  //a list that remembers which perks were added and in what order (first → last). Useful if you ever need to read them back in order.
     private readonly Dictionary<PerkType, Image> _activePerkIcons = new Dictionary<PerkType, Image>();  //map/dict so we can perkkType --> img assign to that perk. 
-    
+
     public Text fireRatePerkText;
     public Text speedPerkText;
     public Text healthPerkText;
@@ -223,8 +223,8 @@ public class UI : MonoBehaviour
     public GameObject crimsonMagicVFX;
 
     [Header("Dash UI")]
-    public Slider dashCooldownSlider;    
-    public Image dashFill;               
+    public Slider dashCooldownSlider;
+    public Image dashFill;
     public Color dashReadyColor = Color.white;
     public Image dashVFXPicture;
     //public Color dashRechargingColor = new Color(1f, 1f, 1f, 0.6f);
@@ -251,6 +251,18 @@ public class UI : MonoBehaviour
     private float _tallyEndTime = 0f;
     private Coroutine _tallyCo;
 
+    public float tallyRepopUp = 0.06f;     // time to scale up
+    public float tallyRepopDown = 0.10f;   // time to settle back
+    public float tallyPopScale = 1.12f;    // how big the pop gets
+    private Coroutine _tallyRepopCo;       // running repop anim
+    public float tallyCountStep = 0.015f; // seconds per +1 (fast)
+    private Coroutine _tallyCountCo;
+    private int _displayTotal = 0;        // what’s currently shown
+
+    public float tallySpeedMultiplier = 1f;
+
+    public float tallyIdleTimeout = 10f;   // seconds with no new AddKillPointsTally() before we force-fade
+    private float _lastAddTime = -999f;
 
     [Header("Debris")]
     public Text DebrisText;
@@ -296,7 +308,7 @@ public class UI : MonoBehaviour
     void Start()
     {
         magicManager = FindFirstObjectByType<MagicManager>();  // Find it once at start
-        grenadeManager = FindFirstObjectByType<GrenadeManager>();  
+        grenadeManager = FindFirstObjectByType<GrenadeManager>();
         arm = FindFirstObjectByType<ArmMovementMegaScript>();
 
         if (grenadePanel) grenadePanel.SetActive(false); //set panel to false off rip
@@ -336,7 +348,7 @@ public class UI : MonoBehaviour
 
         if (dashVFXPicture)
         {
-            dashVFXPicture.gameObject.SetActive(false); 
+            dashVFXPicture.gameObject.SetActive(false);
         }
 
         if (postProcessVolume != null && postProcessVolume.profile != null)
@@ -535,9 +547,9 @@ public class UI : MonoBehaviour
         else if (PlayerIsCloseCanGrabWeapon && mysteryBox.GetCurrentPreview() != null)
         {
             Weapon weapon = mysteryBox.GetCurrentPreview().GetComponent<Weapon>();   //so we get the weapon adn than grab the Weapon.cs script 
-            
+
             string weaponName = (weapon != null) ? weapon.weaponName : "Unknown";    //if we find weapon script use that name if we cant use unkown
-            
+
             string interactKey = KeybindManager.Instance.GetKeyName("Interact"); // or whatever you called it
             MysteryBoxText.text = $"Press [{interactKey}] to pick up: {weaponName}";
 
@@ -1015,7 +1027,7 @@ public class UI : MonoBehaviour
             FindFirstObjectByType<MoreDashSlamPerk>()?.hasMoreDashSlamPerk ?? false,
             FindFirstObjectByType<MoreDashSlamPerk>()?.cost ?? 0
         );
-        
+
         HandlePerkStationUI(
             FindFirstObjectByType<ResurrectPerk>(),
             resurrectPerkText,
@@ -1374,14 +1386,14 @@ public class UI : MonoBehaviour
             if (pm != null && pm.GetPoints() >= COST_TO_OPEN)
             {
                 OpenGrenadePanel(); // only opens if you have >= 500
-            } 
+            }
         }
 
     }
 
     void OpenGrenadePanel()
     {
-        grenadePanelOpen = true;        
+        grenadePanelOpen = true;
         grenadePanel.SetActive(true);
         grenadePrompt.gameObject.SetActive(false);  // hide prompt
 
@@ -1478,7 +1490,7 @@ public class UI : MonoBehaviour
     public void ShowTemporaryGrenadeMessage(string message)
     {
         if (grenadeStatusText == null) return;              //if you alerady have the text GTFO this code
-        if (grenadeMsgCo != null) StopCoroutine(grenadeMsgCo);      
+        if (grenadeMsgCo != null) StopCoroutine(grenadeMsgCo);
         grenadeMsgCo = StartCoroutine(GrenadeMsgRoutine(message));  //start the message for a quick sec
     }
 
@@ -1874,8 +1886,8 @@ public class UI : MonoBehaviour
     //-------------------------- perk ICON logic
     public void ShowPerkIcon(PerkType type)
     {
-        if (perkBar == null || perkIconPrefab == null) return;          
-        if (_activePerkIcons.ContainsKey(type)) return;                 
+        if (perkBar == null || perkIconPrefab == null) return;
+        if (_activePerkIcons.ContainsKey(type)) return;
 
         Sprite s = GetPerkSprite(type);
         if (s == null) return;
@@ -1962,7 +1974,7 @@ public class UI : MonoBehaviour
         }
 
         const float InteractionRange = 3f;     //determine the distance (interationRange)
-            
+
         float dist = Vector3.Distance(player.position, perkObj.transform.position);  //find distance between player and the player
         if (dist > InteractionRange)        //if your not in range than make text ui false
         {
@@ -2015,18 +2027,17 @@ public class UI : MonoBehaviour
         if (eliminationStackRoot == null || eliminationRowPrefab == null) return;  //gtfo this code if we dont have
 
         int UpdatedAwardedPoints = Mathf.RoundToInt(awardedPoints * PointManager.GlobalPointsMult);
-        AddKillPointsTally(UpdatedAwardedPoints);
+        AddKillPointsTally(UpdatedAwardedPoints);  // --- THIS IS ACUMILATION text
 
-
-        if (_activeEliminationRows.Count >= maxEliminationRows) 
+        if (_activeEliminationRows.Count >= maxEliminationRows)
         {
             Text oldest = _activeEliminationRows[0];  //oldest one 
-            
+
             if (oldest != null)
             {
                 Destroy(oldest.gameObject);
             }
-            
+
             _activeEliminationRows.RemoveAt(0);
         }
 
@@ -2050,7 +2061,7 @@ public class UI : MonoBehaviour
 
         // Initial state
         cg.alpha = 0f;  //set to 0 so you cant see 
-        row.rectTransform.localScale = Vector3.one * 0.6f; 
+        row.rectTransform.localScale = Vector3.one * 0.6f;
 
         // --- POP IN ---
         float timer = 0f; //start the timer at 0
@@ -2089,19 +2100,73 @@ public class UI : MonoBehaviour
     {
         if (killPointsTallyText == null) return;
 
+        _lastAddTime = Time.unscaledTime;                 // <-- track last “add”
         _tallyTotal += points;
         _tallyEndTime = Time.unscaledTime + tallyHoldSeconds;
 
-        // update the text immediately
-        killPointsTallyText.text = $"+{_tallyTotal}";
         if (!killPointsTallyText.gameObject.activeSelf)
             killPointsTallyText.gameObject.SetActive(true);
 
-        if (_tallyCo == null)
-            _tallyCo = StartCoroutine(KillPointsTallyRoutine());
+        // show current display (counter will climb to the target)
+        killPointsTallyText.text = $"+{_displayTotal}";
+
+        // bounce if already visible
+        if (_tallyCo != null) TriggerTallyRepop();
+
+        // restart/ensure the hold+fade routine
+        if (_tallyCo != null) StopCoroutine(_tallyCo);
+        _tallyCo = StartCoroutine(KillPointsTallyRoutine());
+
+        // ensure the count-up is running
+        if (_tallyCountCo == null)
+            _tallyCountCo = StartCoroutine(TallyCountUpRoutine());
     }
 
-    // --- Anim/hold/fade routine ---
+
+
+    private void TriggerTallyRepop()
+    {
+        if (_tallyRepopCo != null) StopCoroutine(_tallyRepopCo);
+        _tallyRepopCo = StartCoroutine(KillPointsTallyRepopRoutine());
+    }
+
+    private IEnumerator KillPointsTallyRepopRoutine()
+    {
+        var rt = killPointsTallyText.rectTransform;
+
+        // Start from current (in case pop-in/fade is mid-flight)
+        Vector3 start = rt.localScale;
+        Vector3 up = Vector3.one * tallyPopScale;
+        Vector3 end = Vector3.one;
+
+        // UP
+        float t = 0f;
+        float upDur = Mathf.Max(0.0001f, tallyRepopUp);
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / upDur;
+            float k = Mathf.Clamp01(t);
+            // SmoothStep for a nicer ease
+            k = k * k * (3f - 2f * k);
+            rt.localScale = Vector3.Lerp(start, up, k);
+            yield return null;
+        }
+
+        // DOWN (settle back)
+        t = 0f;
+        float dnDur = Mathf.Max(0.0001f, tallyRepopDown);
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / dnDur;
+            float k = Mathf.Clamp01(t);
+            k = k * k * (3f - 2f * k);
+            rt.localScale = Vector3.Lerp(up, end, k);
+            yield return null;
+        }
+
+        _tallyRepopCo = null;
+    }
+
     private IEnumerator KillPointsTallyRoutine()
     {
         // ensure CanvasGroup exists for fade
@@ -2125,9 +2190,27 @@ public class UI : MonoBehaviour
             yield return null;
         }
 
-        // HOLD while additions keep coming in (timer resets on AddKillPointsTally)
-        while (Time.unscaledTime < _tallyEndTime)
-            yield return null;
+        // --- WAIT UNTIL DISPLAY CATCHES UP, THEN HOLD 3s OF INACTIVITY ---
+        while (true)
+        {
+            // 1) Wait until the count-up catches the latest target
+            while (_displayTotal < _tallyTotal)
+                yield return null;
+
+            // 2) Start a 3s (tallyHoldSeconds) inactivity window
+            float idleEnd = Time.unscaledTime + tallyHoldSeconds;
+
+            // 3) If new points arrive during the window, restart from step (1)
+            bool brokeForNewPoints = false;
+            while (Time.unscaledTime < idleEnd)
+            {
+                if (_displayTotal < _tallyTotal) { brokeForNewPoints = true; break; }
+                yield return null;
+            }
+
+            if (!brokeForNewPoints)
+                break; // finished a full idle window with no new points; proceed to fade
+        }
 
         // FADE OUT
         t = 0f;
@@ -2141,11 +2224,64 @@ public class UI : MonoBehaviour
             yield return null;
         }
 
-        // reset & hide
+        // cleanup
+        if (_tallyCountCo != null)
+        {
+            StopCoroutine(_tallyCountCo);
+            _tallyCountCo = null;
+        }
+
         _tallyCo = null;
         _tallyTotal = 0;
+        _displayTotal = 0;
         killPointsTallyText.gameObject.SetActive(false);
     }
+
+
+    // --- original logic, now with speed scaling ---
+    private IEnumerator TallyCountUpRoutine()
+    {
+        float E = 1e-6f;
+        float carry = 0f;
+
+        while (true)
+        {
+            while (_displayTotal < _tallyTotal)
+            {
+                // --- timeout: if no new adds for too long, stop climbing & fade now
+                if (Time.unscaledTime - _lastAddTime > tallyIdleTimeout)
+                {
+                    _tallyTotal = _displayTotal;              // stop the climb
+                    _tallyEndTime = Time.unscaledTime;        // let fade routine kick in immediately
+                    _tallyCountCo = null;
+                    yield break;
+                }
+
+                float cps = (1f / Mathf.Max(E, tallyCountStep)) * Mathf.Max(0f, tallySpeedMultiplier);
+
+                carry += cps * Time.unscaledDeltaTime;
+
+                int steps = (int)carry;
+                if (steps > 0)
+                {
+                    for (int i = 0; i < steps && _displayTotal < _tallyTotal; i++)
+                    {
+                        _displayTotal++;
+                        if (killPointsTallyText != null)
+                            killPointsTallyText.text = $"+{_displayTotal}";
+                    }
+                    carry -= steps;
+                }
+
+                yield return null; // next frame
+            }
+
+            // caught up; stop until new points arrive
+            _tallyCountCo = null;
+            yield break;
+        }
+    }
+
 
 
 
