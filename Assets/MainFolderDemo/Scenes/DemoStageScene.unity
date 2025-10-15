@@ -2611,6 +2611,10 @@ MonoBehaviour:
   eliminationRowPrefab: {fileID: 279084759906856047, guid: 70e2ae202eff5c2489e379791e17402b,
     type: 3}
   maxEliminationRows: 10
+  killPointsTallyText: {fileID: 1176109087}
+  tallyHoldSeconds: 3
+  tallyFadeIn: 0.12
+  tallyFadeOut: 0.25
   DebrisText: {fileID: 1865635088}
   grappleHookBox: {fileID: 901432752}
   grappleHookText: {fileID: 135505516}
@@ -54821,7 +54825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.85065913, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -54849,7 +54853,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1176109086}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e19747de3f5aca642ab2be37e372fb86, type: 3}
   m_Name: 
@@ -54881,7 +54885,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 120, y: 44}
+  m_AnchoredPosition: {x: 161.8, y: 54.1}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1176866456
@@ -64544,7 +64548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1595701417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64558,7 +64562,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   zombiePrefabs:
+  - {fileID: 6149432723859890116, guid: e20a78585e15dfc47872c97297648c17, type: 3}
+  - {fileID: 7224478408790448130, guid: cd1b764f06bfee844a726211ef5fee4c, type: 3}
   - {fileID: 7560827146355968688, guid: 89d43b2956839244988f109367c4f229, type: 3}
+  - {fileID: 7217697383087328957, guid: 1bb4d1d757d2f9840b251f80547560bf, type: 3}
   spawnPoints:
   - {fileID: 1632199129}
   startZombies: 568

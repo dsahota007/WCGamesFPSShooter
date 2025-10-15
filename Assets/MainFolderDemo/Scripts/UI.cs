@@ -241,6 +241,17 @@ public class UI : MonoBehaviour
     private readonly List<Text> _activeEliminationRows = new List<Text>();
     public int maxEliminationRows = 10; // cap
 
+    [Header("Kill Points Tally")]
+    public Text killPointsTallyText;      // place in scene & hook up
+    public float tallyHoldSeconds = 3f;   // time after last add before fading
+    public float tallyFadeIn = 0.12f;
+    public float tallyFadeOut = 0.25f;
+
+    private int _tallyTotal = 0;
+    private float _tallyEndTime = 0f;
+    private Coroutine _tallyCo;
+
+
     [Header("Debris")]
     public Text DebrisText;
 
@@ -2004,6 +2015,8 @@ public class UI : MonoBehaviour
         if (eliminationStackRoot == null || eliminationRowPrefab == null) return;  //gtfo this code if we dont have
 
         int UpdatedAwardedPoints = Mathf.RoundToInt(awardedPoints * PointManager.GlobalPointsMult);
+        AddKillPointsTally(UpdatedAwardedPoints);
+
 
         if (_activeEliminationRows.Count >= maxEliminationRows) 
         {
@@ -2070,6 +2083,69 @@ public class UI : MonoBehaviour
         Destroy(row.gameObject);
     }
 
+    //---- the total accumulation text
+
+    public void AddKillPointsTally(int points)
+    {
+        if (killPointsTallyText == null) return;
+
+        _tallyTotal += points;
+        _tallyEndTime = Time.unscaledTime + tallyHoldSeconds;
+
+        // update the text immediately
+        killPointsTallyText.text = $"+{_tallyTotal}";
+        if (!killPointsTallyText.gameObject.activeSelf)
+            killPointsTallyText.gameObject.SetActive(true);
+
+        if (_tallyCo == null)
+            _tallyCo = StartCoroutine(KillPointsTallyRoutine());
+    }
+
+    // --- Anim/hold/fade routine ---
+    private IEnumerator KillPointsTallyRoutine()
+    {
+        // ensure CanvasGroup exists for fade
+        CanvasGroup cg = killPointsTallyText.GetComponent<CanvasGroup>();
+        if (cg == null) cg = killPointsTallyText.gameObject.AddComponent<CanvasGroup>();
+
+        // POP IN (quick)
+        cg.alpha = 0f;
+        var rt = killPointsTallyText.rectTransform;
+        Vector3 s0 = Vector3.one * 0.85f;
+        Vector3 s1 = Vector3.one;
+        rt.localScale = s0;
+
+        float t = 0f;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / Mathf.Max(0.0001f, tallyFadeIn);
+            float k = Mathf.Clamp01(t);
+            cg.alpha = Mathf.Lerp(0f, 1f, k);
+            rt.localScale = Vector3.Lerp(s0, s1, k);
+            yield return null;
+        }
+
+        // HOLD while additions keep coming in (timer resets on AddKillPointsTally)
+        while (Time.unscaledTime < _tallyEndTime)
+            yield return null;
+
+        // FADE OUT
+        t = 0f;
+        Vector3 s2 = Vector3.one * 1.15f;
+        while (t < 1f)
+        {
+            t += Time.unscaledDeltaTime / Mathf.Max(0.0001f, tallyFadeOut);
+            float k = Mathf.Clamp01(t);
+            cg.alpha = Mathf.Lerp(1f, 0f, k);
+            rt.localScale = Vector3.Lerp(Vector3.one, s2, k);
+            yield return null;
+        }
+
+        // reset & hide
+        _tallyCo = null;
+        _tallyTotal = 0;
+        killPointsTallyText.gameObject.SetActive(false);
+    }
 
 
 
@@ -2339,7 +2415,7 @@ public class UI : MonoBehaviour
         }
     }
 
-    //-- on screen controls 
+    //-------------------- on screen controls 
 
     void HandleKeyChanged(string action, KeyCode key)
     {
@@ -2357,7 +2433,7 @@ public class UI : MonoBehaviour
         if (summonMagicControlText) summonMagicControlText.text = km.GetKeyName("SummonMagic");
     }
 
-    //-- pop up text
+    //----------------------- pop up text for when you grab and buy stuff
 
     public void ShowCenterPopup(string message) => ShowCenterPopup(message, centerPopupColor);
 
