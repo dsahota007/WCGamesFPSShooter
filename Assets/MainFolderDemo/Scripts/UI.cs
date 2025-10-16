@@ -264,7 +264,7 @@ public class UI : MonoBehaviour
     // Coroutines
     private Coroutine _coroutineShowHoldFade = null;   // show/hold/fade routine
     private Coroutine _coroutineCountUp = null;        // count-up routine
-    private Coroutine _coroutinePopBounce = null;      // pop/bounce routine
+    private Coroutine _coroutineKillPopBounce = null;      // pop/bounce routine
 
 
     [Header("Debris")]
@@ -2097,33 +2097,34 @@ public class UI : MonoBehaviour
         Destroy(row.gameObject);
     }
 
-    //---- the total accumulation text
-    public void AddKillPointsTally(int points)
+    //---------------------- the total accumulation text
+    public void AddKillPointsTally(int points) 
     {
         if (killPointsTallyText == null)
         {
             return;
         }
 
-        _lastAddUnscaledTime = Time.unscaledTime;
-        _targetPointsTotal += points;
+        _lastAddUnscaledTime = Time.unscaledTime;   //this saves like the last time the current clock time into variable -- this helps ignore pausing and slow motion or anything
+        _targetPointsTotal += points;        // Increase the target we want the UI counter to reach
 
         if (!killPointsTallyText.gameObject.activeSelf)
         {
-            killPointsTallyText.gameObject.SetActive(true);
+            killPointsTallyText.gameObject.SetActive(true);    // Make sure the tally UI is visible
         }
 
         // show current (will climb to target)
-        killPointsTallyText.text = $"+{_shownPointsTotal}";
+        killPointsTallyText.text = $"+{_shownPointsTotal}";   //update the string  --- This is the goal number the counter should climb to.
 
         // pop if already visible
-        if (_coroutinePopBounce != null)
+        if (_coroutineKillPopBounce != null)  //if pop/bounce animation is playing we have to stop 
         {
-            StopCoroutine(_coroutinePopBounce);
+            StopCoroutine(_coroutineKillPopBounce);
         }
-        _coroutinePopBounce = StartCoroutine(PopBounceOnceRoutine());
 
-        // restart show/hold/fade
+        _coroutineKillPopBounce = StartCoroutine(PopBounceOnceRoutine());
+
+        // restart show/hold/fade   ----------  this small part is keeping it alive so every time you get a kill it restarts
         if (_coroutineShowHoldFade != null)
         {
             StopCoroutine(_coroutineShowHoldFade);
@@ -2133,7 +2134,7 @@ public class UI : MonoBehaviour
         // ensure counter is running
         if (_coroutineCountUp == null)
         {
-            _coroutineCountUp = StartCoroutine(CountUpRoutine());
+            _coroutineCountUp = StartCoroutine(CountUpRoutine());   // this helps it go up one by one so 1,2,3,4,5 rather than jumping to 50, 100...
         }
     }
 
@@ -2167,7 +2168,7 @@ public class UI : MonoBehaviour
             yield return null;
         }
 
-        _coroutinePopBounce = null;
+        _coroutineKillPopBounce = null;
     }
 
     private IEnumerator ShowHoldThenFadeRoutine()
@@ -2308,7 +2309,7 @@ public class UI : MonoBehaviour
         StartCoroutine(DestroyRowAfter(row, seconds));
     }
 
-    private System.Collections.IEnumerator DestroyRowAfter(UnityEngine.UI.Text row, float seconds)
+    private IEnumerator DestroyRowAfter(Text row, float seconds)
     {
         yield return new WaitForSeconds(seconds);
         if (row != null) Destroy(row.gameObject);
@@ -2336,7 +2337,7 @@ public class UI : MonoBehaviour
         _timedCoroutines[key] = StartCoroutine(TimedPowerupRoutine(key, row, label, durationSeconds));
     }
 
-    private System.Collections.IEnumerator TimedPowerupRoutine(string key, UnityEngine.UI.Text row, string label, float durationSeconds)
+    private IEnumerator TimedPowerupRoutine(string key, Text row, string label, float durationSeconds)
     {
         float end = Time.time + Mathf.Max(0f, durationSeconds);
         row.gameObject.SetActive(true);
