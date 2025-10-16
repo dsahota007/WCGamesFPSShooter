@@ -241,6 +241,9 @@ public class UI : MonoBehaviour
     private readonly List<Text> _activeEliminationRows = new List<Text>();
     public int maxEliminationRows = 10; // cap
 
+    public Color eliminationNormalColor = Color.white;
+    public Color eliminationHighlightColor = new Color(1f, 0.9f, 0.2f);
+
     [Header("Kill Points Tally")]
     public Text killPointsTallyText;
 
@@ -2025,7 +2028,7 @@ public class UI : MonoBehaviour
     }
     //-------------------- Enemy Kill Feed text 
 
-    public void ShowEliminationMessage(int awardedPoints, string enemyName = "Zombie")
+    public void ShowEliminationMessage(int awardedPoints, string enemyName = "Zombie", bool highlight = false)
     {
         if (eliminationStackRoot == null || eliminationRowPrefab == null) return;  //gtfo this code if we dont have
 
@@ -2046,6 +2049,9 @@ public class UI : MonoBehaviour
 
         var row = Instantiate(eliminationRowPrefab, eliminationStackRoot);  //spawn here and what to spawn 
         row.text = $"+{UpdatedAwardedPoints} {enemyName} Eliminated";                 // what the text says
+
+        row.color = highlight ? eliminationHighlightColor : eliminationNormalColor;
+
 
         _activeEliminationRows.Add(row);
         StartCoroutine(PopInAndFadeOut(row));

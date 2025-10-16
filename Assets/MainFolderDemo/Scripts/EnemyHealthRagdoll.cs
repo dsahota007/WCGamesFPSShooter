@@ -615,7 +615,8 @@ public class EnemyHealthRagdoll : MonoBehaviour
                 int points = (!isMiniboss && isHeadshot) ? Mathf.RoundToInt(basePts * 1.5f) : basePts;
 
                 string label = GetEliminationLabel(isHeadshot); // e.g., "Fire Miniboss" or "Zombie"
-                ui.ShowEliminationMessage(points, label);
+                bool highlight = isMiniboss || isHeadshot;  // <- yellow for either case
+                ui.ShowEliminationMessage(points, label, highlight);
             }
             return;     //get outt the this part 
         }
