@@ -242,27 +242,30 @@ public class UI : MonoBehaviour
     public int maxEliminationRows = 10; // cap
 
     [Header("Kill Points Tally")]
-    public Text killPointsTallyText;      // place in scene & hook up
-    public float tallyHoldSeconds = 3f;   // time after last add before fading
-    public float tallyFadeIn = 0.12f;
-    public float tallyFadeOut = 0.25f;
+    public Text killPointsTallyText;
 
-    private int _tallyTotal = 0;
-    private float _tallyEndTime = 0f;
-    private Coroutine _tallyCo;
+    public float tallyFadeInSeconds = 0.12f;
+    public float tallyFadeOutSeconds = 0.25f;
+    public float tallyHoldSecondsAfterCaughtUp = 3f;   // hold AFTER we finish counting
 
-    public float tallyRepopUp = 0.06f;     // time to scale up
-    public float tallyRepopDown = 0.10f;   // time to settle back
-    public float tallyPopScale = 1.12f;    // how big the pop gets
-    private Coroutine _tallyRepopCo;       // running repop anim
-    public float tallyCountStep = 0.015f; // seconds per +1 (fast)
-    private Coroutine _tallyCountCo;
-    private int _displayTotal = 0;        // what’s currently shown
+    public float tallyPopUpSeconds = 0.06f;
+    public float tallyPopDownSeconds = 0.10f;
+    public float tallyPopScaleMultiplier = 1.12f;
 
-    public float tallySpeedMultiplier = 1f;
+    public float tallyBaseSecondsPerOne = 0.015f;      // base speed (sec per +1)
+    public float tallySpeedMultiplier = 1f;            // multiply speed (e.g., 10 = 10x faster)
+    public float tallyIdleTimeoutSeconds = 10f;        // stop counting if no new adds for this long
 
-    public float tallyIdleTimeout = 10f;   // seconds with no new AddKillPointsTally() before we force-fade
-    private float _lastAddTime = -999f;
+    // State
+    private int _targetPointsTotal = 0;                // goal number
+    private int _shownPointsTotal = 0;                 // what’s on screen now
+    private float _lastAddUnscaledTime = -999f;
+
+    // Coroutines
+    private Coroutine _coroutineShowHoldFade = null;   // show/hold/fade routine
+    private Coroutine _coroutineCountUp = null;        // count-up routine
+    private Coroutine _coroutinePopBounce = null;      // pop/bounce routine
+
 
     [Header("Debris")]
     public Text DebrisText;
@@ -2095,192 +2098,197 @@ public class UI : MonoBehaviour
     }
 
     //---- the total accumulation text
-
     public void AddKillPointsTally(int points)
     {
-        if (killPointsTallyText == null) return;
+        if (killPointsTallyText == null)
+        {
+            return;
+        }
 
-        _lastAddTime = Time.unscaledTime;                 // <-- track last “add”
-        _tallyTotal += points;
-        _tallyEndTime = Time.unscaledTime + tallyHoldSeconds;
+        _lastAddUnscaledTime = Time.unscaledTime;
+        _targetPointsTotal += points;
 
         if (!killPointsTallyText.gameObject.activeSelf)
+        {
             killPointsTallyText.gameObject.SetActive(true);
+        }
 
-        // show current display (counter will climb to the target)
-        killPointsTallyText.text = $"+{_displayTotal}";
+        // show current (will climb to target)
+        killPointsTallyText.text = $"+{_shownPointsTotal}";
 
-        // bounce if already visible
-        if (_tallyCo != null) TriggerTallyRepop();
+        // pop if already visible
+        if (_coroutinePopBounce != null)
+        {
+            StopCoroutine(_coroutinePopBounce);
+        }
+        _coroutinePopBounce = StartCoroutine(PopBounceOnceRoutine());
 
-        // restart/ensure the hold+fade routine
-        if (_tallyCo != null) StopCoroutine(_tallyCo);
-        _tallyCo = StartCoroutine(KillPointsTallyRoutine());
+        // restart show/hold/fade
+        if (_coroutineShowHoldFade != null)
+        {
+            StopCoroutine(_coroutineShowHoldFade);
+        }
+        _coroutineShowHoldFade = StartCoroutine(ShowHoldThenFadeRoutine());
 
-        // ensure the count-up is running
-        if (_tallyCountCo == null)
-            _tallyCountCo = StartCoroutine(TallyCountUpRoutine());
+        // ensure counter is running
+        if (_coroutineCountUp == null)
+        {
+            _coroutineCountUp = StartCoroutine(CountUpRoutine());
+        }
     }
 
-
-
-    private void TriggerTallyRepop()
+    private IEnumerator PopBounceOnceRoutine()
     {
-        if (_tallyRepopCo != null) StopCoroutine(_tallyRepopCo);
-        _tallyRepopCo = StartCoroutine(KillPointsTallyRepopRoutine());
-    }
+        RectTransform rt = killPointsTallyText.rectTransform;
 
-    private IEnumerator KillPointsTallyRepopRoutine()
-    {
-        var rt = killPointsTallyText.rectTransform;
+        Vector3 startScale = rt.localScale;
+        Vector3 popScale = Vector3.one * tallyPopScaleMultiplier;
+        Vector3 endScale = Vector3.one;
 
-        // Start from current (in case pop-in/fade is mid-flight)
-        Vector3 start = rt.localScale;
-        Vector3 up = Vector3.one * tallyPopScale;
-        Vector3 end = Vector3.one;
-
-        // UP
+        // Up
         float t = 0f;
-        float upDur = Mathf.Max(0.0001f, tallyRepopUp);
+        float upDur = Mathf.Max(0.0001f, tallyPopUpSeconds);
         while (t < 1f)
         {
             t += Time.unscaledDeltaTime / upDur;
-            float k = Mathf.Clamp01(t);
-            // SmoothStep for a nicer ease
-            k = k * k * (3f - 2f * k);
-            rt.localScale = Vector3.Lerp(start, up, k);
+            float k = t * t * (3f - 2f * t); // smoothstep
+            rt.localScale = Vector3.Lerp(startScale, popScale, Mathf.Clamp01(k));
             yield return null;
         }
 
-        // DOWN (settle back)
+        // Down
         t = 0f;
-        float dnDur = Mathf.Max(0.0001f, tallyRepopDown);
+        float downDur = Mathf.Max(0.0001f, tallyPopDownSeconds);
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / dnDur;
-            float k = Mathf.Clamp01(t);
-            k = k * k * (3f - 2f * k);
-            rt.localScale = Vector3.Lerp(up, end, k);
+            t += Time.unscaledDeltaTime / downDur;
+            float k = t * t * (3f - 2f * t);
+            rt.localScale = Vector3.Lerp(popScale, endScale, Mathf.Clamp01(k));
             yield return null;
         }
 
-        _tallyRepopCo = null;
+        _coroutinePopBounce = null;
     }
 
-    private IEnumerator KillPointsTallyRoutine()
+    private IEnumerator ShowHoldThenFadeRoutine()
     {
-        // ensure CanvasGroup exists for fade
+        // Ensure CanvasGroup
         CanvasGroup cg = killPointsTallyText.GetComponent<CanvasGroup>();
-        if (cg == null) cg = killPointsTallyText.gameObject.AddComponent<CanvasGroup>();
+        if (cg == null)
+        {
+            cg = killPointsTallyText.gameObject.AddComponent<CanvasGroup>();
+        }
 
-        // POP IN (quick)
+        // Fade In + scale in
+        RectTransform rt = killPointsTallyText.rectTransform;
         cg.alpha = 0f;
-        var rt = killPointsTallyText.rectTransform;
-        Vector3 s0 = Vector3.one * 0.85f;
-        Vector3 s1 = Vector3.one;
-        rt.localScale = s0;
+        rt.localScale = Vector3.one * 0.85f;
 
         float t = 0f;
+        float fadeIn = Mathf.Max(0.0001f, tallyFadeInSeconds);
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / Mathf.Max(0.0001f, tallyFadeIn);
+            t += Time.unscaledDeltaTime / fadeIn;
             float k = Mathf.Clamp01(t);
             cg.alpha = Mathf.Lerp(0f, 1f, k);
-            rt.localScale = Vector3.Lerp(s0, s1, k);
+            rt.localScale = Vector3.Lerp(Vector3.one * 0.85f, Vector3.one, k);
             yield return null;
         }
 
-        // --- WAIT UNTIL DISPLAY CATCHES UP, THEN HOLD 3s OF INACTIVITY ---
+        // Wait until fully caught up
+        while (_shownPointsTotal < _targetPointsTotal)
+        {
+            yield return null;
+        }
+
+        // Hold N seconds of inactivity; if new points arrive, restart wait+hold
         while (true)
         {
-            // 1) Wait until the count-up catches the latest target
-            while (_displayTotal < _tallyTotal)
-                yield return null;
+            float idleWindowEnd = Time.unscaledTime + tallyHoldSecondsAfterCaughtUp;
+            bool gotNewPoints = false;
 
-            // 2) Start a 3s (tallyHoldSeconds) inactivity window
-            float idleEnd = Time.unscaledTime + tallyHoldSeconds;
-
-            // 3) If new points arrive during the window, restart from step (1)
-            bool brokeForNewPoints = false;
-            while (Time.unscaledTime < idleEnd)
+            while (Time.unscaledTime < idleWindowEnd)
             {
-                if (_displayTotal < _tallyTotal) { brokeForNewPoints = true; break; }
+                if (_shownPointsTotal < _targetPointsTotal)
+                {
+                    gotNewPoints = true;
+                    break;
+                }
                 yield return null;
             }
 
-            if (!brokeForNewPoints)
-                break; // finished a full idle window with no new points; proceed to fade
+            if (!gotNewPoints)
+            {
+                break; // finished a full idle window → fade out
+            }
+
+            // Wait again to catch up before holding
+            while (_shownPointsTotal < _targetPointsTotal)
+            {
+                yield return null;
+            }
         }
 
-        // FADE OUT
+        // Fade Out + scale out
         t = 0f;
-        Vector3 s2 = Vector3.one * 1.15f;
+        float fadeOut = Mathf.Max(0.0001f, tallyFadeOutSeconds);
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / Mathf.Max(0.0001f, tallyFadeOut);
+            t += Time.unscaledDeltaTime / fadeOut;
             float k = Mathf.Clamp01(t);
             cg.alpha = Mathf.Lerp(1f, 0f, k);
-            rt.localScale = Vector3.Lerp(Vector3.one, s2, k);
+            rt.localScale = Vector3.Lerp(Vector3.one, Vector3.one * 1.15f, k);
             yield return null;
         }
 
-        // cleanup
-        if (_tallyCountCo != null)
+        // Cleanup
+        if (_coroutineCountUp != null)
         {
-            StopCoroutine(_tallyCountCo);
-            _tallyCountCo = null;
+            StopCoroutine(_coroutineCountUp);
+            _coroutineCountUp = null;
         }
 
-        _tallyCo = null;
-        _tallyTotal = 0;
-        _displayTotal = 0;
+        _coroutineShowHoldFade = null;
+        _targetPointsTotal = 0;
+        _shownPointsTotal = 0;
         killPointsTallyText.gameObject.SetActive(false);
     }
 
-
-    // --- original logic, now with speed scaling ---
-    private IEnumerator TallyCountUpRoutine()
+    private IEnumerator CountUpRoutine()
     {
-        float E = 1e-6f;
-        float carry = 0f;
+        const float EPS = 1e-6f;
 
         while (true)
         {
-            while (_displayTotal < _tallyTotal)
+            if (_shownPointsTotal >= _targetPointsTotal)
             {
-                // --- timeout: if no new adds for too long, stop climbing & fade now
-                if (Time.unscaledTime - _lastAddTime > tallyIdleTimeout)
-                {
-                    _tallyTotal = _displayTotal;              // stop the climb
-                    _tallyEndTime = Time.unscaledTime;        // let fade routine kick in immediately
-                    _tallyCountCo = null;
-                    yield break;
-                }
-
-                float cps = (1f / Mathf.Max(E, tallyCountStep)) * Mathf.Max(0f, tallySpeedMultiplier);
-
-                carry += cps * Time.unscaledDeltaTime;
-
-                int steps = (int)carry;
-                if (steps > 0)
-                {
-                    for (int i = 0; i < steps && _displayTotal < _tallyTotal; i++)
-                    {
-                        _displayTotal++;
-                        if (killPointsTallyText != null)
-                            killPointsTallyText.text = $"+{_displayTotal}";
-                    }
-                    carry -= steps;
-                }
-
-                yield return null; // next frame
+                _coroutineCountUp = null;
+                yield break;
             }
 
-            // caught up; stop until new points arrive
-            _tallyCountCo = null;
-            yield break;
+            // If idle too long, stop counting now (let ShowHoldThenFade handle fade)
+            if (Time.unscaledTime - _lastAddUnscaledTime > tallyIdleTimeoutSeconds)
+            {
+                _targetPointsTotal = _shownPointsTotal;
+                _coroutineCountUp = null;
+                yield break;
+            }
+
+            // counts-per-second = 1 / baseStep * speedMultiplier
+            float countsPerSecond = (1f / Mathf.Max(EPS, tallyBaseSecondsPerOne)) * Mathf.Max(0f, tallySpeedMultiplier);
+            int addThisFrame = Mathf.Max(1, Mathf.FloorToInt(countsPerSecond * Time.unscaledDeltaTime));
+
+            _shownPointsTotal = Mathf.Min(_shownPointsTotal + addThisFrame, _targetPointsTotal);
+
+            if (killPointsTallyText != null)
+            {
+                killPointsTallyText.text = $"+{_shownPointsTotal}";
+            }
+
+            yield return null;
         }
     }
+
 
 
 
