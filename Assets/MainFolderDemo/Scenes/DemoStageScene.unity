@@ -2922,14 +2922,15 @@ MonoBehaviour:
     type: 3}
   maxEliminationRows: 10
   killPointsTallyText: {fileID: 1176109087}
-  tallyHoldSeconds: 3
-  tallyFadeIn: 0.12
-  tallyFadeOut: 0.25
-  tallyRepopUp: 0.06
-  tallyRepopDown: 0.1
-  tallyPopScale: 1.12
-  tallyCountStep: 0.05
+  tallyFadeInSeconds: 0.12
+  tallyFadeOutSeconds: 0.25
+  tallyHoldSecondsAfterCaughtUp: 3
+  tallyPopUpSeconds: 0.25
+  tallyPopDownSeconds: 0.1
+  tallyPopScaleMultiplier: 1.12
+  tallyBaseSecondsPerOne: 0.015
   tallySpeedMultiplier: 10
+  tallyIdleTimeoutSeconds: 10
   DebrisText: {fileID: 1865635088}
   grappleHookBox: {fileID: 901432752}
   grappleHookText: {fileID: 135505516}

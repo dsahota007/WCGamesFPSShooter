@@ -2140,31 +2140,33 @@ public class UI : MonoBehaviour
 
     private IEnumerator PopBounceOnceRoutine()
     {
-        RectTransform rt = killPointsTallyText.rectTransform;
+        RectTransform killTxtRectTran = killPointsTallyText.rectTransform;
 
-        Vector3 startScale = rt.localScale;
-        Vector3 popScale = Vector3.one * tallyPopScaleMultiplier;
-        Vector3 endScale = Vector3.one;
+        Vector3 startScale = killTxtRectTran.localScale;  //store local scale of the text 
+        Vector3 popScale = Vector3.one * tallyPopScaleMultiplier;    //showcase the size when big by multiplying it by the size
+        Vector3 endScale = Vector3.one;                             //back to normal 
+
+        // k is progress
 
         // Up
-        float t = 0f;
-        float upDur = Mathf.Max(0.0001f, tallyPopUpSeconds);
-        while (t < 1f)
+        float timer = 0f;  //start a timer 
+        float upDur = tallyPopUpSeconds;   //amount of seconds its going to be up for
+        while (timer < 1f)   //keep looping when timer is less than 0 
         {
-            t += Time.unscaledDeltaTime / upDur;
-            float k = t * t * (3f - 2f * t); // smoothstep
-            rt.localScale = Vector3.Lerp(startScale, popScale, Mathf.Clamp01(k));
+            timer += Time.unscaledDeltaTime / upDur;   // ----we increase timer  
+            float k = timer * timer * (3f - 2f * timer); // smoothstep
+            killTxtRectTran.localScale = Vector3.Lerp(startScale, popScale, Mathf.Clamp01(k));
             yield return null;
         }
 
         // Down
-        t = 0f;
-        float downDur = Mathf.Max(0.0001f, tallyPopDownSeconds);
-        while (t < 1f)
+        timer = 0f;
+        float downDur = tallyPopDownSeconds;
+        while (timer < 1f)
         {
-            t += Time.unscaledDeltaTime / downDur;
-            float k = t * t * (3f - 2f * t);
-            rt.localScale = Vector3.Lerp(popScale, endScale, Mathf.Clamp01(k));
+            timer += Time.unscaledDeltaTime / downDur;
+            float k = timer * timer * (3f - 2f * timer);
+            killTxtRectTran.localScale = Vector3.Lerp(popScale, endScale, Mathf.Clamp01(k));
             yield return null;
         }
 
