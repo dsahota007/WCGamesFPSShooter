@@ -2921,6 +2921,8 @@ MonoBehaviour:
   eliminationRowPrefab: {fileID: 279084759906856047, guid: 70e2ae202eff5c2489e379791e17402b,
     type: 3}
   maxEliminationRows: 10
+  eliminationNormalColor: {r: 1, g: 1, b: 1, a: 1}
+  eliminationHighlightColor: {r: 1, g: 0.9, b: 0.2, a: 1}
   killPointsTallyText: {fileID: 1176109087}
   tallyFadeInSeconds: 0.12
   tallyFadeOutSeconds: 0.25

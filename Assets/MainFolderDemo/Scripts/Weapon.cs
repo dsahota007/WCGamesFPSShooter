@@ -32,6 +32,12 @@ public class Weapon : MonoBehaviour
     public float fireRate = 0.1f;
     public float burstDelay = 0.1f;
 
+    public enum PierceMode { None, PierceEnemies }    
+
+    [Header("Penetration")]
+    public PierceMode pierceMode = PierceMode.None;  
+    public int pierceCount = 2;
+
     [Header("Reload Settings")]
     public float reloadMoveAmount = 0.2f;
     public float reloadDuration = 0.2f;
@@ -487,21 +493,23 @@ public class Weapon : MonoBehaviour
 
         if (bulletPrefab && firePoint)
         {
-            GameObject b = Instantiate(bulletPrefab, firePoint.position + firePoint.forward * 0.2f, firePoint.rotation);     //Instantiate(whatToSpawn, whereToSpawn, whichRotation);
-            Bullet bullet = b.GetComponent<Bullet>();
-            if (bullet != null)
-            {
-                bullet.damage = bulletDamage;   // <-- weapon-specific damage
-                bullet.sourceWeapon = this;   // << add this so bullet knows infusion + VFX + DOT params
+            GameObject b = Instantiate(
+                bulletPrefab,
+                firePoint.position + firePoint.forward * 0.2f,
+                firePoint.rotation
+            );
 
+            var bulletComp = b.GetComponent<Bullet>();   // <- renamed
+            if (bulletComp != null)
+            {
+                bulletComp.damage = bulletDamage;  //bullet damage
+                bulletComp.sourceWeapon = this;    //infusion type stuff
+                bulletComp.piercesLeft = (pierceMode == PierceMode.PierceEnemies) ? pierceCount : 0;
             }
         }
 
-
-
-        //// --- Spawn muzzle flash ---
+        // --- Spawn muzzle flash (keep only ONE of these) ---
         GameObject muzzlePrefab = GetMuzzleFlashPrefab();
-
         if (muzzlePrefab != null && firePoint != null)
         {
             GameObject flash = Instantiate(muzzlePrefab, firePoint.position, firePoint.rotation);
@@ -1098,7 +1106,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    public string GetDisplayName()
+    public string GetDisplayName()  //---------this is for popup Text in teh middle of screen
     {
         if (upgradeLevel <= 0) return weaponName;
 

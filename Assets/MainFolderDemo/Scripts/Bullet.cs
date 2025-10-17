@@ -18,6 +18,8 @@ public class Bullet : MonoBehaviour
     Rigidbody rb;
     Collider myCol;
 
+    public int piercesLeft = 0;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -63,6 +65,13 @@ public class Bullet : MonoBehaviour
         if (norag != null)
         {
             norag.TakeDamage(damage, transform.forward, other);
+
+            if (piercesLeft > 0)
+            {
+                piercesLeft--;  // still alive; continue flying
+                return;
+            }
+
             Destroy(gameObject);
             return;
         }
@@ -316,6 +325,13 @@ public class Bullet : MonoBehaviour
                     }
                 }
             }
+        }
+
+        //pierceing process
+        if (piercesLeft > 0)
+        {
+            piercesLeft--;  // keep going through more enemies
+            return;
         }
 
         Destroy(gameObject);

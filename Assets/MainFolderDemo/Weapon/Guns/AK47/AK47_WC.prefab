@@ -6074,6 +6074,8 @@ MonoBehaviour:
   fireType: 2
   fireRate: 0.1
   burstDelay: 0.02
+  pierceMode: 1
+  pierceCount: 3
   reloadMoveAmount: 1.5
   reloadDuration: 0.5
   reloadTime: 1
@@ -6085,7 +6087,8 @@ MonoBehaviour:
   Tier2maxReserve: 150
   Tier3clipSize: 60
   Tier3maxReserve: 180
-  papBulletPrefabTier1: {fileID: 0}
+  papBulletPrefabTier1: {fileID: 6410560179999154620, guid: f3866e6df371a344cb43d39c7fb1ef46,
+    type: 3}
   papFireTypeTier1: 2
   recoilAngle: 6
   recoilSnappiness: 6

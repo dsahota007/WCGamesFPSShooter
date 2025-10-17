@@ -224,7 +224,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0, g: 0.5719719, b: 1, a: 1}
+      maxColor: {r: 0.21076608, g: 1, b: 0, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -4965,7 +4965,7 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 2
-  m_Color: {r: 0, g: 0.43849897, b: 1, a: 1}
+  m_Color: {r: 0.010703921, g: 1, b: 0, a: 1}
   m_Intensity: 15
   m_Range: 15
   m_SpotAngle: 30
@@ -5011,7 +5011,8 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 2.3637496e+10, y: -3.2475505e-31, z: 0, w: 1.8693586e+33}
+  m_BoundingSphereOverride: {x: 2.667811e+20, y: 7.2727964e+22, z: 7.7471845e+31,
+    w: 1.5791352e-19}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
@@ -5035,7 +5036,7 @@ GameObject:
   - component: {fileID: 7844299034088412405}
   - component: {fileID: 4824676573003828925}
   m_Layer: 17
-  m_Name: Bullet2
+  m_Name: Bullet_Ray
   m_TagString: Bullets
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5156,7 +5157,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.47
+  m_Radius: 9.57
   m_Height: 0.01389559
   m_Direction: 1
   m_Center: {x: 0, y: 0.000000044004988, z: 0.009499601}
@@ -5180,9 +5181,10 @@ MonoBehaviour:
   - {fileID: 5229322557928275105, guid: 99e593e2f7c279743a262c9223b09521, type: 3}
   - {fileID: 8616876867203870938, guid: 25c0e47112878534c9a6ff92160cbb48, type: 3}
   - {fileID: 2430188457786999321, guid: e7401e255397253498b273739328c36a, type: 3}
-  groundHitEffect: {fileID: 1067471869909948, guid: f70beae9db4534140b6d54697cfbfa53,
+  groundHitEffect: {fileID: 1121192042590650, guid: d1fce48cfb0aace478ec6dc9b5861cb8,
     type: 3}
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 262144
   sourceWeapon: {fileID: 0}
+  piercesLeft: 0
