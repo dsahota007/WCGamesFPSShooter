@@ -2650,9 +2650,6 @@ public class UI : MonoBehaviour
 
         if (row != null) Destroy(row.gameObject);
     }
-
-
-
 }
 
 
