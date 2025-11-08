@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1294959111783018880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.043096337, z: 0, w: 0.999071}
-  m_LocalPosition: {x: 0.03, y: -0.01, z: 0.02}
+  m_LocalPosition: {x: 0.042, y: -0.07, z: 0.02}
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -141,13 +141,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4022974244671153971}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.090980224, z: -0, w: -0.9958527}
-  m_LocalPosition: {x: 3.1765995, y: 5.4131994, z: 8.543045}
+  m_LocalRotation: {x: -0, y: 0.7054276, z: -0, w: -0.708782}
+  m_LocalPosition: {x: -0.97904027, y: 0, z: 0.0009914153}
   m_LocalScale: {x: 12.700001, y: 12.7, z: 12.700001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5259964198238378332}
-  m_LocalEulerAnglesHint: {x: 0, y: -178.7, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -89.728, z: 0}
 --- !u!1 &7526038970778361266
 GameObject:
   m_ObjectHideFlags: 0
@@ -292,8 +292,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7896929993975101864}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.16, y: 2.271, z: 0.581}
+  m_LocalRotation: {x: 0, y: 0.7891913, z: 0, w: 0.61414754}
+  m_LocalPosition: {x: -0.09, y: 2.05, z: 0.581}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -301,7 +301,7 @@ Transform:
   - {fileID: 7150040815078590216}
   - {fileID: 5259964198238378332}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 104.22, z: 0}
 --- !u!114 &1796756074764282029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,17 +356,17 @@ MonoBehaviour:
   controller: {fileID: 0}
   targetKickbackOffset: {x: 0.03, y: 0, z: 0}
   isWeaponBeingShowcased: 0
-  leftHoldPos: {x: -0.26, y: -0.2255, z: -0.17}
+  leftHoldPos: {x: -0.39, y: -0.33, z: -0.11}
   leftHoldRotEuler: {x: -24.22, y: 199.835, z: -50.626}
-  rightHoldPos: {x: -0.05, y: 0.12, z: -0.32}
+  rightHoldPos: {x: -0.08, y: 0.09, z: -0.32}
   rightHoldRotEuler: {x: -51.385, y: -133.7, z: -22.396}
   bulletDamage: 10
   upgradeLevel: 0
   maxUpgradeLevel: 3
   gunRenderer: {fileID: 1998793834841937079}
   magazineRenderer: {fileID: 6845717381454889617}
-  papGunMaterial: {fileID: 2100000, guid: 7ddc8d91e3e3cc743890ec2673be481b, type: 2}
-  papMagMaterial: {fileID: 2100000, guid: 8867023f86d0a4e408c73aac2acc8af4, type: 2}
+  papGunMaterial: {fileID: 2100000, guid: c5ea55b772dd95e4f8609fac2ce6bed8, type: 2}
+  papMagMaterial: {fileID: 2100000, guid: 5f35b6e3116db844eb26f3469c9ceb6b, type: 2}
   infusion: 0
   fireInfusionVFXPrefab: {fileID: 3473529909581181512, guid: 05030faaf97464749b7c2dbbc4956660,
     type: 3}
