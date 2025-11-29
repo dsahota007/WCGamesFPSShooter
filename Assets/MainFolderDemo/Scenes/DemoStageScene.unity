@@ -16450,6 +16450,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5423349785326635100, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
         type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423349785326635100, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -37026,7 +37031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d02d475b85354eb43947ff9daa895714, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropChance: 0.005
+  dropChance: 1
   pickupPrefabs:
   - {fileID: 4943829022777390022, guid: 2bef4749036d684448815405d878c249, type: 3}
   - {fileID: 4943829022777390022, guid: fbffac4892099554c9213caea41fb0cc, type: 3}
@@ -68923,9 +68928,9 @@ MonoBehaviour:
   - {fileID: 7217697383087328957, guid: 1bb4d1d757d2f9840b251f80547560bf, type: 3}
   spawnPoints:
   - {fileID: 1632199129}
-  startZombies: 568
-  zombiesPerRound: 3
-  timeBetweenRounds: 10
+  startZombies: 1
+  zombiesPerRound: 1
+  timeBetweenRounds: 2
 --- !u!4 &1595701418
 Transform:
   m_ObjectHideFlags: 0
@@ -73373,6 +73378,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: UpBooster_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423349785326635100, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5423349785326635100, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
         type: 3}
@@ -115013,17 +115023,17 @@ PrefabInstance:
     - target: {fileID: 3364212968599529073, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -2.5378
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 3364212968599529073, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.8366
+      value: 16.39
       objectReference: {fileID: 0}
     - target: {fileID: 3364212968599529073, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.2376
+      value: 11.69
       objectReference: {fileID: 0}
     - target: {fileID: 3364212968599529073, guid: 7c0cf2befd5cafb48ab83e2861269cf2,
         type: 3}

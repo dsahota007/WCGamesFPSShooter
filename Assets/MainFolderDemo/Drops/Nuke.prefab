@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7740600455200979783}
   - component: {fileID: 4903511123171480379}
   - component: {fileID: 8263696059186165721}
-  - component: {fileID: 5301801209762563038}
   - component: {fileID: 4022979908172431157}
   m_Layer: 0
   m_Name: nuke
@@ -120,23 +119,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5301801209762563038
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1665071699599876377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637829592e3384f45ae9caf75f36e9c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 4
-  rotateSpeed: 90
-  bobAmplitude: 0.15
-  bobSpeed: 2
-  lifeTime: 20
 --- !u!135 &4022979908172431157
 SphereCollider:
   m_ObjectHideFlags: 0

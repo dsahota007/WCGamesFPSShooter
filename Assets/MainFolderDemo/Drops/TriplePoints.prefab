@@ -170,7 +170,6 @@ GameObject:
   - component: {fileID: 8254421563501237710}
   - component: {fileID: 8018921844347961472}
   - component: {fileID: 8299489124772704364}
-  - component: {fileID: 4890008102437796750}
   - component: {fileID: 7533966493067170806}
   m_Layer: 0
   m_Name: DoublePoints
@@ -277,23 +276,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4890008102437796750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5297570874233446992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637829592e3384f45ae9caf75f36e9c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 2
-  rotateSpeed: 90
-  bobAmplitude: 0.15
-  bobSpeed: 2
-  lifeTime: 20
 --- !u!135 &7533966493067170806
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -327,7 +309,6 @@ GameObject:
   - component: {fileID: 5848717892183769950}
   - component: {fileID: 6529029900667605844}
   - component: {fileID: 3643510732455306123}
-  - component: {fileID: 8898481116348061093}
   - component: {fileID: 7827021294980649541}
   m_Layer: 0
   m_Name: 2x
@@ -435,23 +416,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &8898481116348061093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9073649310400322945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637829592e3384f45ae9caf75f36e9c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 4
-  rotateSpeed: 90
-  bobAmplitude: 0.15
-  bobSpeed: 2
-  lifeTime: 20
 --- !u!135 &7827021294980649541
 SphereCollider:
   m_ObjectHideFlags: 0

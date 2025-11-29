@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7929862230708679043}
   - component: {fileID: 8881295521735625655}
   - component: {fileID: 4929783725683887178}
-  - component: {fileID: 1316312908862854673}
   - component: {fileID: 5050772730126067229}
   m_Layer: 0
   m_Name: BonusPoints
@@ -120,23 +119,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1316312908862854673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1690238142075119386}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 637829592e3384f45ae9caf75f36e9c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: 4
-  rotateSpeed: 90
-  bobAmplitude: 0.15
-  bobSpeed: 2
-  lifeTime: 20
 --- !u!135 &5050772730126067229
 SphereCollider:
   m_ObjectHideFlags: 0
