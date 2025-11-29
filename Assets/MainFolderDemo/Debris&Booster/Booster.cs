@@ -1,102 +1,134 @@
 ﻿// LaunchPad.cs
 using UnityEngine;
-using System.Collections;
 
 [RequireComponent(typeof(Collider))]
 public class LaunchPad : MonoBehaviour
 {
-    [Header("Launch")]
-    public float launchSpeed = 24f;
-    //public float launchDuration = 1.25f;
-    public string playerTag = "Player";
-    public bool grantKineticJump = true;
-
-    [Header("Cancel Conditions")]
-    public bool cancelOnDash = true;   // stop pad the moment player dashes
-    public bool cancelOnSlam = true;   // stop pad the moment player starts slam
+    [Header("Launch")] 
+    public float launchSpeed = 24f;  // Upward speed to add when hitting the pad.
+    public float forwardBoost = 0f;   // Optional extra forward boost along the pad's forward.
+    public string playerTag = "Player";      // Tag of the player object that should be launched.
+    public bool grantKineticJump = true;        // If true, calls EnableKineticJumpNow on PlayerMovement when launched.
+    [Header("Cancel / Ignore Conditions")]
+    public bool ignoreWhileDashing = true;   // If true, pad does nothing if the player is currently dashing.
+    public bool ignoreWhileSlamming = true;   // If true, pad does nothing if the player is currently slamming
 
     void Reset()
     {
         var col = GetComponent<Collider>();
-        if (col) col.isTrigger = true;
+        if (col != null)
+        {
+            col.isTrigger = true;
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (!other.CompareTag(playerTag)) return;
+        if (other.CompareTag(playerTag) == false)
+        {
+            return;
+        }
 
         // find the player root
-        var root = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
+        GameObject root;
+        if (other.attachedRigidbody != null)
+        {
+            root = other.attachedRigidbody.gameObject;
+        }
+        else
+        {
+            root = other.gameObject;
+        }
 
         var pm = root.GetComponent<PlayerMovement>();
         var cc = root.GetComponent<CharacterController>();
         var rb = root.GetComponent<Rigidbody>();
 
-        // If already dashing and we don't want to interfere, ignore pad
-        if (pm && cancelOnDash && pm.IsDashing()) return;
-
-        // Give Kinetic Jump window if desired
-        if (pm && grantKineticJump) pm.EnableKineticJumpNow();
-
-        Vector3 dir = transform.forward.normalized;
-
-        if (cc) { StartCoroutine(LaunchCC(cc, dir, pm)); return; }
-        if (rb) { StartCoroutine(LaunchRB(rb, dir, pm)); }
-    }
-
-    IEnumerator LaunchCC(CharacterController cc, Vector3 dir, PlayerMovement pm)
-    {
-        //float end = Time.time + launchDuration;
-
-        // BOOST PHASE (actively push)
-        //while (Time.time )
-        //{
-            if (ShouldCancel(pm)) yield break;
-
-            cc.Move(dir * launchSpeed * Time.deltaTime);
-            yield return null;
-        
-
-        // MOMENTUM PHASE (coast with gravity until grounded)
-        Vector3 vel = dir * launchSpeed;
-        while (true)
+        // if we have PlayerMovement, use it as the main authority
+        if (pm != null)
         {
-            if (ShouldCancel(pm)) yield break;
+            if (ignoreWhileDashing == true && pm.IsDashing() == true)
+            {
+                return;
+            }
 
-            float dt = Time.deltaTime;
-            vel += Physics.gravity * dt;
-            cc.Move(vel * dt);
+            if (ignoreWhileSlamming == true && pm.IsSlamming() == true)
+            {
+                return;
+            }
 
-            if (cc.isGrounded && vel.y <= 0f) yield break;
-            yield return null;
+            // Give Kinetic Jump window if desired
+            if (grantKineticJump == true)
+            {
+                pm.EnableKineticJumpNow();
+            }
+
+            // --- MAIN BEHAVIOR: add an upward launch impulse ---
+            // This hands the Y-velocity to your normal movement system.
+            if (launchSpeed > 0f)
+            {
+                pm.AddUpwardVelocity(launchSpeed);
+            }
+
+            // Optional forward impulse: your normal air control + slam still work.
+            if (forwardBoost != 0f)
+            {
+                // Example if you add this later:
+                // pm.AddHorizontalImpulse(transform.forward * forwardBoost);
+            }
+
+            // Optional: a tiny camera shake on launch (NOT on landing)
+            CameraScript.Main?.Shake(0.25f, 1.5f, 40f, true);
+            return;
         }
-    }
 
-    IEnumerator LaunchRB(Rigidbody rb, Vector3 dir, PlayerMovement pm)
-    {
-        if (rb.isKinematic) rb.isKinematic = false;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        // ---- Fallbacks if there is NO PlayerMovement ----
 
-        //float end = Time.time + launchDuration;
+        // Rigidbody-based character: set their velocity directly
+        if (rb != null)
+        {
+            if (rb.isKinematic == true)
+            {
+                rb.isKinematic = false;
+            }
 
-        // BOOST PHASE (actively set velocity)
-        //while (Time.time < end)
-        //{
-            if (ShouldCancel(pm)) yield break;
+            rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
-            yield return new WaitForFixedUpdate();
-            rb.linearVelocity = dir * launchSpeed;
-        
+            Vector3 v = rb.linearVelocity;
 
-        // After boost, RB just falls under normal physics
-    }
+            // Upward launch
+            if (launchSpeed > 0f)
+            {
+                // keep whichever is stronger so you don't "kill" an existing bigger jump
+                v.y = Mathf.Max(v.y, launchSpeed);
+            }
 
-    // Helper to centralize cancel rules
-    bool ShouldCancel(PlayerMovement pm)
-    {
-        if (pm == null) return false;
-        if (cancelOnSlam && pm.IsSlamming()) return true;
-        if (cancelOnDash && pm.IsDashing()) return true;
-        return false;
+            // Optional forward boost
+            if (forwardBoost != 0f)
+            {
+                v += transform.forward * forwardBoost;
+            }
+
+            rb.linearVelocity = v;
+
+            CameraScript.Main?.Shake(0.25f, 1.5f, 40f, true);
+            return;
+        }
+
+        // CharacterController without PlayerMovement:
+        // we can only do a small, instant upward move – after that,
+        // your own movement code is in charge.
+        if (cc != null)
+        {
+            Vector3 move = Vector3.up * launchSpeed * Time.deltaTime;
+
+            if (forwardBoost != 0f)
+            {
+                move += transform.forward * forwardBoost * Time.deltaTime;
+            }
+
+            cc.Move(move);
+            CameraScript.Main?.Shake(0.25f, 1.5f, 40f, true);
+        }
     }
 }
