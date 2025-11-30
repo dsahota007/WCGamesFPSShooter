@@ -138,6 +138,9 @@ MonoBehaviour:
   bobAmplitude: 0.15
   bobSpeed: 2
   lifeTime: 20
+  pickupVFX: {fileID: 358637981425055526, guid: 5f305b150ca6e204396ec763f8d0979d,
+    type: 3}
+  vfxLifeTime: 5
 --- !u!135 &579743676591761360
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -157,7 +160,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 1.11
   m_Center: {x: -0.049042888, y: 0.153164, z: 0.000000040978193}
 --- !u!1 &6875527852102830656
 GameObject:

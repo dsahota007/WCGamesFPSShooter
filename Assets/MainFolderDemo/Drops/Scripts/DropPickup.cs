@@ -10,6 +10,10 @@ public class DropPickup : MonoBehaviour
 
     Vector3 basePos;
 
+    public GameObject pickupVFX;
+    public float vfxLifeTime = 5f;
+
+
     void Start()
     {
         basePos = transform.position;
@@ -29,6 +33,13 @@ public class DropPickup : MonoBehaviour
     {
         if (!other.CompareTag("Player")) return;
         FindFirstObjectByType<DropManager>()?.Apply(type);
+
+        if (pickupVFX != null)
+        {
+            GameObject vfx = Instantiate(pickupVFX, transform.position, Quaternion.identity);
+            Destroy(vfx, vfxLifeTime);
+        }
+
         Destroy(gameObject);
     }
 }

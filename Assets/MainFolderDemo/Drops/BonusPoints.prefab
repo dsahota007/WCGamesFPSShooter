@@ -140,6 +140,9 @@ MonoBehaviour:
   bobAmplitude: 0.15
   bobSpeed: 2
   lifeTime: 20
+  pickupVFX: {fileID: 358637981425055526, guid: c35cc7f7d952e0d4f90b7ecefc019df5,
+    type: 3}
+  vfxLifeTime: 5
 --- !u!135 &2349284250005847803
 SphereCollider:
   m_ObjectHideFlags: 0
