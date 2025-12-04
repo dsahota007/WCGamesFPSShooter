@@ -12,6 +12,8 @@ public class AmmoBox : MonoBehaviour
     public Transform chestTop;   // Assign this in Inspector
     public float openAngle = -7.73f;
     public float openTime = 1f;
+    public GameObject openVFX;   //shine vfx
+
 
     private Quaternion closedRotation;
     private bool isOpening = false;
