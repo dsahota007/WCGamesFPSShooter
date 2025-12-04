@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class AmmoBox : MonoBehaviour
 {
@@ -6,10 +7,24 @@ public class AmmoBox : MonoBehaviour
 
     private Transform player;
 
+
+    [Header("Ammo Box Open VFX")]
+    public Transform chestTop;   // Assign this in Inspector
+    public float openAngle = -7.73f;
+    public float openTime = 1f;
+
+    private Quaternion closedRotation;
+    private bool isOpening = false;
+
     void Start()
     {
         var p = GameObject.FindGameObjectWithTag("Player");
         if (p) player = p.transform;
+
+        if (chestTop != null)  
+        {
+            closedRotation = chestTop.localRotation; //capping the closed rotation. 
+        }
     }
 
     void Update()
@@ -50,7 +65,79 @@ public class AmmoBox : MonoBehaviour
             // optional: ping UI toast if you want (UI stays in UI by your rule)
             // FindFirstObjectByType<UI>()?.ShowTemporaryPerkMessage("Not enough points");
         }
+
+        if (!isOpening)
+        {
+            StartCoroutine(OpenChestLid());
+        }
     }
+
+
+    //animation of the lid opening
+
+
+    //IEnumerator OpenChestLid()
+    //{
+    //    if (chestTop == null) yield break;
+
+    //    isOpening = true;
+
+    //    // Rotate open
+    //    chestTop.localRotation = Quaternion.Euler(openAngle,
+    //                                               chestTop.localEulerAngles.y,
+    //                                               chestTop.localEulerAngles.z);
+
+    //    // Wait 1 second
+    //    yield return new WaitForSeconds(openTime);
+
+    //    // Return to original rotation
+    //    chestTop.localRotation = closedRotation;
+
+    //    isOpening = false;
+    //}
+
+
+    IEnumerator OpenChestLid()
+    {
+        if (chestTop == null) yield break;
+
+        isOpening = true;
+
+        Quaternion openRotation = Quaternion.Euler(
+            openAngle,
+            closedRotation.eulerAngles.y,
+            closedRotation.eulerAngles.z
+        );
+
+        float t = 0f;
+        float speed = 4f; // opening speed
+
+        // Smooth open
+        while (t < 1f)
+        {
+            t += Time.deltaTime * speed;
+            chestTop.localRotation = Quaternion.Lerp(closedRotation, openRotation, t);
+            yield return null;
+        }
+
+        // Stay open for 1 second
+        yield return new WaitForSeconds(openTime);
+
+        t = 0f;
+
+        // Smooth close
+        while (t < 1f)
+        {
+            t += Time.deltaTime * speed;
+            chestTop.localRotation = Quaternion.Lerp(openRotation, closedRotation, t);
+            yield return null;
+        }
+
+        chestTop.localRotation = closedRotation;
+        isOpening = false;
+    }
+
+
 
     int GetAmmoCost(Weapon w)
     {
