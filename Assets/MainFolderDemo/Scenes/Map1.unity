@@ -47182,7 +47182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &267505404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168291,6 +168291,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactDistance: 3
+  chestTop: {fileID: 0}
+  openAngle: -7.73
+  openTime: 1
+  openVFX: {fileID: 0}
 --- !u!1001 &891770870
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -176135,7 +176139,7 @@ Light:
     m_Strength: 1
     m_Bias: 0.5
     m_NormalBias: 0.4
-    m_NearPlane: 0.2
+    m_NearPlane: 10
     m_CullingMatrixOverride:
       e00: 1
       e01: 0
